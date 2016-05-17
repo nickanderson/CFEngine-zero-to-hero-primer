@@ -1,0 +1,13 @@
+bundle agent example {
+  files:
+    solaris::
+      "/tmp/hello/world"
+        create => "true";
+      "/tmp/foo/bar"
+        create => "true";
+    linux::
+      "/dev/shm/hello_world"
+        create => "true";
+  commands:
+      "echo Hello World";
+}

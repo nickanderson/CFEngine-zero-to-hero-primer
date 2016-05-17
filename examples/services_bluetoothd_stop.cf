@@ -1,0 +1,6 @@
+bundle agent stop_bluetoothd {
+  services:
+
+    "bluetoothd"
+      service_policy => "stop";
+}

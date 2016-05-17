@@ -14,7 +14,7 @@
 #+REVEAL_THEME: night
 # ?? Guess this flattens up to x levels deep
 #+REVEAL_HLEVEL: 1
-#+REVEAL_HEAD_PREAMBLE: <meta name="description" content="CFEngine Zero to Hero Primer.">
+#+REVEAL_HEAD_PREAMBLE: <meta name=description" content=CFEngine Zero to Hero Primer.">
 #+REVEAL_POSTAMBLE: <p> Created by Nick Anderson. </p>
 #+REVEAL_PLUGINS: (markdown notes)
 #+REVEAL_EXTRA_CSS: ./local.css
@@ -57,8 +57,9 @@ Want to know more?
 - [[http://verticalsysadmin.com/][Vertical Sysadmin's CFEngine courses]]
 - [[https://docs.cfengine.com/lts/reference.html][CFEngine Reference Manual]]
 - [[mailto:contact@cfengine.com][CFEngine Training & Professional Services]]
+- [[http://shop.oreilly.com/product/110000787.do][Beyond Automation with CFEngine3]] (Video Training)
 
-* Fork Me on Github!
+** Fork Me on Github!
 :PROPERTIES:
 :ID:       688caa3c-27be-483e-9c6b-9ce91134fea7
 :END:
@@ -128,7 +129,7 @@ is responsible for making that happen.
 :ID:       d0330294-0334-4d64-97cd-fabe1c3ec6f3
 :END:
 #+DOWNLOADED: https://codepumpkin.files.wordpress.com/2014/10/imperative-vs-declarative1.png?w=723 @ 2016-05-11 16:31:47
-#+REVEAL_HTML: <iframe width="600" height="300" src="./media/imperative-vs-declarative1_2016-05-11_16-31-47.png" frameborder="0" allowfullscreen></iframe>
+#+REVEAL_HTML: <iframe width=600" height=300" src=./media/imperative-vs-declarative1_2016-05-11_16-31-47.png" frameborder=0" allowfullscreen></iframe>
 
 ** Imperative vs. Declarative
 :PROPERTIES:
@@ -185,9 +186,16 @@ When a system has reached the desired state it is said to have reached
 :ID:       9c0c5886-4b07-423e-9e4a-0b55a73515b7
 :END:
 
-Promise theory is a model of voluntary cooperation between individual,
-autonomous actors or agents who publish their intentions to one another in the
-form of promises.
+Promise theory is the *fundamental underlying philosophy* that drives CFEngine.
+
+It is a model of voluntary cooperation between individual, autonomous actors or
+agents who publish their intentions to one another in the form of promises.
+
+
+** What makes promises?
+:PROPERTIES:
+:ID:       200e380a-dd5d-4f0a-a36f-7734801183ba
+:END:
 
 A file (e.g., =/etc/apache2/httpd.conf=) can make promises about its own
 contents, attributes, etc. But it does not make any promises about a process.
@@ -196,8 +204,18 @@ A process (e.g., =httpd=) can make a promise that it will be running. But it
 does not make any promises about its configuration.
 
 The configuration file and the process are /autonomous/. Each makes promises
-about itself which cooperates toward an end. Promise theory is the *fundamental
-underlying philosophy* that drives CFEngine.
+about itself which cooperates toward an end.
+
+** Going Deeper
+:PROPERTIES:
+:ID:       4eda301f-e34c-4088-9c61-caee91158454
+:END:
+
+- [[https://www.amazon.com/Thinking-Promises-Mark-Burgess-ebook/dp/B01092PYG8/ref=pd_cp_351_2?ie=UTF8&refRID=P8MMWZ7H2X6B52JEAHNB][Thinking in Promises]]
+- [[https://www.amazon.com/Search-Certainty-Science-Information-Infrastructure-ebook/dp/B00WL6SPR6/ref=pd_sim_351_3?ie=UTF8&dpID=61EbYHkv7NL&dpSrc=sims&preST=_OU01_AC_UL160_SR107%252C160_&refRID=R1NF58A2W7Z570MN6V3P][In Search of Certainty]]
+- [[https://www.amazon.com/Promise-Theory-Jan-Bergstra-ebook/dp/B00IAQQ8PM?ie=UTF8&btkr=1&redirect=true&ref_=dp-kindle-redirect][Promise Theory: Principals and Applications]]
+
+[[./media/thinking-in-promises-cover.jpg]] [[./media/in-search-of-certainty-cover.png]]
 
 * Promises
 :PROPERTIES:
@@ -236,9 +254,8 @@ underlying philosophy* that drives CFEngine.
           attribute2 => body;
 #+END_SRC
 
-Each promise has a list of attributes that describe the parameters of the
-promise. Every attribute is optional, and the available attributes will vary
-depending on the *promise type*.
+Each promise can have one or more attributes that describe the parameters of the
+promise. The available attributes will vary depending on the *promise type*.
 
 The value can be either a text string (which must be quoted) or another object
 (which must not be quoted). All of the attributes together are called the *body*
@@ -266,7 +283,7 @@ Attributes are separated by *commas*. Each promise ends with a *semi-colon*.
   created if it does not exist.
 - The *promisee* is /you!/
 - To create a directory instead, use a =files:= promise and append a =.= to the
-  directory name (e.g., "=/tmp/hello/.=")
+  directory name (e.g., =/tmp/hello/.=)
 
 * Bundles
 :PROPERTIES:
@@ -362,7 +379,10 @@ Bundles and bodies can be paramaterized for abstraction and re-usability. In
 other words you can define one and call it even passing in parameters which will
 implicitly become variables.
 
-Here's an example:
+** Example
+:PROPERTIES:
+:ID:       0b8595fd-0ac5-43f6-a978-20babb7cb6ae
+:END:
 
 #+BEGIN_SRC cfengine3
   body type name (my_param) {
@@ -370,7 +390,7 @@ Here's an example:
   }
 #+END_SRC
 
-The parameter =param= is accessed as a variable by =$(param)=.
+The parameter =my_param= is accessed as a variable by =$(my_param)=.
 
 * The Masterfiles Policy Framework
 :PROPERTIES:
@@ -410,8 +430,9 @@ These are the building blocks. You now know what they all are.
 
 Now we will go through some examples.
 
-In each example that includes a complete bundle, try running it on your virtual
-machine. Save all of the files for future reference.
+I encourage you to try executing the examples as we go along.
+
+- https://github.com/nickanderson/CFEngine-zero-to-hero-primer/tree/master/examples
 
 To execute a policy run the following command:
 
@@ -419,13 +440,36 @@ To execute a policy run the following command:
 $ cf-agent --file ./test.cf --bundle bundlename
 #+END_EXAMPLE
 
-*Note:* Make sure you use the correct file and bundle name!
+*Note:* Make sure you use the correct file and bundle name! For any examples
+using a bundle named main you can skip specifying the bundle.
+
+** Running commands
+:PROPERTIES:
+:ID:       f1a0a12d-213b-47b4-a76f-e90af704ed17
+:END:
+
+#+caption: =commands_echo_hello_world.cf=
+#+BEGIN_SRC cfengine3 :tangle examples/commands_echo_hello_world.cf
+  bundle agent main
+  {
+    commands:
+        "/bin/echo Hello World!";
+  }
+#+END_SRC
+
+#+BEGIN_NOTES
+Commands are *not* the best way to accomplish automation.
+
+- Can hide important details.
+- Not the most efficient way to collect information.
+#+END_NOTES
 
 ** Set File Permissions
 :PROPERTIES:
 :ID:       759fe7c4-fd50-4e0b-b9bb-0460d25c013f
 :END:
 
+#+caption: =set_file_permissions.cf=
 #+BEGIN_SRC cfengine3 :tangle examples/set_file_permissions.cf
   bundle agent example {
     files:
@@ -448,7 +492,6 @@ $ cf-agent --file ./test.cf --bundle bundlename
 
 Note: The values for =owners= and =groups= is enclosed in curly braces. This is
 because these attributes take a list of strings (aka, an =slist=).
-
 
 ** Copy an Entire File
 :PROPERTIES:
@@ -479,8 +522,9 @@ because these attributes take a list of strings (aka, an =slist=).
 :ID:       df23c2a4-0fc9-492a-9587-b5ab168609c0
 :END:
 
-#+BEGIN_SRC cfengine3
-    bundle agent example {
+#+caption: =sshd_permit_root_login_no.cf=
+#+BEGIN_SRC cfengine3 :tangle examples/sshd_permit_root_login_no.cf
+    bundle agent main {
       files:
         "/etc/ssh/sshd_config"     edit_line => deny_root_ssh;
     }
@@ -501,7 +545,7 @@ because these attributes take a list of strings (aka, an =slist=).
   probably want to copy the whole file or use =set_config_values()= from the
   standard library.
 
-* Introduction to Classes
+* Classification and Classes
 :PROPERTIES:
 :ID:       28958fde-5ec8-4305-bd03-6873bec81c3f
 :END:
@@ -653,7 +697,8 @@ promise. Think of each like a heading in an outline. Everything that follows is
 still under the same heading until a new heading is declared. If a new promise
 type is declared the class context is reset as well.
 
-#+BEGIN_SRC cfengine3
+#+caption: =implicit_class_context.cf=
+#+BEGIN_SRC cfengine3 :tangle examples/implicit_class_context.cf
   bundle agent example {
     files:
       solaris::
@@ -790,7 +835,7 @@ define our class context. The expression =RestartApache.debian= means
 # Note the vertical pipes inside the table are actually unicode characters, this
 # is just to make it work inside org-mode
 
-* Manageing Processes
+* Managing Processes
 :PROPERTIES:
 :ID:       04dd5bb2-bad1-4efe-a2b3-bf34af6d465e
 :END:
@@ -823,7 +868,8 @@ When CFEngine executes =commands= promises Apache will be started.
 :ID:       bc4aa11f-fe91-4c70-b103-12fd4731be60
 :END:
 
-#+BEGIN_SRC cfengine3
+#+caption: =process_stop_bluetoothd.cf=
+#+BEGIN_SRC cfengine3 :tangle examples/process_stop_bluetoothd.cf
   bundle agent stop_bluetooth {
 
     processes:
@@ -842,7 +888,8 @@ command is executed.
 :ID:       7dfc7a39-30e0-4c63-b7ab-3a598cab3f7d
 :END:
 
-#+BEGIN_SRC cfengine3
+#+caption: =process_signals_bluetoothd.cf=
+#+BEGIN_SRC cfengine3 :tangle examples/process_signals_bluetoothd.cf
   bundle agent stop_bluetooth {
 
     processes:
@@ -856,7 +903,7 @@ This policy uses a =processes= promise to check the process table (with =ps=)
 for the regular expression =.*bluetoothd.*=. Any matching process is sent the
 =term= signal, then sent the =kill= signal.
 
-*Note:* The promise ="bluetoothd"= becomes the *regular expression*,
+*Note:* The promise =bluetoothd= becomes the *regular expression*,
 =.*bluetoothd.*= that is matched against the output of =ps=. This means that it
 can match *anywhere* on the line (in versions prior to 3.9), not just the
 process name field. *Caveat emptor!*
@@ -876,22 +923,19 @@ process name field. *Caveat emptor!*
 #+END_SRC
 
 This uses the =services= promise type to ensure that Apache is always running.
-This only works for services that are defined under =standard_services= in the
-standard library and requires cfengine 3.4.0 or higher.
 
-=services= promises currently only work on Linux and are distro-intelligent.
-That is, this promise example above works equally well on Debian/Ubuntu, Red
-Hat/CentOS or SUSE (and derived distros).
-
-If you're not using one of these distros, or if you're using a Solaris or BSD
-based system you'll need to use processes promises.
+The =standard_services= bundle implementation currently covers =systemd=,
+=chkconfig=, the =service= command, =svcadm= and =systemV= init scripts. Proper
+functionality relies on each installed service correctly implementing a service
+check as appropriate for the init system in use.
 
 ** Ensuring Processes are Not Running: Using Services
 :PROPERTIES:
 :ID:       52325dac-802a-4a7c-a286-41167a4349d2
 :END:
 
-#+BEGIN_SRC cfengine3
+#+caption: =services_bluetoothd_stop.cf=
+#+BEGIN_SRC cfengine3 :tangle examples/services_bluetoothd_stop.cf
   bundle agent stop_bluetoothd {
     services:
 
@@ -907,9 +951,14 @@ higher.
 
 The same restrictions about distros apply to stopping services promises.
 
-* Package Management
+* Managing Packages
 :PROPERTIES:
 :ID:       640d1c4c-8e50-4924-9196-7d45ff2f495d
+:END:
+
+** Legacy Implementation
+:PROPERTIES:
+:ID:       a4a244f9-fa44-48ce-8585-8f15824b1712
 :END:
 
 #+BEGIN_SRC cfengine3
@@ -919,24 +968,99 @@ The same restrictions about distros apply to stopping services promises.
         "zsh"
           package_policy  => "addupdate",
           package_method  => apt,
-          package_select  => ">=",
+          package_select  => ">=,
           package_version => "4.3.10-14";
     }
 #+END_SRC
 
-- The =package_policy= of ="add update"= will install or upgrade. Using =add=
+- The =package_policy= of =add update= will install or upgrade. Using =add=
   will only install, never upgrade, =upgrade= will upgrade only and =delete=
   will uninstall.
 - The =package_method= of =apt= is in the standard library, look there for other
   package methods (e.g., rpm, ips, etc.).
-- The =package_select= of =">="= means the installed version must be equal to or
-  newer than the specified version or it will be replaced. Using ="<="= would
-  downgrade, if the =package_method= supports downgrading and ="=="= will
+- The =package_select= of =>== means the installed version must be equal to or
+  newer than the specified version or it will be replaced. Using =<== would
+  downgrade, if the =package_method= supports downgrading and ==== will
   require the exact version.
 
-* Deleting Files
+#+BEGIN_NOTES
+Packages promises have be re-vamped with a new implementation that makes it
+easier to dig into the specific details of how packages should be managed.
+#+END_NOTES
+
+** New Implementation
+:PROPERTIES:
+:ID:       b3d20cf4-75cc-4a24-9188-d85c1b6f2be3
+:END:
+
+#+BEGIN_SRC cfengine3
+    bundle agent install {
+      packages:
+        "zsh"
+          policy  => "present",
+          package_module  => yum,
+          version => "latest";
+    }
+#+END_SRC
+
+- The =policy= of =present= will make sure the package is installed on the
+  system, while a =policy= of =absent= will ensure a package is not installed.
+- The =package_module= of =yum= is included in the Masterfiles Policy Framework.
+- The =version= of =latest= means the installed version should be the latest
+  available. Alternatively you can provide an explicit version.
+
+** Package Managers
+:PROPERTIES:
+:ID:       60949620-51bb-456e-8847-35e52d82a0ca
+:END:
+
+- =package_methods=
+
+  =pip(flags)=, =npm(dir)=, =npm_g=, =brew(user)=, =apt=, =apt_get=,
+  =apt_get_permissive=, =apt_get_release(release)=, =dpkg_version(repo)=,
+  =rpm_version(repo)=, =windows_feature=, =msi_implicit(repo)=,
+  =msi_explicit(repo)=, =yum=, =yum_rpm=, =yum_rpm_permissive=,
+  =yum_rpm_enable_repo(repoid)=, =yum_group=, =rpm_filebased(path)=, =ips=,
+  =smartos=, =smartos_pkg_add(repo)=, =opencsw=, =solaris(pkgname, spoolfile,
+  adminfile)=, =solaris_install(adminfile)=, =freebsd=, =freebsd_portmaster=,
+  =alpinelinux=, =emerge=, =pacman=, =zypper=, =generic=
+
+- =package_modules=
+
+  =yum=, =apt_get=, =freebsd_ports=, =nimclient=, =pkg=, =pkgsrc=
+
+* Managing Files
 :PROPERTIES:
 :ID:       84c4b634-81e2-4a05-ac60-b66f0224f360
+:END:
+
+** Templating a file
+:PROPERTIES:
+:ID:       6005b838-5e30-45f1-acfb-7de243839169
+:END:
+
+#+Caption: =template.mustache=
+#+BEGIN_SRC text :tangle examples/template.mustache
+Hello from {{{vars.sys.fqhost}}}!
+
+{{#classes.linux}}I am a Linux Box!{{/classes.linux}}
+{{^classes.windows}}I am NOT a Windows Box{{/classes.windows}}
+#+END_SRC
+
+#+Caption: =template_file.cf=
+#+BEGIN_SRC cfengine3 :tangle examples/template_file.cf
+  bundle agent main{
+    files:
+        "/tmp/example"
+          create => "true",
+          edit_template => "$(this.promise_dirname)/template.mustache",
+          template_method => "mustache";
+  }
+#+END_SRC
+
+** Deleting a file
+:PROPERTIES:
+:ID:       dcde8434-d578-4bd2-9798-390bab27d97b
 :END:
 
 #+BEGIN_SRC cfengine3
@@ -953,12 +1077,8 @@ This policy will delete any files in =/var/log/= older than 7 days. The
 
 To delete a file indiscriminately, omit the =file_select=.
 
-Look up
-[[https://docs.cfengine.com/lts/reference-promise-types-files.html#file_select][=file_select=]]
-and
-[[https://docs.cfengine.com/lts/reference-standard-library-files.html#tidy][=tidy=]]
-in the [[https://docs.cfengine.com/lts/reference.html][reference-manual]] to
-find more ways to use this.
+Look up [[https://docs.cfengine.com/lts/reference-promise-types-files.html#file_select][=file_select=]] and [[https://docs.cfengine.com/lts/reference-standard-library-files.html#tidy][=tidy=]] in the [[https://docs.cfengine.com/lts/reference.html][reference-manual]] to find more ways to
+use this.
 
 * Setting Up a Client/Server Environment
 :PROPERTIES:
@@ -970,41 +1090,41 @@ and the server FQDN must be set properly in DNS (or use the IP addresses). This
 is ideally handled by your provisioning process. Along with automating server
 function you should also be automating your provisioning process.
 
-Some ways of automating provisioning are
-[[http://fedoraproject.org/wiki/Anaconda/Kickstart][kickstart]],
-[[http://wiki.debian.org/DebianInstaller/Preseed][preseed]],
-[[http://wiki.debian.org/FAI][fai]], [[http://www.cobblerd.org][cobbler]],
-[[http://www.osalt.com/g4u][disk imaging]],
-[[http://aws.amazon.com/ec2/][instance cloning]], etc, etc. This of course is
-not a complete list.
+Some ways of automating provisioning are [[http://fedoraproject.org/wiki/Anaconda/Kickstart][kickstart]], [[http://wiki.debian.org/DebianInstaller/Preseed][preseed]], [[http://wiki.debian.org/FAI][fai]], [[http://www.cobblerd.org][cobbler]], [[http://www.osalt.com/g4u][disk
+imaging]], [[http://aws.amazon.com/ec2/][instance cloning]], etc, etc. This of course is not a complete list.
 
-* Bootstraping the Server and Client
+** Bootstraping the Server and Client
 :PROPERTIES:
 :ID:       19be29ca-f7a2-4e00-8bfe-0c82abcf5587
 :END:
 
-** Server Side
+*** Server Side
 :PROPERTIES:
 :ID:       2f62e0b9-1c3b-413e-9b7b-7be933cd09cb
 :END:
 
-Edit =/var/cfengine/masterfiles/def.cf= to set the ="acl"= list for the IP addresses of your network, then run:
+Edit =/var/cfengine/masterfiles/def.cf= to set the =acl= list for the IP
+addresses of your network, then run:
 
-    cf-agent --bootstrap $(hostname --fqdn)
-    cf-agent -KI
+#+BEGIN_EXAMPLE
+  cf-agent --bootstrap $(hostname --fqdn)
+  cf-agent -KI
+#+END_EXAMPLE
 
-** Client Side
+*** Client Side
 :PROPERTIES:
 :ID:       54a6c47a-fad0-4850-9e41-2fae90482477
 :END:
 
 Simply run:
 
-    cf-agent --bootstrap server.fqdn.example.com
+#+BEGIN_EXAMPLE
+  cf-agent --bootstrap server.fqdn.example.com
+#+END_EXAMPLE
 
 You can use the server's IP address instead of the DNS name.
 
-* Managing and Distributing Policies
+** Managing and Distributing Policies
 :PROPERTIES:
 :ID:       d9e383b1-66ce-4c83-9bc1-249ba4d388b3
 :END:
@@ -1013,7 +1133,7 @@ The policy files are in =/var/cfengine/masterfiles= on the server (also known as
 the =policy_hub=) and are copied to =/var/cfengine/inputs=. All clients then
 copy =/var/cfengine/inputs= from the server.
 
-<div style="text-align:center">![](policy_propagation.png)</div>
+<div style=text-align:center">![](policy_propagation.png)</div>
 
 Now edit the policy in =/var/cfengine/masterfiles= on the server and watch for
 the changes to happen on the client.
@@ -1025,7 +1145,7 @@ under =body common control= inside of =promises.cf=.
 Bundles are executed in the order they are listed in the =bundlesequence=, but
 =inputs= can be listed in any order.
 
-* Keep Track of Promises Repaired and Promises Not Repaired
+* Reporting on Promise Outcomes
 :PROPERTIES:
 :ID:       aeed71b0-6fb3-4012-b33d-d8e5d6e345e8
 :END:
@@ -1052,19 +1172,29 @@ And finally you can use the =-I= flag to have CFEngine *inform* you of repairs.
   cf-agent -KI
 #+END_EXAMPLE
 
-* Debugging
+** Enterprise Reporting
+:PROPERTIES:
+:ID:       bcc58a30-f948-4fde-8685-c691190ce489
+:END:
+
+[[./media/enterprise-reporting.png]]
+
+** Debugging
+:PROPERTIES:
+:ID:       1e36c971-9bc8-43f8-814b-d6ab8f3c8bcf
+:END:
 
 Inevitably, something will go wrong, and you will need to dig deep to figure
 something out. Lucky for you, I have some tips for debugging.
 
-** Run without locks
+*** Run without locks
 :PROPERTIES:
 :ID:       f86345f4-8990-4310-94bd-c08edbb32ee9
 :END:
 
  Again, using =-K= to disable locks is useful.
 
-** Using Verbose Mode
+*** Using Verbose Mode
 :PROPERTIES:
 :ID:       e4c6cdd2-7113-4b53-b1ca-614afde6c415
 :END:
@@ -1101,7 +1231,7 @@ excruciating detail.
  verbose: P: END files promise (/tmp/touch...)
 #+END_EXAMPLE
 
-** Comments
+*** Comments
 :PROPERTIES:
 :ID:       f70a691d-3f41-4b38-999e-f2a9b203872d
 :END:
@@ -1138,7 +1268,7 @@ Think about why this promise is important to the proper functioning of your infr
 - What could go wrong if this promise isn't kept
 #+END_NOTES
 
-** Promise Handles
+*** Promise Handles
 :PROPERTIES:
 :ID:       0100492d-e829-45d5-ad86-18c0097418b3
 :END:
@@ -1182,7 +1312,7 @@ I believe this will come into core in 3.9 or 3.10.
 
 #+END_NOTES
 
-** Promisees
+*** Promisees
 :PROPERTIES:
 :ID:       1fac9d2a-357d-41b4-9363-d7be3ec437d6
 :END:
@@ -1208,12 +1338,32 @@ CFEngine will tell you additional info about each promise.
            comment 'More recent copy of named.cache than shipped with bind.'
 #+END_EXAMPLE
 
-** Meta
+*** Meta
+:PROPERTIES:
+:ID:       ae9c713c-e3be-4b07-bd88-056bbc1af431
+:END:
 
 When debugging variables and classes promise /meta/ data is useful to help
 identify variables and classes with specific attributes.
 
-Promise meta data is not currently displayed in the CFEngine's verbose output.
+#+caption: =debugging_classes_and_vars_with_tags.cf=
+#+BEGIN_SRC cfengine3 :tangle examples/debugging_classes_and_vars_with_tags.cf
+  bundle agent main{
+    classes:
+        "my_class" expression => "any", meta => { "mytag" };
+    vars:
+        "my_var" string => "value", meta => { "mytag" };
+        "my_vars" slist => variablesmatching(".*", "mytag" );
+        "my_classes" slist => classesmatching(".*", "mytag" );
+    reports:
+        "My var: $(my_vars)";
+        "My class: $(my_classes)";
+  }
+#+END_SRC
+
+*Note:* Promise meta data is not currently displayed in the CFEngine's verbose
+output.
+
 * The Rest
 :PROPERTIES:
 :ID:       d42914dc-b51d-46cd-b254-8f0e7e12b0fa
@@ -1231,12 +1381,11 @@ the [reference manual][reference-manual].
 - =database= promises — Promise the schema of your database, CFEngine does the
   SQL for you.
 - =edit_xml:= promises - Promise by path, CFEngine does the XML for you.
-- =interfaces:= promises — Promise your network settings
 - Monitoring — Using data from =cf-monitor=.
 - Implicit looping — Pass a list to a promise and it loops over the values in
   the list.
 
-* Pro Tips
+** Pro Tips
 :PROPERTIES:
 :ID:       f9326762-bccd-47d5-b431-dbdddd021822
 :END:

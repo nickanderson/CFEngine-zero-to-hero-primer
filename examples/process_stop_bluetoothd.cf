@@ -1,0 +1,7 @@
+bundle agent stop_bluetooth {
+
+  processes:
+
+    "bluetoothd"
+      process_stop => "/etc/init.d/bluetooth stop";
+}

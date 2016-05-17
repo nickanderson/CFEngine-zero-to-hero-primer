@@ -1,0 +1,7 @@
+bundle agent stop_bluetooth {
+
+  processes:
+
+    "bluetoothd"
+      signals => { "term", "kill" };
+}

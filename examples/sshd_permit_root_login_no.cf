@@ -1,0 +1,11 @@
+bundle agent main {
+  files:
+    "/etc/ssh/sshd_config"     edit_line => deny_root_ssh;
+}
+
+bundle edit_line deny_root_ssh {
+  delete_lines:
+    "^PermitRootLogin.*"
+  insert_lines:
+    "PermitRootLogin no"
+}

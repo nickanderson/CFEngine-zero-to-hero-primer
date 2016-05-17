@@ -1,0 +1,11 @@
+bundle agent example {
+  files:
+    "/etc/shadow"     perms => perms_for_shadow_files;
+    "/etc/gshadow"    perms => perms_for_shadow_files;
+}
+
+body perms perms_for_shadow_files {
+  owners => { "root" };
+  groups => { "shadow" };
+  mode   => "0640";
+}

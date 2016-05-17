@@ -1,0 +1,11 @@
+bundle agent main{
+  classes:
+      "my_class" expression => "any", meta => { "mytag" };
+  vars:
+      "my_var" string => "value", meta => { "mytag" };
+      "my_vars" slist => variablesmatching(".*", "mytag" );
+      "my_classes" slist => classesmatching(".*", "mytag" );
+  reports:
+      "My var: $(my_vars)";
+      "My class: $(my_classes)";
+}

@@ -1,41 +1,153 @@
-<!DOCTYPE html>
-<html lang="en">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<meta charset="utf-8"/>
+<!-- 2016-05-17 Tue 12:55 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>CFEngine Zero to Hero Primer</title>
-<meta name="author" content="(Nick Anderson)"/>
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Nick Anderson" />
 <style type="text/css">
-.underline { text-decoration: underline; }
-</style>
-<link rel="stylesheet" href="./reveal.js/css/reveal.css"/>
-<link rel="stylesheet" href="./reveal.js/css/theme/night.css" id="theme"/>
-<link rel="stylesheet" href="./local.css"/>
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
 
-<!-- If the query includes 'print-pdf', include the PDF print sheet -->
-<script>
-    if( window.location.search.match( /print-pdf/gi ) ) {
-        var link = document.createElement( 'link' );
-        link.rel = 'stylesheet';
-        link.type = 'text/css';
-        link.href = './reveal.js/css/print/pdf.css';
-        document.getElementsByTagName( 'head' )[0].appendChild( link );
-    }
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
 </script>
-<meta name="description" content="CFEngine Zero to Hero Primer.">
 </head>
 <body>
-<div class="reveal">
-<div class="slides">
-<section id="sec-title-slide">
-<h1>CFEngine Zero to Hero Primer</h1>
-<h2>Nick Anderson</h2>
-<h2><a href="mailto:nick@cmdln.org">nick@cmdln.org</a></h2>
-<h2></h2>
-</section>
+<div id="content">
+<h1 class="title">CFEngine Zero to Hero Primer</h1>
 
-<section>
-<section id="slide-orgheadline1">
+<div id="outline-container-orgheadline1" class="outline-2">
 <h2 id="orgheadline1"><a id="ID-bebd19ec-c478-4b8d-ad63-2216c814a5af"></a>Introduction</h2>
+<div class="outline-text-2" id="text-orgheadline1">
 <p>
 <b>CFEngine</b> contains a powerful language for controlling all aspects of a system.
 CFEngine runs primarily on UNIX and UNIX like operating systems, but can also
@@ -52,18 +164,17 @@ the 20% of CFEngine that will do 80% of the work.
 <p>
 Want to know more?
 </p>
-<ul>
+<ul class="org-ul">
 <li><a href="http://verticalsysadmin.com/">Vertical Sysadmin's CFEngine courses</a></li>
 <li><a href="https://docs.cfengine.com/lts/reference.html">CFEngine Reference Manual</a></li>
 <li><a href="mailto:contact@cfengine.com">CFEngine Training &amp; Professional Services</a></li>
-
+<li><a href="http://shop.oreilly.com/product/110000787.do">Beyond Automation with CFEngine3</a> (Video Training)</li>
 </ul>
+</div>
 
-</section>
-</section>
-<section>
-<section id="slide-orgheadline2">
-<h2 id="orgheadline2"><a id="ID-688caa3c-27be-483e-9c6b-9ce91134fea7"></a>Fork Me on Github!</h2>
+<div id="outline-container-orgheadline2" class="outline-3">
+<h3 id="orgheadline2"><a id="ID-688caa3c-27be-483e-9c6b-9ce91134fea7"></a>Fork Me on Github!</h3>
+<div class="outline-text-3" id="text-orgheadline2">
 <p>
 You can get a copy of this presentation any time on Github.
 </p>
@@ -71,37 +182,40 @@ You can get a copy of this presentation any time on Github.
 <p>
 <a href="http://github.com/nickanderson/CFEngine-zero-to-hero-primer">http://github.com/nickanderson/CFEngine-zero-to-hero-primer</a>
 </p>
+</div>
+</div>
+</div>
 
-</section>
-</section>
-<section>
-<section id="slide-orgheadline7">
-<h2 id="orgheadline7"><a id="ID-9a044a65-d73c-4727-8425-3d0dc14c7521"></a>CFEngine Components</h2>
+<div id="outline-container-orgheadline3" class="outline-2">
+<h2 id="orgheadline3"><a id="ID-9a044a65-d73c-4727-8425-3d0dc14c7521"></a>CFEngine Components</h2>
+<div class="outline-text-2" id="text-orgheadline3">
 <p>
 These are the major components of CFEngine that you will encounter on a day to
 day basis.
 </p>
 
-<ul>
+<ul class="org-ul">
 <li><code>cf-agent</code></li>
 <li><code>cf-monitord</code></li>
 <li><code>cf-execd</code></li>
 <li><code>cf-serverd</code></li>
-
 </ul>
+</div>
 
-</section>
-<section id="slide-orgheadline3">
-<h3 id="orgheadline3"><a id="ID-171881f4-8e19-44dd-b6d1-5e52d64b59c7"></a><code>cf-agent</code></h3>
+<div id="outline-container-orgheadline4" class="outline-3">
+<h3 id="orgheadline4"><a id="ID-171881f4-8e19-44dd-b6d1-5e52d64b59c7"></a><code>cf-agent</code></h3>
+<div class="outline-text-3" id="text-orgheadline4">
 <p>
 <code>cf-agent</code> is the command you will use most often. It is used to apply policy to
 your system. If you are running any CFEngine command from the command line,
 there's a greater than 99% chance that this is it.
 </p>
+</div>
+</div>
 
-</section>
-<section id="slide-orgheadline4">
-<h3 id="orgheadline4"><a id="ID-c3cbe444-b1a2-490f-85cb-29d94152c0c9"></a><code>cf-monitord</code></h3>
+<div id="outline-container-orgheadline5" class="outline-3">
+<h3 id="orgheadline5"><a id="ID-c3cbe444-b1a2-490f-85cb-29d94152c0c9"></a><code>cf-monitord</code></h3>
+<div class="outline-text-3" id="text-orgheadline5">
 <p>
 <code>cf-monitord</code> monitors various statistics about the running system. This
 information is made available in the form of <b>classes</b> and <b>variables</b>.
@@ -111,10 +225,12 @@ information is made available in the form of <b>classes</b> and <b>variables</b>
 You'll almost never use <code>cf-monitord</code> directly. However the data provided by
 <code>cf-monitord</code> is available to <code>cf-agent</code>.
 </p>
+</div>
+</div>
 
-</section>
-<section id="slide-orgheadline5">
-<h3 id="orgheadline5"><a id="ID-24db747a-4fcf-491c-ba39-f339f2730b8f"></a><code>cf-execd</code></h3>
+<div id="outline-container-orgheadline6" class="outline-3">
+<h3 id="orgheadline6"><a id="ID-24db747a-4fcf-491c-ba39-f339f2730b8f"></a><code>cf-execd</code></h3>
+<div class="outline-text-3" id="text-orgheadline6">
 <p>
 <code>cf-execd</code> is a periodic task scheduler. You can think of it like <code>cron</code> on
 steroids.
@@ -124,34 +240,36 @@ steroids.
 By default CFEngine runs and enforces policies every <i>five minutes</i>. <code>cf-execd</code>
 is responsible for making that happen.
 </p>
+</div>
+</div>
 
-</section>
-<section id="slide-orgheadline6">
-<h3 id="orgheadline6"><a id="ID-1e211d18-0097-4ad4-a62c-0eb3e9984402"></a><code>cf-serverd</code></h3>
+<div id="outline-container-orgheadline7" class="outline-3">
+<h3 id="orgheadline7"><a id="ID-1e211d18-0097-4ad4-a62c-0eb3e9984402"></a><code>cf-serverd</code></h3>
+<div class="outline-text-3" id="text-orgheadline7">
 <p>
 <code>cf-serverd</code> runs on the CFEngine server, as well as all clients.
 </p>
 
-<ul>
+<ul class="org-ul">
 <li>On servers it is responsible for serving files to clients.</li>
 <li>On clients it accepts <code>cf-runagent</code> requests</li>
-
 </ul>
 
 <p>
 <code>cf-runagent</code> allows you to request ad-hoc policy runs. I rarely use it.
 </p>
+</div>
+</div>
+</div>
 
-</section>
-</section>
-<section>
-<section id="slide-orgheadline11">
-<h2 id="orgheadline11"><a id="ID-d0330294-0334-4d64-97cd-fabe1c3ec6f3"></a>How vs. What</h2>
-<iframe width="600" height="300" src="./media/imperative-vs-declarative1_2016-05-11_16-31-47.png" frameborder="0" allowfullscreen></iframe>
+<div id="outline-container-orgheadline8" class="outline-2">
+<h2 id="orgheadline8"><a id="ID-d0330294-0334-4d64-97cd-fabe1c3ec6f3"></a>How vs. What</h2>
+<div class="outline-text-2" id="text-orgheadline8">
+</div>
 
-</section>
-<section id="slide-orgheadline8">
-<h3 id="orgheadline8"><a id="ID-a9547a43-da11-49a4-8640-3c6490415404"></a>Imperative vs. Declarative</h3>
+<div id="outline-container-orgheadline9" class="outline-3">
+<h3 id="orgheadline9"><a id="ID-a9547a43-da11-49a4-8640-3c6490415404"></a>Imperative vs. Declarative</h3>
+<div class="outline-text-3" id="text-orgheadline9">
 <p>
 It is very likely that you have only ever used <b>imperative</b> languages. Examples
 of imperative languages include C, Perl, Ruby, Python, shell scripting, etc.
@@ -163,10 +281,12 @@ CFEngine is a <b>declarative</b> language. The CFEngine language is merely a
 <i>description</i> of the final state. CFEngine uses <b>convergence</b> to arrive at the
 described state.
 </p>
+</div>
+</div>
 
-</section>
-<section id="slide-orgheadline9">
-<h3 id="orgheadline9"><a id="ID-c828ad3f-79d0-42d4-9fc8-76d2348f8fa5"></a>Imperative is Sequential</h3>
+<div id="outline-container-orgheadline10" class="outline-3">
+<h3 id="orgheadline10"><a id="ID-c828ad3f-79d0-42d4-9fc8-76d2348f8fa5"></a>Imperative is Sequential</h3>
+<div class="outline-text-3" id="text-orgheadline10">
 <p>
 Imperative languages execute step by step in <b>sequence</b>.
 </p>
@@ -188,10 +308,12 @@ restarted.
 <p>
 Imperative starts at known state A and transforms to known state B.
 </p>
+</div>
+</div>
 
-</section>
-<section id="slide-orgheadline10">
-<h3 id="orgheadline10"><a id="ID-440944c7-b77e-427e-a263-c745fe75bac0"></a>Declarative is Descriptive</h3>
+<div id="outline-container-orgheadline11" class="outline-3">
+<h3 id="orgheadline11"><a id="ID-440944c7-b77e-427e-a263-c745fe75bac0"></a>Declarative is Descriptive</h3>
+<div class="outline-text-3" id="text-orgheadline11">
 <p>
 It is not a list of steps to arrive achieve an outcome but a <b>description</b> of
 the desired state. Because of this any deviation from the desired state can be
@@ -212,18 +334,27 @@ make them true.
 When a system has reached the desired state it is said to have reached
 <b>convergence</b>.
 </p>
+</div>
+</div>
+</div>
 
-</section>
-</section>
-<section>
-<section id="slide-orgheadline12">
+<div id="outline-container-orgheadline12" class="outline-2">
 <h2 id="orgheadline12"><a id="ID-9c0c5886-4b07-423e-9e4a-0b55a73515b7"></a>Promise Theory</h2>
+<div class="outline-text-2" id="text-orgheadline12">
 <p>
-Promise theory is a model of voluntary cooperation between individual,
-autonomous actors or agents who publish their intentions to one another in the
-form of promises.
+Promise theory is the <b>fundamental underlying philosophy</b> that drives CFEngine.
 </p>
 
+<p>
+It is a model of voluntary cooperation between individual, autonomous actors or
+agents who publish their intentions to one another in the form of promises.
+</p>
+</div>
+
+
+<div id="outline-container-orgheadline13" class="outline-3">
+<h3 id="orgheadline13"><a id="ID-200e380a-dd5d-4f0a-a36f-7734801183ba"></a>What makes promises?</h3>
+<div class="outline-text-3" id="text-orgheadline13">
 <p>
 A file (e.g., <code>/etc/apache2/httpd.conf</code>) can make promises about its own
 contents, attributes, etc. But it does not make any promises about a process.
@@ -236,21 +367,37 @@ does not make any promises about its configuration.
 
 <p>
 The configuration file and the process are <i>autonomous</i>. Each makes promises
-about itself which cooperates toward an end. Promise theory is the <b>fundamental
-underlying philosophy</b> that drives CFEngine.
+about itself which cooperates toward an end.
 </p>
+</div>
+</div>
 
-</section>
-</section>
-<section>
-<section id="slide-orgheadline16">
-<h2 id="orgheadline16"><a id="ID-022f09e3-9cda-4e42-8ac5-754a1a42edac"></a>Promises</h2>
-</section>
-<section id="slide-orgheadline13">
-<h3 id="orgheadline13"><a id="ID-3f44af59-010c-4f53-9ffc-6ebbd10f99b7"></a>Anatomy of a Promise</h3>
+<div id="outline-container-orgheadline14" class="outline-3">
+<h3 id="orgheadline14"><a id="ID-4eda301f-e34c-4088-9c61-caee91158454"></a>Going Deeper</h3>
+<div class="outline-text-3" id="text-orgheadline14">
+<ul class="org-ul">
+<li><a href="https://www.amazon.com/Thinking-Promises-Mark-Burgess-ebook/dp/B01092PYG8/ref=pd_cp_351_2?ie=UTF8&amp;refRID=P8MMWZ7H2X6B52JEAHNB">Thinking in Promises</a></li>
+<li><a href="https://www.amazon.com/Search-Certainty-Science-Information-Infrastructure-ebook/dp/B00WL6SPR6/ref=pd_sim_351_3?ie=UTF8&amp;dpID=61EbYHkv7NL&amp;dpSrc=sims&amp;preST=_OU01_AC_UL160_SR107%2C160_&amp;refRID=R1NF58A2W7Z570MN6V3P">In Search of Certainty</a></li>
+<li><a href="https://www.amazon.com/Promise-Theory-Jan-Bergstra-ebook/dp/B00IAQQ8PM?ie=UTF8&amp;btkr=1&amp;redirect=true&amp;ref_=dp-kindle-redirect">Promise Theory: Principals and Applications</a></li>
+</ul>
+
+<p>
+<img src="./media/thinking-in-promises-cover.jpg" alt="thinking-in-promises-cover.jpg" /> <img src="./media/in-search-of-certainty-cover.png" alt="in-search-of-certainty-cover.png" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline15" class="outline-2">
+<h2 id="orgheadline15"><a id="ID-022f09e3-9cda-4e42-8ac5-754a1a42edac"></a>Promises</h2>
+<div class="outline-text-2" id="text-orgheadline15">
+</div>
+<div id="outline-container-orgheadline16" class="outline-3">
+<h3 id="orgheadline16"><a id="ID-3f44af59-010c-4f53-9ffc-6ebbd10f99b7"></a>Anatomy of a Promise</h3>
+<div class="outline-text-3" id="text-orgheadline16">
 <div class="org-src-container">
 
-<pre  class="src src-cfengine3"><span style="color: #839496; font-weight: bold;">type</span>:
+<pre class="src src-cfengine3"><span style="color: #839496; font-weight: bold;">type</span>:
   <span style="color: #859900; font-weight: bold;">context</span>::
     <span style="color: #2aa198;">"promiser"</span> -&gt; <span style="color: #2aa198;">"promisee"</span>
       attribute1 =&gt; <span style="color: #2aa198;">"value"</span>,
@@ -258,21 +405,22 @@ underlying philosophy</b> that drives CFEngine.
 </pre>
 </div>
 
-<ul>
+<ul class="org-ul">
 <li><b>type</b> is the kind of promise being made (e.g., files, commands, etc.).</li>
 <li><b>context</b> is optional and defaults to <code>any::</code>. Promises with a context will
 only apply if the given context is true.</li>
 <li><b>promiser</b> is what is making the promise. (e.g., a file or a process).</li>
 <li><b>promisee</b> is an optional recipient or beneficiary of the promise.</li>
-
 </ul>
+</div>
+</div>
 
-</section>
-<section id="slide-orgheadline14">
-<h3 id="orgheadline14"><a id="ID-0a74a05e-a6e3-4ceb-9eed-7dd44ecc311d"></a>Promise Attributes</h3>
+<div id="outline-container-orgheadline17" class="outline-3">
+<h3 id="orgheadline17"><a id="ID-0a74a05e-a6e3-4ceb-9eed-7dd44ecc311d"></a>Promise Attributes</h3>
+<div class="outline-text-3" id="text-orgheadline17">
 <div class="org-src-container">
 
-<pre  class="src src-cfengine3"><span style="color: #839496; font-weight: bold;">type</span>:
+<pre class="src src-cfengine3"><span style="color: #839496; font-weight: bold;">type</span>:
   <span style="color: #859900; font-weight: bold;">context</span>::
     <span style="color: #2aa198;">"promiser"</span> -&gt; <span style="color: #2aa198;">"promisee"</span>
       attribute1 =&gt; <span style="color: #2aa198;">"value"</span>,
@@ -281,9 +429,8 @@ only apply if the given context is true.</li>
 </div>
 
 <p>
-Each promise has a list of attributes that describe the parameters of the
-promise. Every attribute is optional, and the available attributes will vary
-depending on the <b>promise type</b>.
+Each promise can have one or more attributes that describe the parameters of the
+promise. The available attributes will vary depending on the <b>promise type</b>.
 </p>
 
 <p>
@@ -295,20 +442,22 @@ of the promise (as in "the body of an e-mail", or "the body of a contract").
 <p>
 Attributes are separated by <b>commas</b>. Each promise ends with a <b>semi-colon</b>.
 </p>
+</div>
+</div>
 
-</section>
-<section id="slide-orgheadline15">
-<h3 id="orgheadline15"><a id="ID-c87caf72-3377-4a84-9113-1b71a86ad340"></a>Example Promise</h3>
+<div id="outline-container-orgheadline18" class="outline-3">
+<h3 id="orgheadline18"><a id="ID-c87caf72-3377-4a84-9113-1b71a86ad340"></a>Example Promise</h3>
+<div class="outline-text-3" id="text-orgheadline18">
 <div class="org-src-container">
 
-<pre  class="src src-cfengine3"><span style="color: #839496; font-weight: bold;">files</span>:
+<pre class="src src-cfengine3"><span style="color: #839496; font-weight: bold;">files</span>:
   <span style="color: #859900; font-weight: bold;">linux</span>::
     <span style="color: #2aa198;">"/tmp/hello/world"</span> -&gt; <span style="color: #2aa198;">{</span> <span style="color: #2aa198;">"Student"</span> <span style="color: #2aa198;">}</span>
       create =&gt; <span style="color: #2aa198;">"true"</span>;
 </pre>
 </div>
 
-<ul>
+<ul class="org-ul">
 <li>This is a promise of <b>type</b> <code>files</code>.</li>
 <li>This promise has a <b>class context</b> of <code>linux</code> (it will only apply if running a
 Linux kernel).</li>
@@ -317,15 +466,15 @@ Linux kernel).</li>
 created if it does not exist.</li>
 <li>The <b>promisee</b> is <i>you!</i></li>
 <li>To create a directory instead, use a <code>files:</code> promise and append a <code>.</code> to the
-directory name (e.g., "<code>/tmp/hello/.</code>")</li>
-
+directory name (e.g., <code>/tmp/hello/.</code>)</li>
 </ul>
+</div>
+</div>
+</div>
 
-</section>
-</section>
-<section>
-<section id="slide-orgheadline18">
-<h2 id="orgheadline18"><a id="ID-52089c14-f3f9-44fa-9c78-665051e5454a"></a>Bundles</h2>
+<div id="outline-container-orgheadline19" class="outline-2">
+<h2 id="orgheadline19"><a id="ID-52089c14-f3f9-44fa-9c78-665051e5454a"></a>Bundles</h2>
+<div class="outline-text-2" id="text-orgheadline19">
 <p>
 A <b>bundle</b> is a collection of <b>promises</b>. It is a logical grouping of any number
 of promises, usually for a common purpose. E.g., a bundle to configure
@@ -336,22 +485,22 @@ everything necessary for Apache to function properly.
 For example, a bundle to configure Apache might:
 </p>
 
-<ul>
+<ul class="org-ul">
 <li>install the apache2 package</li>
 <li>edit the configuration file</li>
 <li>copy the web server content</li>
 <li>configure filesystem permissions</li>
 <li>ensure the <code>httpd</code> process is running</li>
 <li>restart the <code>httpd</code> process when necessary</li>
-
 </ul>
+</div>
 
-</section>
-<section id="slide-orgheadline17">
-<h3 id="orgheadline17"><a id="ID-c47adf7f-d46e-4b24-9069-3f6df29a9463"></a>Anatomy of a Bundle</h3>
+<div id="outline-container-orgheadline20" class="outline-3">
+<h3 id="orgheadline20"><a id="ID-c47adf7f-d46e-4b24-9069-3f6df29a9463"></a>Anatomy of a Bundle</h3>
+<div class="outline-text-3" id="text-orgheadline20">
 <div class="org-src-container">
 
-<pre  class="src src-cfengine3"><span style="color: #839496; font-weight: bold;">bundle</span> <span style="color: #268bd2; font-weight: bold;">type</span> <span style="color: #268bd2;">name</span>
+<pre class="src src-cfengine3"><span style="color: #839496; font-weight: bold;">bundle</span> <span style="color: #268bd2; font-weight: bold;">type</span> <span style="color: #268bd2;">name</span>
 <span style="color: #2aa198;">{</span>
 
     <span style="color: #839496; font-weight: bold;">type</span>:
@@ -381,12 +530,13 @@ Bundles of type <code>common</code> apply to any CFEngine binary.
 <p>
 For now you will only create <code>agent</code> or <code>common</code> bundles.
 </p>
+</div>
+</div>
+</div>
 
-</section>
-</section>
-<section>
-<section id="slide-orgheadline20">
-<h2 id="orgheadline20"><a id="ID-a25471b9-fc26-4190-ad80-6fe557daf8f3"></a>Bodies</h2>
+<div id="outline-container-orgheadline21" class="outline-2">
+<h2 id="orgheadline21"><a id="ID-a25471b9-fc26-4190-ad80-6fe557daf8f3"></a>Bodies</h2>
+<div class="outline-text-2" id="text-orgheadline21">
 <p>
 I stated before that the attributes of a promise, collectively, are called the
 body. Depending on the specific attribute the value of an attribute can be an
@@ -397,13 +547,14 @@ body. Depending on the specific attribute the value of an attribute can be an
 A <b>body</b> is a collection of <i>attributes</i>. These are attributes that supplement
 the promise.
 </p>
+</div>
 
-</section>
-<section id="slide-orgheadline19">
-<h3 id="orgheadline19"><a id="ID-9e437e47-6827-4813-b692-80212b7314e0"></a>Anatomy of a Body</h3>
+<div id="outline-container-orgheadline22" class="outline-3">
+<h3 id="orgheadline22"><a id="ID-9e437e47-6827-4813-b692-80212b7314e0"></a>Anatomy of a Body</h3>
+<div class="outline-text-3" id="text-orgheadline22">
 <div class="org-src-container">
 
-<pre  class="src src-cfengine3"><span style="color: #839496; font-weight: bold;">body</span> <span style="color: #268bd2; font-weight: bold;">type</span> <span style="color: #268bd2;">name</span> <span style="color: #2aa198;">{</span>
+<pre class="src src-cfengine3"><span style="color: #839496; font-weight: bold;">body</span> <span style="color: #268bd2; font-weight: bold;">type</span> <span style="color: #268bd2;">name</span> <span style="color: #2aa198;">{</span>
   attribute1 =&gt; <span style="color: #2aa198;">"value"</span>;
   attribute2 =&gt; <span style="color: #2aa198;">"value"</span>;
 <span style="color: #2aa198;">}</span>
@@ -419,10 +570,9 @@ The difference between a <i>bundle</i> and a <i>body</i> is that a bundle contai
 Take a moment to let this sink in.
 </p>
 
-<ul>
+<ul class="org-ul">
 <li>A <b>bundle</b> is a collection of <i>promises</i>.</li>
 <li>A <b>body</b> is a collection of <i>attributes</i> that are applied to a promise.</li>
-
 </ul>
 
 <p>
@@ -433,52 +583,54 @@ this.
 <p>
 In a body each attribute ends with a <b>semi-colon</b>.
 </p>
+</div>
+</div>
+</div>
 
-</section>
-</section>
-<section>
-<section id="slide-orgheadline21">
-<h2 id="orgheadline21"><a id="ID-f2c206eb-fd36-40f0-8f2b-0f390f0c5992"></a>Abstraction and Re-usability</h2>
+<div id="outline-container-orgheadline23" class="outline-2">
+<h2 id="orgheadline23"><a id="ID-f2c206eb-fd36-40f0-8f2b-0f390f0c5992"></a>Abstraction and Re-usability</h2>
+<div class="outline-text-2" id="text-orgheadline23">
 <p>
 Bundles and bodies can be paramaterized for abstraction and re-usability. In
 other words you can define one and call it even passing in parameters which will
 implicitly become variables.
 </p>
+</div>
 
-<p>
-Here's an example:
-</p>
-
+<div id="outline-container-orgheadline24" class="outline-3">
+<h3 id="orgheadline24"><a id="ID-0b8595fd-0ac5-43f6-a978-20babb7cb6ae"></a>Example</h3>
+<div class="outline-text-3" id="text-orgheadline24">
 <div class="org-src-container">
 
-<pre  class="src src-cfengine3"><span style="color: #839496; font-weight: bold;">body</span> <span style="color: #268bd2; font-weight: bold;">type</span> <span style="color: #268bd2;">name</span> <span style="color: #2aa198;">(</span>my_param<span style="color: #2aa198;">)</span> <span style="color: #2aa198;">{</span>
+<pre class="src src-cfengine3"><span style="color: #839496; font-weight: bold;">body</span> <span style="color: #268bd2; font-weight: bold;">type</span> <span style="color: #268bd2;">name</span> <span style="color: #2aa198;">(</span>my_param<span style="color: #2aa198;">)</span> <span style="color: #2aa198;">{</span>
   attribute1 =&gt; <span style="color: #2aa198;">"$(my_param)"</span>;
 <span style="color: #2aa198;">}</span>
 </pre>
 </div>
 
 <p>
-The parameter <code>param</code> is accessed as a variable by <code>$(param)</code>.
+The parameter <code>my_param</code> is accessed as a variable by <code>$(my_param)</code>.
 </p>
+</div>
+</div>
+</div>
 
-</section>
-</section>
-<section>
-<section id="slide-orgheadline23">
-<h2 id="orgheadline23"><a id="ID-a73ed34e-8f1a-49c2-b878-c3cef34c79ec"></a>The Masterfiles Policy Framework</h2>
+<div id="outline-container-orgheadline25" class="outline-2">
+<h2 id="orgheadline25"><a id="ID-a73ed34e-8f1a-49c2-b878-c3cef34c79ec"></a>The Masterfiles Policy Framework</h2>
+<div class="outline-text-2" id="text-orgheadline25">
 <p>
 The <b>Masterfiles Policy Framework</b> is the default policy that ships with
 CFEngine. The standard library is included.
 </p>
 
-<ul>
+<ul class="org-ul">
 <li><a href="https://github.com/cfengine/masterfiles">Masterfiles Policy Framework</a></li>
-
 </ul>
+</div>
 
-</section>
-<section id="slide-orgheadline22">
-<h3 id="orgheadline22"><a id="ID-66ce5ebc-f9a5-4a28-925f-d62220ca6eb3"></a>CFEngine Standard Library</h3>
+<div id="outline-container-orgheadline26" class="outline-3">
+<h3 id="orgheadline26"><a id="ID-66ce5ebc-f9a5-4a28-925f-d62220ca6eb3"></a>CFEngine Standard Library</h3>
+<div class="outline-text-3" id="text-orgheadline26">
 <p>
 The <b>CFEngine Standard Library</b> comes bundled with CFEngine in the
 <code>masterfiles/lib/</code> directory.
@@ -490,33 +642,36 @@ include in your promises and is growing with every version of CFEngine. Get to
 know the standard library well, it will save you much time.
 </p>
 
-<ul>
+<ul class="org-ul">
 <li><a href="https://docs.cfengine.com/latest/reference-standard-library.html">Standard Library Reference</a></li>
-
 </ul>
+</div>
+</div>
+</div>
 
-</section>
-</section>
-<section>
-<section id="slide-orgheadline24">
-<h2 id="orgheadline24"><a id="ID-8906e180-eeea-4af5-ace5-fbcf093cf075"></a>Putting it All together</h2>
+<div id="outline-container-orgheadline27" class="outline-2">
+<h2 id="orgheadline27"><a id="ID-8906e180-eeea-4af5-ace5-fbcf093cf075"></a>Putting it All together</h2>
+<div class="outline-text-2" id="text-orgheadline27">
 <p>
 These are the building blocks. You now know what they all are.
 </p>
+</div>
+</div>
 
-</section>
-</section>
-<section>
-<section id="slide-orgheadline28">
+<div id="outline-container-orgheadline28" class="outline-2">
 <h2 id="orgheadline28"><a id="ID-68586360-89e3-4971-9ecb-c99031283c8a"></a>Examples</h2>
+<div class="outline-text-2" id="text-orgheadline28">
 <p>
 Now we will go through some examples.
 </p>
 
 <p>
-In each example that includes a complete bundle, try running it on your virtual
-machine. Save all of the files for future reference.
+I encourage you to try executing the examples as we go along.
 </p>
+
+<ul class="org-ul">
+<li><a href="https://github.com/nickanderson/CFEngine-zero-to-hero-primer/tree/master/examples">https://github.com/nickanderson/CFEngine-zero-to-hero-primer/tree/master/examples</a></li>
+</ul>
 
 <p>
 To execute a policy run the following command:
@@ -527,15 +682,44 @@ $ cf-agent --file ./test.cf --bundle bundlename
 </pre>
 
 <p>
-<b>Note:</b> Make sure you use the correct file and bundle name!
+<b>Note:</b> Make sure you use the correct file and bundle name! For any examples
+using a bundle named main you can skip specifying the bundle.
+</p>
+</div>
+
+<div id="outline-container-orgheadline29" class="outline-3">
+<h3 id="orgheadline29"><a id="ID-f1a0a12d-213b-47b4-a76f-e90af704ed17"></a>Running commands</h3>
+<div class="outline-text-3" id="text-orgheadline29">
+<div class="org-src-container">
+<label class="org-src-name"><code>commands_echo_hello_world.cf</code></label>
+<pre class="src src-cfengine3"><span style="color: #839496; font-weight: bold;">bundle</span> <span style="color: #268bd2; font-weight: bold;">agent</span> <span style="color: #268bd2;">main</span>
+<span style="color: #2aa198;">{</span>
+  <span style="color: #839496; font-weight: bold;">commands</span>:
+      <span style="color: #2aa198;">"/bin/echo Hello World!"</span>;
+<span style="color: #2aa198;">}</span>
+</pre>
+</div>
+
+<div class="NOTES">
+<p>
+Commands are <b>not</b> the best way to accomplish automation.
 </p>
 
-</section>
-<section id="slide-orgheadline25">
-<h3 id="orgheadline25"><a id="ID-759fe7c4-fd50-4e0b-b9bb-0460d25c013f"></a>Set File Permissions</h3>
-<div class="org-src-container">
+<ul class="org-ul">
+<li>Can hide important details.</li>
+<li>Not the most efficient way to collect information.</li>
+</ul>
 
-<pre  class="src src-cfengine3"><span style="color: #839496; font-weight: bold;">bundle</span> <span style="color: #268bd2; font-weight: bold;">agent</span> <span style="color: #268bd2;">example</span> <span style="color: #2aa198;">{</span>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline30" class="outline-3">
+<h3 id="orgheadline30"><a id="ID-759fe7c4-fd50-4e0b-b9bb-0460d25c013f"></a>Set File Permissions</h3>
+<div class="outline-text-3" id="text-orgheadline30">
+<div class="org-src-container">
+<label class="org-src-name"><code>set_file_permissions.cf</code></label>
+<pre class="src src-cfengine3"><span style="color: #839496; font-weight: bold;">bundle</span> <span style="color: #268bd2; font-weight: bold;">agent</span> <span style="color: #268bd2;">example</span> <span style="color: #2aa198;">{</span>
   <span style="color: #839496; font-weight: bold;">files</span>:
     <span style="color: #2aa198;">"/etc/shadow"</span>     perms =&gt; perms_for_shadow_files;
     <span style="color: #2aa198;">"/etc/gshadow"</span>    perms =&gt; perms_for_shadow_files;
@@ -549,27 +733,27 @@ $ cf-agent --file ./test.cf --bundle bundlename
 </pre>
 </div>
 
-<ul>
+<ul class="org-ul">
 <li>This is an <b>agent</b> bundle (meaning that it is processed by <code>cf-agent</code>).</li>
 <li>Its purpose is to set the permissions on <code>/etc/shadow</code> and <code>/etc/gshadow</code>.</li>
 <li>It uses an external body named <code>perms_for_shadow_files</code>.</li>
 <li>The body only needs to be defined once and can be reused for any number of
 promises.</li>
-
 </ul>
 
 <p>
 Note: The values for <code>owners</code> and <code>groups</code> is enclosed in curly braces. This is
 because these attributes take a list of strings (aka, an <code>slist</code>).
 </p>
+</div>
+</div>
 
-
-</section>
-<section id="slide-orgheadline26">
-<h3 id="orgheadline26"><a id="ID-4112e831-3a36-41f8-86df-6c0327623979"></a>Copy an Entire File</h3>
+<div id="outline-container-orgheadline31" class="outline-3">
+<h3 id="orgheadline31"><a id="ID-4112e831-3a36-41f8-86df-6c0327623979"></a>Copy an Entire File</h3>
+<div class="outline-text-3" id="text-orgheadline31">
 <div class="org-src-container">
 
-<pre  class="src src-cfengine3"><span style="color: #839496; font-weight: bold;">bundle</span> <span style="color: #268bd2; font-weight: bold;">agent</span> <span style="color: #268bd2;">example</span> <span style="color: #2aa198;">{</span>
+<pre class="src src-cfengine3"><span style="color: #839496; font-weight: bold;">bundle</span> <span style="color: #268bd2; font-weight: bold;">agent</span> <span style="color: #268bd2;">example</span> <span style="color: #2aa198;">{</span>
   <span style="color: #839496; font-weight: bold;">files</span>:
     <span style="color: #2aa198;">"/etc/motd"</span>     copy_from =&gt; cp<span style="color: #b58900;">(</span><span style="color: #2aa198;">"/repo/motd"</span><span style="color: #b58900;">)</span>;
 <span style="color: #2aa198;">}</span>
@@ -582,21 +766,22 @@ because these attributes take a list of strings (aka, an <code>slist</code>).
 </pre>
 </div>
 
-<ul>
+<ul class="org-ul">
 <li>The purpose of this bundle is to copy <code>/etc/motd</code> from the CFEngine server</li>
 <li><code>$(sys.policy_hub)</code> is an automatic variable which contains the CFEngine
 server's address.</li>
 <li>The path <code>/repo/motd</code> is on the <i>server's</i> filesystem.</li>
 <li>The <code>compare</code> type tells CFEngine how to know when the file needs updating.</li>
-
 </ul>
+</div>
+</div>
 
-</section>
-<section id="slide-orgheadline27">
-<h3 id="orgheadline27"><a id="ID-df23c2a4-0fc9-492a-9587-b5ab168609c0"></a>Edit a File</h3>
+<div id="outline-container-orgheadline32" class="outline-3">
+<h3 id="orgheadline32"><a id="ID-df23c2a4-0fc9-492a-9587-b5ab168609c0"></a>Edit a File</h3>
+<div class="outline-text-3" id="text-orgheadline32">
 <div class="org-src-container">
-
-<pre  class="src src-cfengine3"><span style="color: #839496; font-weight: bold;">bundle</span> <span style="color: #268bd2; font-weight: bold;">agent</span> <span style="color: #268bd2;">example</span> <span style="color: #2aa198;">{</span>
+<label class="org-src-name"><code>sshd_permit_root_login_no.cf</code></label>
+<pre class="src src-cfengine3"><span style="color: #839496; font-weight: bold;">bundle</span> <span style="color: #268bd2; font-weight: bold;">agent</span> <span style="color: #268bd2;">main</span> <span style="color: #2aa198;">{</span>
   <span style="color: #839496; font-weight: bold;">files</span>:
     <span style="color: #2aa198;">"/etc/ssh/sshd_config"</span>     edit_line =&gt; deny_root_ssh;
 <span style="color: #2aa198;">}</span>
@@ -610,7 +795,7 @@ server's address.</li>
 </pre>
 </div>
 
-<ul>
+<ul class="org-ul">
 <li>This will delete any line matching the regular expression <code>^PermitRootLogin.*</code>.</li>
 <li>This also inserts the line <code>PermitRootLogin no</code> <b>at the end of the file</b>.</li>
 <li>CFEngine is smart enough to know not to edit the file if the end result is
@@ -618,20 +803,20 @@ already <i>converged</i>.</li>
 <li>This is an overly simplistic example. When editing configuration files you
 probably want to copy the whole file or use <code>set_config_values()</code> from the
 standard library.</li>
-
 </ul>
+</div>
+</div>
+</div>
 
-</section>
-</section>
-<section>
-<section id="slide-orgheadline37">
-<h2 id="orgheadline37"><a id="ID-28958fde-5ec8-4305-bd03-6873bec81c3f"></a>Introduction to Classes</h2>
+<div id="outline-container-orgheadline33" class="outline-2">
+<h2 id="orgheadline33"><a id="ID-28958fde-5ec8-4305-bd03-6873bec81c3f"></a>Classification and Classes</h2>
+<div class="outline-text-2" id="text-orgheadline33">
 <p>
 A <b>class</b> is like a tag (like tagging a photo). Classes are used to give a
 promise <b>context</b>. There are two types of classes.
 </p>
 
-<ol>
+<ol class="org-ol">
 <li><b>Built in classes</b>. These so called <b>hard classes</b> are classes that CFEngine
 will create automatically. Hard classes are determined based on the system
 attributes. For example a server running Linux will have the class <code>linux</code>.</li>
@@ -639,19 +824,19 @@ attributes. For example a server running Linux will have the class <code>linux</
 <li><b>User defined classes</b>. These so called <b>soft classes</b> are classes that are
 defined by you. You can create them based on the outcome of a promise, based
 on the existence of other classes, or for no reason.</li>
-
 </ol>
+</div>
 
-</section>
-<section id="slide-orgheadline29">
-<h3 id="orgheadline29"><a id="ID-813aca93-3777-49c0-9c6b-0ff1face8e5f"></a>My classes</h3>
+<div id="outline-container-orgheadline34" class="outline-3">
+<h3 id="orgheadline34"><a id="ID-813aca93-3777-49c0-9c6b-0ff1face8e5f"></a>My classes</h3>
+<div class="outline-text-3" id="text-orgheadline34">
 <p>
 Here is a list of hard classes defined on an actual system running CFEngine.
 </p>
 
 <div class="org-src-container">
 
-<pre  class="src src-sh">cf-promises --show-classes
+<pre class="src src-sh">cf-promises --show-classes
 </pre>
 </div>
 
@@ -740,13 +925,15 @@ ubuntu_15                                                    inventory,attribute
 ubuntu_15_10                                                 inventory,attribute_name=none,source=agent,hardclass
 x86_64                                                       source=agent,derived-from=sys.machine,hardclass
 </pre>
+</div>
+</div>
 
-</section>
-<section id="slide-orgheadline30">
-<h3 id="orgheadline30"><a id="ID-f702d707-312e-40b6-8bdd-967da8188cec"></a>Control Promise Selection</h3>
+<div id="outline-container-orgheadline35" class="outline-3">
+<h3 id="orgheadline35"><a id="ID-f702d707-312e-40b6-8bdd-967da8188cec"></a>Control Promise Selection</h3>
+<div class="outline-text-3" id="text-orgheadline35">
 <div class="org-src-container">
 
-<pre  class="src src-cfengine3"><span style="color: #839496; font-weight: bold;">bundle</span> <span style="color: #268bd2; font-weight: bold;">agent</span> <span style="color: #268bd2;">apache_config</span> <span style="color: #2aa198;">{</span>
+<pre class="src src-cfengine3"><span style="color: #839496; font-weight: bold;">bundle</span> <span style="color: #268bd2; font-weight: bold;">agent</span> <span style="color: #268bd2;">apache_config</span> <span style="color: #2aa198;">{</span>
   <span style="color: #839496; font-weight: bold;">files</span>:
 
     <span style="color: #859900; font-weight: bold;">debian</span>::
@@ -772,10 +959,12 @@ promise will be skipped unless that class is defined on the system.
 Thus, only Debian systems will run the <code>debian::</code> context promise, only Red Hat
 will run <code>redhat::</code> and only Solaris will run <code>solaris::</code>.
 </p>
+</div>
+</div>
 
-</section>
-<section id="slide-orgheadline31">
-<h3 id="orgheadline31"><a id="ID-5f448af0-c91c-4da9-bdbc-297979c5e110"></a>Promise Type and Class Context Can be Implicit</h3>
+<div id="outline-container-orgheadline36" class="outline-3">
+<h3 id="orgheadline36"><a id="ID-5f448af0-c91c-4da9-bdbc-297979c5e110"></a>Promise Type and Class Context Can be Implicit</h3>
+<div class="outline-text-3" id="text-orgheadline36">
 <p>
 The <i>promise type</i> and <i>class context</i> don't need to be listed for every
 promise. Think of each like a heading in an outline. Everything that follows is
@@ -784,8 +973,8 @@ type is declared the class context is reset as well.
 </p>
 
 <div class="org-src-container">
-
-<pre  class="src src-cfengine3"><span style="color: #839496; font-weight: bold;">bundle</span> <span style="color: #268bd2; font-weight: bold;">agent</span> <span style="color: #268bd2;">example</span> <span style="color: #2aa198;">{</span>
+<label class="org-src-name"><code>implicit_class_context.cf</code></label>
+<pre class="src src-cfengine3"><span style="color: #839496; font-weight: bold;">bundle</span> <span style="color: #268bd2; font-weight: bold;">agent</span> <span style="color: #268bd2;">example</span> <span style="color: #2aa198;">{</span>
   <span style="color: #839496; font-weight: bold;">files</span>:
     <span style="color: #859900; font-weight: bold;">solaris</span>::
       <span style="color: #2aa198;">"/tmp/hello/world"</span>
@@ -806,34 +995,37 @@ The first three promises are of type <code>files</code>. The first two will only
 <code>solaris</code> while the third will only execute on <code>linux</code>. The last promise has a
 new promise type, of <code>commands</code>, and will always execute.
 </p>
+</div>
+</div>
 
-</section>
-<section id="slide-orgheadline32">
-<h3 id="orgheadline32"><a id="ID-d3e97cff-8043-4494-9735-7e5bb6d4ebb3"></a>A Note About Classes and Distributions Based on Other Distributions</h3>
+<div id="outline-container-orgheadline37" class="outline-3">
+<h3 id="orgheadline37"><a id="ID-d3e97cff-8043-4494-9735-7e5bb6d4ebb3"></a>A Note About Classes and Distributions Based on Other Distributions</h3>
+<div class="outline-text-3" id="text-orgheadline37">
 <p>
 I said that only Debian systems will run <code>debian::</code> and only Red Hat will run
 <code>redhat::</code>. This isn't exactly true.
 </p>
 
-<ul>
+<ul class="org-ul">
 <li>Ubuntu is based on Debian, and so will have both <code>ubuntu</code> and <code>debian</code> defined
 as hard classes.</li>
 <li>Likewise, CentOS is based on Red Hat and so will have both <code>centos</code> and
 <code>redhat</code> defined as hard classes.</li>
-
 </ul>
 
 <p>
 This goes for any distro that is based on another distro. The "parent" classes
 will be also defined.
 </p>
+</div>
+</div>
 
-</section>
-<section id="slide-orgheadline33">
-<h3 id="orgheadline33"><a id="ID-f3ecf589-89b4-4a7b-aa3c-9fc68c710b07"></a>Use Classes to Control Flow</h3>
+<div id="outline-container-orgheadline38" class="outline-3">
+<h3 id="orgheadline38"><a id="ID-f3ecf589-89b4-4a7b-aa3c-9fc68c710b07"></a>Use Classes to Control Flow</h3>
+<div class="outline-text-3" id="text-orgheadline38">
 <div class="org-src-container">
 
-<pre  class="src src-cfengine3"><span style="color: #839496; font-weight: bold;">bundle</span> <span style="color: #268bd2; font-weight: bold;">agent</span> <span style="color: #268bd2;">apache_config</span> <span style="color: #2aa198;">{</span>
+<pre class="src src-cfengine3"><span style="color: #839496; font-weight: bold;">bundle</span> <span style="color: #268bd2; font-weight: bold;">agent</span> <span style="color: #268bd2;">apache_config</span> <span style="color: #2aa198;">{</span>
   <span style="color: #839496; font-weight: bold;">files</span>:
 
     <span style="color: #2aa198;">"/etc/apache2/apache2.conf"</span>
@@ -860,13 +1052,15 @@ When CFEngine reaches the commands section, if the <code>RestartApache</code> cl
 defined (which only happens if the config file is updated) then Apache will be
 restarted.
 </p>
+</div>
+</div>
 
-</section>
-<section id="slide-orgheadline34">
-<h3 id="orgheadline34"><a id="ID-e1a9f2c4-904f-4785-ae7d-4c3cf5af9f8d"></a>Use Classes to Control Flow</h3>
+<div id="outline-container-orgheadline39" class="outline-3">
+<h3 id="orgheadline39"><a id="ID-e1a9f2c4-904f-4785-ae7d-4c3cf5af9f8d"></a>Use Classes to Control Flow</h3>
+<div class="outline-text-3" id="text-orgheadline39">
 <div class="org-src-container">
 
-<pre  class="src src-cfengine3"><span style="color: #839496; font-weight: bold;">bundle</span> <span style="color: #268bd2; font-weight: bold;">agent</span> <span style="color: #268bd2;">apache_config</span> <span style="color: #2aa198;">{</span>
+<pre class="src src-cfengine3"><span style="color: #839496; font-weight: bold;">bundle</span> <span style="color: #268bd2; font-weight: bold;">agent</span> <span style="color: #268bd2;">apache_config</span> <span style="color: #2aa198;">{</span>
   <span style="color: #839496; font-weight: bold;">files</span>:
 
     <span style="color: #2aa198;">"/etc/apache2/apache2.conf"</span>
@@ -885,24 +1079,25 @@ restarted.
 So, the workflow then is:
 </p>
 
-<ol>
+<ol class="org-ol">
 <li>Perform promise 1</li>
 <li>Define a class if repaired</li>
 <li>Perform promise 2 if the class has been set</li>
-
 </ol>
 
 <p>
 I use this <b>ALL</b>. <b>THE</b>. <b>TIME</b>. If this class is to teach you 20% that
 accomplishes 80%, <b>this slide</b> is the 5% that accomplishes 95%.
 </p>
+</div>
+</div>
 
-</section>
-<section id="slide-orgheadline35">
-<h3 id="orgheadline35"><a id="ID-bf5f85c4-5096-4137-85cf-1d9a1f0788db"></a>Class Expressions</h3>
+<div id="outline-container-orgheadline40" class="outline-3">
+<h3 id="orgheadline40"><a id="ID-bf5f85c4-5096-4137-85cf-1d9a1f0788db"></a>Class Expressions</h3>
+<div class="outline-text-3" id="text-orgheadline40">
 <div class="org-src-container">
 
-<pre  class="src src-cfengine3"><span style="color: #839496; font-weight: bold;">commands</span>:
+<pre class="src src-cfengine3"><span style="color: #839496; font-weight: bold;">commands</span>:
   <span style="color: #859900; font-weight: bold;">RestartApache.debian</span>::
     <span style="color: #2aa198;">"/usr/sbin/apache2ctl graceful"</span>;
   <span style="color: #859900; font-weight: bold;">RestartApache.redhat</span>::
@@ -916,13 +1111,15 @@ different commands used to restart Apache. Therefore, we use an expression to
 define our class context. The expression <code>RestartApache.debian</code> means
 "RestartApache <b>and</b> debian".
 </p>
+</div>
+</div>
 
-</section>
-<section id="slide-orgheadline36">
-<h3 id="orgheadline36"><a id="ID-b035d0a6-50e8-47c1-b688-3a07fc12c289"></a>Class Expressions</h3>
+<div id="outline-container-orgheadline41" class="outline-3">
+<h3 id="orgheadline41"><a id="ID-b035d0a6-50e8-47c1-b688-3a07fc12c289"></a>Class Expressions</h3>
+<div class="outline-text-3" id="text-orgheadline41">
 <div class="org-src-container">
 
-<pre  class="src src-cfengine3"><span style="color: #839496; font-weight: bold;">commands</span>:
+<pre class="src src-cfengine3"><span style="color: #839496; font-weight: bold;">commands</span>:
   <span style="color: #859900; font-weight: bold;">RestartApache.debian</span>::
     <span style="color: #2aa198;">"/usr/sbin/apache2ctl graceful"</span>;
   <span style="color: #859900; font-weight: bold;">RestartApache.redhat</span>::
@@ -973,18 +1170,20 @@ define our class context. The expression <code>RestartApache.debian</code> means
 </tr>
 </tbody>
 </table>
+</div>
+</div>
+</div>
 
-</section>
-</section>
-<section>
-<section id="slide-orgheadline43">
-<h2 id="orgheadline43"><a id="ID-04dd5bb2-bad1-4efe-a2b3-bf34af6d465e"></a>Manageing Processes</h2>
-</section>
-<section id="slide-orgheadline38">
-<h3 id="orgheadline38"><a id="ID-bb6290e8-213e-484d-b412-9382d1d785c3"></a>Keep Services Running: Using Processes</h3>
+<div id="outline-container-orgheadline42" class="outline-2">
+<h2 id="orgheadline42"><a id="ID-04dd5bb2-bad1-4efe-a2b3-bf34af6d465e"></a>Managing Processes</h2>
+<div class="outline-text-2" id="text-orgheadline42">
+</div>
+<div id="outline-container-orgheadline43" class="outline-3">
+<h3 id="orgheadline43"><a id="ID-bb6290e8-213e-484d-b412-9382d1d785c3"></a>Keep Services Running: Using Processes</h3>
+<div class="outline-text-3" id="text-orgheadline43">
 <div class="org-src-container">
 
-<pre  class="src src-cfengine3"><span style="color: #839496; font-weight: bold;">bundle</span> <span style="color: #268bd2; font-weight: bold;">agent</span> <span style="color: #268bd2;">apache</span> <span style="color: #2aa198;">{</span>
+<pre class="src src-cfengine3"><span style="color: #839496; font-weight: bold;">bundle</span> <span style="color: #268bd2; font-weight: bold;">agent</span> <span style="color: #268bd2;">apache</span> <span style="color: #2aa198;">{</span>
 
   <span style="color: #839496; font-weight: bold;">processes</span>:
       <span style="color: #2aa198;">"apache2"</span>
@@ -1006,13 +1205,15 @@ for the regular expression <code>.*apache2.*</code>. If it is not found then the
 <p>
 When CFEngine executes <code>commands</code> promises Apache will be started.
 </p>
+</div>
+</div>
 
-</section>
-<section id="slide-orgheadline39">
-<h3 id="orgheadline39"><a id="ID-bc4aa11f-fe91-4c70-b103-12fd4731be60"></a>Ensuring Processes are Not Running: Using Processes and Commands</h3>
+<div id="outline-container-orgheadline44" class="outline-3">
+<h3 id="orgheadline44"><a id="ID-bc4aa11f-fe91-4c70-b103-12fd4731be60"></a>Ensuring Processes are Not Running: Using Processes and Commands</h3>
+<div class="outline-text-3" id="text-orgheadline44">
 <div class="org-src-container">
-
-<pre  class="src src-cfengine3"><span style="color: #839496; font-weight: bold;">bundle</span> <span style="color: #268bd2; font-weight: bold;">agent</span> <span style="color: #268bd2;">stop_bluetooth</span> <span style="color: #2aa198;">{</span>
+<label class="org-src-name"><code>process_stop_bluetoothd.cf</code></label>
+<pre class="src src-cfengine3"><span style="color: #839496; font-weight: bold;">bundle</span> <span style="color: #268bd2; font-weight: bold;">agent</span> <span style="color: #268bd2;">stop_bluetooth</span> <span style="color: #2aa198;">{</span>
 
   <span style="color: #839496; font-weight: bold;">processes</span>:
 
@@ -1027,13 +1228,15 @@ This policy uses a <code>processes</code> promise to check the process table (wi
 for the regular expression <code>.*bluetoothd.*</code>. If it is found the <code>process_stop</code>
 command is executed.
 </p>
+</div>
+</div>
 
-</section>
-<section id="slide-orgheadline40">
-<h3 id="orgheadline40"><a id="ID-7dfc7a39-30e0-4c63-b7ab-3a598cab3f7d"></a>Ensuring Processes are Not Running: Using Processes and Signals</h3>
+<div id="outline-container-orgheadline45" class="outline-3">
+<h3 id="orgheadline45"><a id="ID-7dfc7a39-30e0-4c63-b7ab-3a598cab3f7d"></a>Ensuring Processes are Not Running: Using Processes and Signals</h3>
+<div class="outline-text-3" id="text-orgheadline45">
 <div class="org-src-container">
-
-<pre  class="src src-cfengine3"><span style="color: #839496; font-weight: bold;">bundle</span> <span style="color: #268bd2; font-weight: bold;">agent</span> <span style="color: #268bd2;">stop_bluetooth</span> <span style="color: #2aa198;">{</span>
+<label class="org-src-name"><code>process_signals_bluetoothd.cf</code></label>
+<pre class="src src-cfengine3"><span style="color: #839496; font-weight: bold;">bundle</span> <span style="color: #268bd2; font-weight: bold;">agent</span> <span style="color: #268bd2;">stop_bluetooth</span> <span style="color: #2aa198;">{</span>
 
   <span style="color: #839496; font-weight: bold;">processes</span>:
 
@@ -1050,18 +1253,20 @@ for the regular expression <code>.*bluetoothd.*</code>. Any matching process is 
 </p>
 
 <p>
-<b>Note:</b> The promise ="bluetoothd"= becomes the <b>regular expression</b>,
+<b>Note:</b> The promise <code>bluetoothd</code> becomes the <b>regular expression</b>,
 <code>.*bluetoothd.*</code> that is matched against the output of <code>ps</code>. This means that it
 can match <b>anywhere</b> on the line (in versions prior to 3.9), not just the
 process name field. <b>Caveat emptor!</b>
 </p>
+</div>
+</div>
 
-</section>
-<section id="slide-orgheadline41">
-<h3 id="orgheadline41"><a id="ID-4e737c64-f5c6-41a6-b4c3-5a7c6082533c"></a>Keep Services Running: Using Services</h3>
+<div id="outline-container-orgheadline46" class="outline-3">
+<h3 id="orgheadline46"><a id="ID-4e737c64-f5c6-41a6-b4c3-5a7c6082533c"></a>Keep Services Running: Using Services</h3>
+<div class="outline-text-3" id="text-orgheadline46">
 <div class="org-src-container">
 
-<pre  class="src src-cfengine3"><span style="color: #839496; font-weight: bold;">bundle</span> <span style="color: #268bd2; font-weight: bold;">agent</span> <span style="color: #268bd2;">apache</span> <span style="color: #2aa198;">{</span>
+<pre class="src src-cfengine3"><span style="color: #839496; font-weight: bold;">bundle</span> <span style="color: #268bd2; font-weight: bold;">agent</span> <span style="color: #268bd2;">apache</span> <span style="color: #2aa198;">{</span>
   <span style="color: #839496; font-weight: bold;">services</span>:
 
     <span style="color: #2aa198;">"www"</span>
@@ -1072,27 +1277,23 @@ process name field. <b>Caveat emptor!</b>
 
 <p>
 This uses the <code>services</code> promise type to ensure that Apache is always running.
-This only works for services that are defined under <code>standard_services</code> in the
-standard library and requires cfengine 3.4.0 or higher.
 </p>
 
 <p>
-<code>services</code> promises currently only work on Linux and are distro-intelligent.
-That is, this promise example above works equally well on Debian/Ubuntu, Red
-Hat/CentOS or SUSE (and derived distros).
+The <code>standard_services</code> bundle implementation currently covers <code>systemd</code>,
+<code>chkconfig</code>, the <code>service</code> command, <code>svcadm</code> and <code>systemV</code> init scripts. Proper
+functionality relies on each installed service correctly implementing a service
+check as appropriate for the init system in use.
 </p>
+</div>
+</div>
 
-<p>
-If you're not using one of these distros, or if you're using a Solaris or BSD
-based system you'll need to use processes promises.
-</p>
-
-</section>
-<section id="slide-orgheadline42">
-<h3 id="orgheadline42"><a id="ID-52325dac-802a-4a7c-a286-41167a4349d2"></a>Ensuring Processes are Not Running: Using Services</h3>
+<div id="outline-container-orgheadline47" class="outline-3">
+<h3 id="orgheadline47"><a id="ID-52325dac-802a-4a7c-a286-41167a4349d2"></a>Ensuring Processes are Not Running: Using Services</h3>
+<div class="outline-text-3" id="text-orgheadline47">
 <div class="org-src-container">
-
-<pre  class="src src-cfengine3"><span style="color: #839496; font-weight: bold;">bundle</span> <span style="color: #268bd2; font-weight: bold;">agent</span> <span style="color: #268bd2;">stop_bluetoothd</span> <span style="color: #2aa198;">{</span>
+<label class="org-src-name"><code>services_bluetoothd_stop.cf</code></label>
+<pre class="src src-cfengine3"><span style="color: #839496; font-weight: bold;">bundle</span> <span style="color: #268bd2; font-weight: bold;">agent</span> <span style="color: #268bd2;">stop_bluetoothd</span> <span style="color: #2aa198;">{</span>
   <span style="color: #839496; font-weight: bold;">services</span>:
 
     <span style="color: #2aa198;">"bluetoothd"</span>
@@ -1111,46 +1312,146 @@ higher.
 <p>
 The same restrictions about distros apply to stopping services promises.
 </p>
+</div>
+</div>
+</div>
 
-</section>
-</section>
-<section>
-<section id="slide-orgheadline44">
-<h2 id="orgheadline44"><a id="ID-640d1c4c-8e50-4924-9196-7d45ff2f495d"></a>Package Management</h2>
+<div id="outline-container-orgheadline48" class="outline-2">
+<h2 id="orgheadline48"><a id="ID-640d1c4c-8e50-4924-9196-7d45ff2f495d"></a>Managing Packages</h2>
+<div class="outline-text-2" id="text-orgheadline48">
+</div>
+
+<div id="outline-container-orgheadline49" class="outline-3">
+<h3 id="orgheadline49"><a id="ID-a4a244f9-fa44-48ce-8585-8f15824b1712"></a>Legacy Implementation</h3>
+<div class="outline-text-3" id="text-orgheadline49">
 <div class="org-src-container">
 
-<pre  class="src src-cfengine3"><span style="color: #839496; font-weight: bold;">bundle</span> <span style="color: #268bd2; font-weight: bold;">agent</span> <span style="color: #268bd2;">install</span> <span style="color: #2aa198;">{</span>
+<pre class="src src-cfengine3"><span style="color: #839496; font-weight: bold;">bundle</span> <span style="color: #268bd2; font-weight: bold;">agent</span> <span style="color: #268bd2;">install</span> <span style="color: #2aa198;">{</span>
   <span style="color: #839496; font-weight: bold;">packages</span>:
     <span style="color: #2aa198;">"zsh"</span>
       package_policy  =&gt; <span style="color: #2aa198;">"addupdate"</span>,
       package_method  =&gt; apt,
-      package_select  =&gt; <span style="color: #2aa198;">"&gt;="</span>,
-      package_version =&gt; <span style="color: #2aa198;">"4.3.10-14"</span>;
+      package_select  =&gt; <span style="color: #2aa198;">"&gt;=,</span>
+<span style="color: #2aa198;">      package_version =&gt; "</span><span style="color: #6c71c4;">4</span>.<span style="color: #6c71c4;">3</span>.<span style="color: #6c71c4;">10-14</span><span style="color: #2aa198;">";</span>
 <span style="color: #2aa198;">}</span>
 </pre>
 </div>
 
-<ul>
-<li>The <code>package_policy</code> of ="add update"= will install or upgrade. Using <code>add</code>
+<ul class="org-ul">
+<li>The <code>package_policy</code> of <code>add update</code> will install or upgrade. Using <code>add</code>
   will only install, never upgrade, <code>upgrade</code> will upgrade only and <code>delete</code>
   will uninstall.</li>
 <li>The <code>package_method</code> of <code>apt</code> is in the standard library, look there for other
 package methods (e.g., rpm, ips, etc.).</li>
-<li>The <code>package_select</code> of ="&gt;="= means the installed version must be equal to or
-newer than the specified version or it will be replaced. Using ="&lt;="= would
-downgrade, if the <code>package_method</code> supports downgrading and ="=="= will
+<li>The <code>package_select</code> of <code>&gt;=</code> means the installed version must be equal to or
+newer than the specified version or it will be replaced. Using <code>&lt;=</code> would
+downgrade, if the <code>package_method</code> supports downgrading and <code>==</code> will
 require the exact version.</li>
-
 </ul>
 
-</section>
-</section>
-<section>
-<section id="slide-orgheadline45">
-<h2 id="orgheadline45"><a id="ID-84c4b634-81e2-4a05-ac60-b66f0224f360"></a>Deleting Files</h2>
+<div class="NOTES">
+<p>
+Packages promises have be re-vamped with a new implementation that makes it
+easier to dig into the specific details of how packages should be managed.
+</p>
+
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline50" class="outline-3">
+<h3 id="orgheadline50"><a id="ID-b3d20cf4-75cc-4a24-9188-d85c1b6f2be3"></a>New Implementation</h3>
+<div class="outline-text-3" id="text-orgheadline50">
 <div class="org-src-container">
 
-<pre  class="src src-cfengine3"><span style="color: #839496; font-weight: bold;">bundle</span> <span style="color: #268bd2; font-weight: bold;">agent</span> <span style="color: #268bd2;">tidy</span> <span style="color: #2aa198;">{</span>
+<pre class="src src-cfengine3"><span style="color: #839496; font-weight: bold;">bundle</span> <span style="color: #268bd2; font-weight: bold;">agent</span> <span style="color: #268bd2;">install</span> <span style="color: #2aa198;">{</span>
+  <span style="color: #839496; font-weight: bold;">packages</span>:
+    <span style="color: #2aa198;">"zsh"</span>
+      policy  =&gt; <span style="color: #2aa198;">"present"</span>,
+      package_module  =&gt; yum,
+      version =&gt; <span style="color: #2aa198;">"latest"</span>;
+<span style="color: #2aa198;">}</span>
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>The <code>policy</code> of <code>present</code> will make sure the package is installed on the
+system, while a <code>policy</code> of <code>absent</code> will ensure a package is not installed.</li>
+<li>The <code>package_module</code> of <code>yum</code> is included in the Masterfiles Policy Framework.</li>
+<li>The <code>version</code> of <code>latest</code> means the installed version should be the latest
+available. Alternatively you can provide an explicit version.</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgheadline51" class="outline-3">
+<h3 id="orgheadline51"><a id="ID-60949620-51bb-456e-8847-35e52d82a0ca"></a>Package Managers</h3>
+<div class="outline-text-3" id="text-orgheadline51">
+<ul class="org-ul">
+<li><p>
+<code>package_methods</code>
+</p>
+
+<p>
+<code>pip(flags)</code>, <code>npm(dir)</code>, <code>npm_g</code>, <code>brew(user)</code>, <code>apt</code>, <code>apt_get</code>,
+<code>apt_get_permissive</code>, <code>apt_get_release(release)</code>, <code>dpkg_version(repo)</code>,
+<code>rpm_version(repo)</code>, <code>windows_feature</code>, <code>msi_implicit(repo)</code>,
+<code>msi_explicit(repo)</code>, <code>yum</code>, <code>yum_rpm</code>, <code>yum_rpm_permissive</code>,
+<code>yum_rpm_enable_repo(repoid)</code>, <code>yum_group</code>, <code>rpm_filebased(path)</code>, <code>ips</code>,
+<code>smartos</code>, <code>smartos_pkg_add(repo)</code>, <code>opencsw</code>, <code>solaris(pkgname, spoolfile,
+  adminfile)</code>, <code>solaris_install(adminfile)</code>, <code>freebsd</code>, <code>freebsd_portmaster</code>,
+<code>alpinelinux</code>, <code>emerge</code>, <code>pacman</code>, <code>zypper</code>, <code>generic</code>
+</p></li>
+
+<li><p>
+<code>package_modules</code>
+</p>
+
+<p>
+<code>yum</code>, <code>apt_get</code>, <code>freebsd_ports</code>, <code>nimclient</code>, <code>pkg</code>, <code>pkgsrc</code>
+</p></li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline52" class="outline-2">
+<h2 id="orgheadline52"><a id="ID-84c4b634-81e2-4a05-ac60-b66f0224f360"></a>Managing Files</h2>
+<div class="outline-text-2" id="text-orgheadline52">
+</div>
+
+<div id="outline-container-orgheadline53" class="outline-3">
+<h3 id="orgheadline53"><a id="ID-6005b838-5e30-45f1-acfb-7de243839169"></a>Templating a file</h3>
+<div class="outline-text-3" id="text-orgheadline53">
+<div class="org-src-container">
+<label class="org-src-name"><code>template.mustache</code></label>
+<pre class="src src-text">Hello from {{{vars.sys.fqhost}}}!
+
+{{#classes.linux}}I am a Linux Box!{{/classes.linux}}
+{{^classes.windows}}I am NOT a Windows Box{{/classes.windows}}
+</pre>
+</div>
+
+<div class="org-src-container">
+<label class="org-src-name"><code>template_file.cf</code></label>
+<pre class="src src-cfengine3"><span style="color: #839496; font-weight: bold;">bundle</span> <span style="color: #268bd2; font-weight: bold;">agent</span> <span style="color: #268bd2;">main</span><span style="color: #2aa198;">{</span>
+  <span style="color: #839496; font-weight: bold;">files</span>:
+      <span style="color: #2aa198;">"/tmp/example"</span>
+        create =&gt; <span style="color: #2aa198;">"true"</span>,
+        edit_template =&gt; <span style="color: #2aa198;">"$(this.promise_dirname)/template.mustache"</span>,
+        template_method =&gt; <span style="color: #2aa198;">"mustache"</span>;
+<span style="color: #2aa198;">}</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline54" class="outline-3">
+<h3 id="orgheadline54"><a id="ID-dcde8434-d578-4bd2-9798-390bab27d97b"></a>Deleting a file</h3>
+<div class="outline-text-3" id="text-orgheadline54">
+<div class="org-src-container">
+
+<pre class="src src-cfengine3"><span style="color: #839496; font-weight: bold;">bundle</span> <span style="color: #268bd2; font-weight: bold;">agent</span> <span style="color: #268bd2;">tidy</span> <span style="color: #2aa198;">{</span>
   <span style="color: #839496; font-weight: bold;">files</span>:
     <span style="color: #2aa198;">"/var/log/.*"</span>
       file_select =&gt; days_old<span style="color: #b58900;">(</span><span style="color: #2aa198;">"7"</span><span style="color: #b58900;">)</span>,
@@ -1169,19 +1470,16 @@ To delete a file indiscriminately, omit the <code>file_select</code>.
 </p>
 
 <p>
-Look up
-<a href="https://docs.cfengine.com/lts/reference-promise-types-files.html#file_select"><code>file_select</code></a>
-and
-<a href="https://docs.cfengine.com/lts/reference-standard-library-files.html#tidy"><code>tidy</code></a>
-in the <a href="https://docs.cfengine.com/lts/reference.html">reference-manual</a> to
-find more ways to use this.
+Look up <a href="https://docs.cfengine.com/lts/reference-promise-types-files.html#file_select"><code>file_select</code></a> and <a href="https://docs.cfengine.com/lts/reference-standard-library-files.html#tidy"><code>tidy</code></a> in the <a href="https://docs.cfengine.com/lts/reference.html">reference-manual</a> to find more ways to
+use this.
 </p>
+</div>
+</div>
+</div>
 
-</section>
-</section>
-<section>
-<section id="slide-orgheadline46">
-<h2 id="orgheadline46"><a id="ID-66515861-4365-48d4-9658-6a9788eddc67"></a>Setting Up a Client/Server Environment</h2>
+<div id="outline-container-orgheadline55" class="outline-2">
+<h2 id="orgheadline55"><a id="ID-66515861-4365-48d4-9658-6a9788eddc67"></a>Setting Up a Client/Server Environment</h2>
+<div class="outline-text-2" id="text-orgheadline55">
 <p>
 Before starting you need to have cfengine installed on the server and the client
 and the server FQDN must be set properly in DNS (or use the IP addresses). This
@@ -1190,52 +1488,52 @@ function you should also be automating your provisioning process.
 </p>
 
 <p>
-Some ways of automating provisioning are
-<a href="http://fedoraproject.org/wiki/Anaconda/Kickstart">kickstart</a>,
-<a href="http://wiki.debian.org/DebianInstaller/Preseed">preseed</a>,
-<a href="http://wiki.debian.org/FAI">fai</a>, <a href="http://www.cobblerd.org/">cobbler</a>,
-<a href="http://www.osalt.com/g4u">disk imaging</a>,
-<a href="http://aws.amazon.com/ec2/">instance cloning</a>, etc, etc. This of course is
-not a complete list.
+Some ways of automating provisioning are <a href="http://fedoraproject.org/wiki/Anaconda/Kickstart">kickstart</a>, <a href="http://wiki.debian.org/DebianInstaller/Preseed">preseed</a>, <a href="http://wiki.debian.org/FAI">fai</a>, <a href="http://www.cobblerd.org/">cobbler</a>, <a href="http://www.osalt.com/g4u">disk
+imaging</a>, <a href="http://aws.amazon.com/ec2/">instance cloning</a>, etc, etc. This of course is not a complete list.
+</p>
+</div>
+
+<div id="outline-container-orgheadline56" class="outline-3">
+<h3 id="orgheadline56"><a id="ID-19be29ca-f7a2-4e00-8bfe-0c82abcf5587"></a>Bootstraping the Server and Client</h3>
+<div class="outline-text-3" id="text-orgheadline56">
+</div>
+
+<div id="outline-container-orgheadline57" class="outline-4">
+<h4 id="orgheadline57"><a id="ID-2f62e0b9-1c3b-413e-9b7b-7be933cd09cb"></a>Server Side</h4>
+<div class="outline-text-4" id="text-orgheadline57">
+<p>
+Edit <code>/var/cfengine/masterfiles/def.cf</code> to set the <code>acl</code> list for the IP
+addresses of your network, then run:
 </p>
 
-</section>
-</section>
-<section>
-<section id="slide-orgheadline49">
-<h2 id="orgheadline49"><a id="ID-19be29ca-f7a2-4e00-8bfe-0c82abcf5587"></a>Bootstraping the Server and Client</h2>
-</section>
-<section id="slide-orgheadline47">
-<h3 id="orgheadline47"><a id="ID-2f62e0b9-1c3b-413e-9b7b-7be933cd09cb"></a>Server Side</h3>
-<p>
-Edit <code>/var/cfengine/masterfiles/def.cf</code> to set the ="acl"= list for the IP addresses of your network, then run:
-</p>
-
-<p>
-cf-agent &#x2013;bootstrap $(hostname &#x2013;fqdn)
+<pre class="example">
+cf-agent --bootstrap $(hostname --fqdn)
 cf-agent -KI
-</p>
+</pre>
+</div>
+</div>
 
-</section>
-<section id="slide-orgheadline48">
-<h3 id="orgheadline48"><a id="ID-54a6c47a-fad0-4850-9e41-2fae90482477"></a>Client Side</h3>
+<div id="outline-container-orgheadline58" class="outline-4">
+<h4 id="orgheadline58"><a id="ID-54a6c47a-fad0-4850-9e41-2fae90482477"></a>Client Side</h4>
+<div class="outline-text-4" id="text-orgheadline58">
 <p>
 Simply run:
 </p>
 
-<p>
-cf-agent &#x2013;bootstrap server.fqdn.example.com
-</p>
+<pre class="example">
+cf-agent --bootstrap server.fqdn.example.com
+</pre>
 
 <p>
 You can use the server's IP address instead of the DNS name.
 </p>
+</div>
+</div>
+</div>
 
-</section>
-</section>
-<section>
-<section id="slide-orgheadline50">
-<h2 id="orgheadline50"><a id="ID-d9e383b1-66ce-4c83-9bc1-249ba4d388b3"></a>Managing and Distributing Policies</h2>
+<div id="outline-container-orgheadline59" class="outline-3">
+<h3 id="orgheadline59"><a id="ID-d9e383b1-66ce-4c83-9bc1-249ba4d388b3"></a>Managing and Distributing Policies</h3>
+<div class="outline-text-3" id="text-orgheadline59">
 <p>
 The policy files are in <code>/var/cfengine/masterfiles</code> on the server (also known as
 the <code>policy_hub</code>) and are copied to <code>/var/cfengine/inputs</code>. All clients then
@@ -1243,7 +1541,7 @@ copy <code>/var/cfengine/inputs</code> from the server.
 </p>
 
 <p>
-&lt;div style="text-align:center"&gt;![](policy<sub>propagation.png</sub>)&lt;/div&gt;
+&lt;div style=text-align:center"&gt;![](policy<sub>propagation.png</sub>)&lt;/div&gt;
 </p>
 
 <p>
@@ -1261,12 +1559,13 @@ under <code>body common control</code> inside of <code>promises.cf</code>.
 Bundles are executed in the order they are listed in the <code>bundlesequence</code>, but
 <code>inputs</code> can be listed in any order.
 </p>
+</div>
+</div>
+</div>
 
-</section>
-</section>
-<section>
-<section id="slide-orgheadline51">
-<h2 id="orgheadline51"><a id="ID-aeed71b0-6fb3-4012-b33d-d8e5d6e345e8"></a>Keep Track of Promises Repaired and Promises Not Repaired</h2>
+<div id="outline-container-orgheadline60" class="outline-2">
+<h2 id="orgheadline60"><a id="ID-aeed71b0-6fb3-4012-b33d-d8e5d6e345e8"></a>Reporting on Promise Outcomes</h2>
+<div class="outline-text-2" id="text-orgheadline60">
 <p>
 CFEngine logs to <code>/var/cfengine/promise_summary.log</code>. Here's an example log message:
 </p>
@@ -1296,27 +1595,40 @@ And finally you can use the <code>-I</code> flag to have CFEngine <b>inform</b> 
 <pre class="example">
 cf-agent -KI
 </pre>
+</div>
 
-</section>
-</section>
-<section>
-<section id="slide-orgheadline58">
-<h2 id="orgheadline58">Debugging</h2>
+<div id="outline-container-orgheadline61" class="outline-3">
+<h3 id="orgheadline61"><a id="ID-bcc58a30-f948-4fde-8685-c691190ce489"></a>Enterprise Reporting</h3>
+<div class="outline-text-3" id="text-orgheadline61">
+
+<div class="figure">
+<p><img src="./media/enterprise-reporting.png" alt="enterprise-reporting.png" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline62" class="outline-3">
+<h3 id="orgheadline62"><a id="ID-1e36c971-9bc8-43f8-814b-d6ab8f3c8bcf"></a>Debugging</h3>
+<div class="outline-text-3" id="text-orgheadline62">
 <p>
 Inevitably, something will go wrong, and you will need to dig deep to figure
 something out. Lucky for you, I have some tips for debugging.
 </p>
+</div>
 
-</section>
-<section id="slide-orgheadline52">
-<h3 id="orgheadline52"><a id="ID-f86345f4-8990-4310-94bd-c08edbb32ee9"></a>Run without locks</h3>
+<div id="outline-container-orgheadline63" class="outline-4">
+<h4 id="orgheadline63"><a id="ID-f86345f4-8990-4310-94bd-c08edbb32ee9"></a>Run without locks</h4>
+<div class="outline-text-4" id="text-orgheadline63">
 <p>
 Again, using <code>-K</code> to disable locks is useful.
 </p>
+</div>
+</div>
 
-</section>
-<section id="slide-orgheadline53">
-<h3 id="orgheadline53"><a id="ID-e4c6cdd2-7113-4b53-b1ca-614afde6c415"></a>Using Verbose Mode</h3>
+<div id="outline-container-orgheadline64" class="outline-4">
+<h4 id="orgheadline64"><a id="ID-e4c6cdd2-7113-4b53-b1ca-614afde6c415"></a>Using Verbose Mode</h4>
+<div class="outline-text-4" id="text-orgheadline64">
 <p>
 CFEngine's verbose output can be fantastic for debugging. Use the <code>-v</code> flag to
 turn it on.
@@ -1324,7 +1636,7 @@ turn it on.
 
 <div class="org-src-container">
 
-<pre  class="src src-sh">cf-agent -Kv | grep -A <span style="color: #6c71c4;">5</span> <span style="color: #2aa198;">"BEGIN bundle"</span>
+<pre class="src src-sh">cf-agent -Kv | grep -A <span style="color: #6c71c4;">5</span> <span style="color: #2aa198;">"BEGIN bundle"</span>
 </pre>
 </div>
 
@@ -1355,10 +1667,12 @@ verbose: Handling file existence constraints on '/tmp/touch'
 verbose: A: Promise REPAIRED
 verbose: P: END files promise (/tmp/touch...)
 </pre>
+</div>
+</div>
 
-</section>
-<section id="slide-orgheadline54">
-<h3 id="orgheadline54"><a id="ID-f70a691d-3f41-4b38-999e-f2a9b203872d"></a>Comments</h3>
+<div id="outline-container-orgheadline65" class="outline-4">
+<h4 id="orgheadline65"><a id="ID-f70a691d-3f41-4b38-999e-f2a9b203872d"></a>Comments</h4>
+<div class="outline-text-4" id="text-orgheadline65">
 <p>
 CFEngine supports <i>comments</i> as part of its data structure. Every promise can
 have a <code>comment</code> attribute whose value is a quoted text string.
@@ -1366,7 +1680,7 @@ have a <code>comment</code> attribute whose value is a quoted text string.
 
 <div class="org-src-container">
 
-<pre  class="src src-cfengine3"><span style="color: #839496; font-weight: bold;">bundle</span> <span style="color: #268bd2; font-weight: bold;">agent</span> <span style="color: #268bd2;">example</span> <span style="color: #2aa198;">{</span>
+<pre class="src src-cfengine3"><span style="color: #839496; font-weight: bold;">bundle</span> <span style="color: #268bd2; font-weight: bold;">agent</span> <span style="color: #268bd2;">example</span> <span style="color: #2aa198;">{</span>
   <span style="color: #839496; font-weight: bold;">files</span>:
     <span style="color: #2aa198;">"/etc/bind/named.cache"</span>
       copy_from =&gt; scp<span style="color: #b58900;">(</span><span style="color: #2aa198;">"$(def.files)/bind/named.cache"</span><span style="color: #b58900;">)</span>,
@@ -1396,20 +1710,21 @@ policies for real <b>every</b> promise should have a meaningful comment.
 You'll thank me when this saves the day.
 </p>
 
-<aside class="notes">
+<div class="NOTES">
 <p>
 Think about why this promise is important to the proper functioning of your infrastructure.
 </p>
-<ul>
+<ul class="org-ul">
 <li>What could go wrong if this promise isn't kept</li>
-
 </ul>
 
-</aside>
+</div>
+</div>
+</div>
 
-</section>
-<section id="slide-orgheadline55">
-<h3 id="orgheadline55"><a id="ID-0100492d-e829-45d5-ad86-18c0097418b3"></a>Promise Handles</h3>
+<div id="outline-container-orgheadline66" class="outline-4">
+<h4 id="orgheadline66"><a id="ID-0100492d-e829-45d5-ad86-18c0097418b3"></a>Promise Handles</h4>
+<div class="outline-text-4" id="text-orgheadline66">
 <p>
 When debugging, promise <i>handles</i> are also useful. Again, every promise can have
 a <code>handle</code> attribute whose value is a quoted canonical string.
@@ -1417,7 +1732,7 @@ a <code>handle</code> attribute whose value is a quoted canonical string.
 
 <div class="org-src-container">
 
-<pre  class="src src-cfengine3"><span style="color: #839496; font-weight: bold;">bundle</span> <span style="color: #268bd2; font-weight: bold;">agent</span> <span style="color: #268bd2;">example</span><span style="color: #2aa198;">{</span>
+<pre class="src src-cfengine3"><span style="color: #839496; font-weight: bold;">bundle</span> <span style="color: #268bd2; font-weight: bold;">agent</span> <span style="color: #268bd2;">example</span><span style="color: #2aa198;">{</span>
   <span style="color: #839496; font-weight: bold;">files</span>:
     <span style="color: #2aa198;">"/etc/bind/named.cache"</span>
       copy_from =&gt; scp<span style="color: #b58900;">(</span><span style="color: #2aa198;">"$(def.files)/bind/named.cache"</span><span style="color: #b58900;">)</span>,
@@ -1448,7 +1763,7 @@ real <b>every</b> promise should have a unique handle.
 You'll thank me when this saves the day.
 </p>
 
-<aside class="notes">
+<div class="NOTES">
 <p>
 
 </p>
@@ -1464,11 +1779,13 @@ I believe this will come into core in 3.9 or 3.10.
 @jimis?
 </p>
 
-</aside>
+</div>
+</div>
+</div>
 
-</section>
-<section id="slide-orgheadline56">
-<h3 id="orgheadline56"><a id="ID-1fac9d2a-357d-41b4-9363-d7be3ec437d6"></a>Promisees</h3>
+<div id="outline-container-orgheadline67" class="outline-4">
+<h4 id="orgheadline67"><a id="ID-1fac9d2a-357d-41b4-9363-d7be3ec437d6"></a>Promisees</h4>
+<div class="outline-text-4" id="text-orgheadline67">
 <p>
 When debugging, promise <i>stakeholders</i> aka <i>promisees</i> are useful for
 understanding who cares about a given promise.
@@ -1476,7 +1793,7 @@ understanding who cares about a given promise.
 
 <div class="org-src-container">
 
-<pre  class="src src-cfengine3"><span style="color: #839496; font-weight: bold;">bundle</span> <span style="color: #268bd2; font-weight: bold;">agent</span> <span style="color: #268bd2;">example</span> <span style="color: #2aa198;">{</span>
+<pre class="src src-cfengine3"><span style="color: #839496; font-weight: bold;">bundle</span> <span style="color: #268bd2; font-weight: bold;">agent</span> <span style="color: #268bd2;">example</span> <span style="color: #2aa198;">{</span>
   <span style="color: #839496; font-weight: bold;">files</span>:
     <span style="color: #2aa198;">"/etc/bind/named.cache"</span> -&gt; <span style="color: #b58900;">{</span> <span style="color: #2aa198;">"Operations"</span>, <span style="color: #2aa198;">"Nick Anderson"</span> <span style="color: #b58900;">}</span>
       copy_from =&gt; scp<span style="color: #b58900;">(</span><span style="color: #2aa198;">"$(def.files)/bind/named.cache"</span><span style="color: #b58900;">)</span>,
@@ -1495,30 +1812,52 @@ verbose: Additional promise info: handle 'update_etc_bind_named_cache'\
          source path './t.cf' at line 4 promisee  {'Operations','Nick Anderson'}\
          comment 'More recent copy of named.cache than shipped with bind.'
 </pre>
+</div>
+</div>
 
-</section>
-<section id="slide-orgheadline57">
-<h3 id="orgheadline57">Meta</h3>
+<div id="outline-container-orgheadline68" class="outline-4">
+<h4 id="orgheadline68"><a id="ID-ae9c713c-e3be-4b07-bd88-056bbc1af431"></a>Meta</h4>
+<div class="outline-text-4" id="text-orgheadline68">
 <p>
 When debugging variables and classes promise <i>meta</i> data is useful to help
 identify variables and classes with specific attributes.
 </p>
 
+<div class="org-src-container">
+<label class="org-src-name"><code>debugging_classes_and_vars_with_tags.cf</code></label>
+<pre class="src src-cfengine3"><span style="color: #839496; font-weight: bold;">bundle</span> <span style="color: #268bd2; font-weight: bold;">agent</span> <span style="color: #268bd2;">main</span><span style="color: #2aa198;">{</span>
+  <span style="color: #839496; font-weight: bold;">classes</span>:
+      <span style="color: #2aa198;">"my_class"</span> expression =&gt; <span style="color: #2aa198;">"any"</span>, meta =&gt; <span style="color: #b58900;">{</span> <span style="color: #2aa198;">"mytag"</span> <span style="color: #b58900;">}</span>;
+  <span style="color: #839496; font-weight: bold;">vars</span>:
+      <span style="color: #2aa198;">"my_var"</span> <span style="color: #b58900;">string</span> =&gt; <span style="color: #2aa198;">"value"</span>, meta =&gt; <span style="color: #b58900;">{</span> <span style="color: #2aa198;">"mytag"</span> <span style="color: #b58900;">}</span>;
+      <span style="color: #2aa198;">"my_vars"</span> <span style="color: #b58900;">slist</span> =&gt; variablesmatching<span style="color: #b58900;">(</span><span style="color: #2aa198;">".*"</span>, <span style="color: #2aa198;">"mytag"</span> <span style="color: #b58900;">)</span>;
+      <span style="color: #2aa198;">"my_classes"</span> <span style="color: #b58900;">slist</span> =&gt; classesmatching<span style="color: #b58900;">(</span><span style="color: #2aa198;">".*"</span>, <span style="color: #2aa198;">"mytag"</span> <span style="color: #b58900;">)</span>;
+  <span style="color: #839496; font-weight: bold;">reports</span>:
+      <span style="color: #2aa198;">"My var: $(my_vars)"</span>;
+      <span style="color: #2aa198;">"My class: $(my_classes)"</span>;
+<span style="color: #2aa198;">}</span>
+</pre>
+</div>
+
 <p>
-Promise meta data is not currently displayed in the CFEngine's verbose output.
+<b>Note:</b> Promise meta data is not currently displayed in the CFEngine's verbose
+output.
 </p>
-</section>
-</section>
-<section>
-<section id="slide-orgheadline59">
-<h2 id="orgheadline59"><a id="ID-d42914dc-b51d-46cd-b254-8f0e7e12b0fa"></a>The Rest</h2>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline69" class="outline-2">
+<h2 id="orgheadline69"><a id="ID-d42914dc-b51d-46cd-b254-8f0e7e12b0fa"></a>The Rest</h2>
+<div class="outline-text-2" id="text-orgheadline69">
 <p>
 Here's a list of topics that I didn't cover. This is to give you a taste of the
 rest of the power that is behind CFEngine. Dig deeper by checking them out in
 the [reference manual][reference-manual].
 </p>
 
-<ul>
+<ul class="org-ul">
 <li><code>vars:</code> promises — Varables, strings, integers and reals (and lists of each).</li>
 <li><code>methods:</code> promises — Create a self-contained bundle that can be called like a
 function.</li>
@@ -1527,19 +1866,16 @@ function.</li>
 <li><code>database</code> promises — Promise the schema of your database, CFEngine does the
 SQL for you.</li>
 <li><code>edit_xml:</code> promises - Promise by path, CFEngine does the XML for you.</li>
-<li><code>interfaces:</code> promises — Promise your network settings</li>
 <li>Monitoring — Using data from <code>cf-monitor</code>.</li>
 <li>Implicit looping — Pass a list to a promise and it loops over the values in
 the list.</li>
-
 </ul>
+</div>
 
-</section>
-</section>
-<section>
-<section id="slide-orgheadline60">
-<h2 id="orgheadline60"><a id="ID-f9326762-bccd-47d5-b431-dbdddd021822"></a>Pro Tips</h2>
-<ul>
+<div id="outline-container-orgheadline70" class="outline-3">
+<h3 id="orgheadline70"><a id="ID-f9326762-bccd-47d5-b431-dbdddd021822"></a>Pro Tips</h3>
+<div class="outline-text-3" id="text-orgheadline70">
+<ul class="org-ul">
 <li><i>Don't edit the standard library</i>. Create a <code>site_lib.cf</code> and add your custom
 library bundles and bodies there. This helps with upgrading because you won't
 have to patch your changes into the new version of the library. When you feel
@@ -1553,7 +1889,6 @@ Layout][layout] by Brian Bennett.</li>
 <li><i>Use <code>git</code></i> to revision control <code>masterfiles</code>.</li>
 <li><i>Syntax errors?</i> Only read the very first error. Fix it, then try again. A
 missing character in one promise will throw the whole file off.</li>
-
 </ul>
 
 <p>
@@ -1562,54 +1897,20 @@ missing character in one promise will throw the whole file off.</li>
 [layout]: <a href="https://digitalelf.net/2013/04/a-case-study-in-cfengine-layout/">https://digitalelf.net/2013/04/a-case-study-in-cfengine-layout/</a>
 [reference-manual]: <a href="https://docs.cfengine.com/lts/reference.html">https://docs.cfengine.com/lts/reference.html</a>
 </p>
-
-</section>
-</section>
-<section>
-<section id="slide-orgheadline61">
-<h2 id="orgheadline61"><a id="ID-a2fc6d66-53af-437a-99cd-db190f54580b"></a>Thanks</h2>
-</section>
-</section>
 </div>
 </div>
-<p> Created by Nick Anderson. </p>
-<script src="./reveal.js/lib/js/head.min.js"></script>
-<script src="./reveal.js/js/reveal.js"></script>
+</div>
 
-<script>
-// Full list of configuration options available here:
-// https://github.com/hakimel/reveal.js#configuration
-Reveal.initialize({
-
-controls: true,
-progress: true,
-history: false,
-center: true,
-slideNumber: 'c',
-rollingLinks: true,
-keyboard: true,
-overview: true,
-width: 1200,
-height: 800,
-margin: 0.10,
-minScale: 0.50,
-maxScale: 2.50,
-
-theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
-transition: Reveal.getQueryHash().transition || 'fade', // default/cube/page/concave/zoom/linear/fade/none
-transitionSpeed: 'default',
-multiplex: {
-    secret: '', // null if client
-    id: '', // id, obtained from socket.io server
-    url: '' // Location of socket.io server
-},
-
-// Optional libraries used to extend on reveal.js
-dependencies: [
- { src: './reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
- { src: './reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
- { src: './reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }]
-});
-</script>
+<div id="outline-container-orgheadline71" class="outline-2">
+<h2 id="orgheadline71"><a id="ID-a2fc6d66-53af-437a-99cd-db190f54580b"></a>Thanks</h2>
+<div class="outline-text-2" id="text-orgheadline71">
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Nick Anderson</p>
+<p class="date">Created: 2016-05-17 Tue 12:55</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
 </body>
 </html>
