@@ -6,6 +6,6 @@ bundle agent example {
 
 body perms perms_for_shadow_files {
   owners => { "root" };
-  groups => { "shadow" };
+  groups => { "root" };
   mode   => "0640";
 }

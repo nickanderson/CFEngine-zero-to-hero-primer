@@ -478,7 +478,7 @@ Commands are *not* the best way to accomplish automation.
 
   body perms perms_for_shadow_files {
     owners => { "root" };
-    groups => { "shadow" };
+    groups => { "root" };
     mode   => "0640";
   }
 #+END_SRC
@@ -1427,8 +1427,16 @@ CLOSED: [2016-05-19 Thu 13:13]
 Mentioned in Pro tips. There is sooooooo much to share! And this presentation is
 only 45 minutes.
 
-** TODO Review shadow file perms danger
+** DONE Review shadow file perms danger
+CLOSED: [2016-05-19 Thu 13:22]
+:PROPERTIES:
+:ID:       8f3e2276-4b9e-47ac-ad6f-d55b5668e20b
+:END:
+
 :PROPERTIES:
 :ID:       724482bb-e91c-4191-9280-2f5243ddadb8
 :END:
 Noted by Trix Farrar @BasementTrix
+
+Yeah, the group was set to shadow, probably not what people really want.
+Switched to =root=.

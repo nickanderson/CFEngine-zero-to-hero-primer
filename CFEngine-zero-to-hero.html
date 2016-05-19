@@ -601,7 +601,7 @@ Commands are <b>not</b> the best way to accomplish automation.
 
 <span style="color: #839496; font-weight: bold;">body</span> <span style="color: #268bd2; font-weight: bold;">perms</span> <span style="color: #268bd2;">perms_for_shadow_files</span> <span style="color: #2aa198;">{</span>
   owners =&gt; <span style="color: #b58900;">{</span> <span style="color: #2aa198;">"root"</span> <span style="color: #b58900;">}</span>;
-  groups =&gt; <span style="color: #b58900;">{</span> <span style="color: #2aa198;">"shadow"</span> <span style="color: #b58900;">}</span>;
+  groups =&gt; <span style="color: #b58900;">{</span> <span style="color: #2aa198;">"root"</span> <span style="color: #b58900;">}</span>;
   mode   =&gt; <span style="color: #2aa198;">"0640"</span>;
 <span style="color: #2aa198;">}</span>
 </pre>
@@ -1742,9 +1742,17 @@ only 45 minutes.
 
 </section>
 <section id="slide-orgheadline73">
-<h3 id="orgheadline73"><a id="ID-724482bb-e91c-4191-9280-2f5243ddadb8"></a><span class="todo TODO">TODO</span> Review shadow file perms danger</h3>
+<h3 id="orgheadline73"><a id="ID-8f3e2276-4b9e-47ac-ad6f-d55b5668e20b"></a><span class="done DONE">DONE</span> Review shadow file perms danger</h3>
+<p>
+:ID:       724482bb-e91c-4191-9280-2f5243ddadb8
+</p>
 <p>
 Noted by Trix Farrar @BasementTrix
+</p>
+
+<p>
+Yeah, the group was set to shadow, probably not what people really want.
+Switched to <code>root</code>.
 </p>
 </section>
 </section>
