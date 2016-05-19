@@ -151,25 +151,25 @@ described state.
 
 Imperative languages execute step by step in *sequence*.
 
-Because it is sequential must go in order from start to finish. If a sequential
-program is interrupted in the middle the state is /inconsistent/. Neither at
-starting point nor at the finish. Executing the program again will repeat tasks
-that have already been done, possibly causing damage in doing so.
+- Goes in order from start to finish.
+- If interrupted the state is /inconsistent/.
+- Subsequent executions /typically/ repeat tasks already done.
+  - Potentially causing damage.
 
-E.g., a script that appends a line to a file then restarts a daemon. If the line
-is appended but the daemon not restarted, running the script again will result
-in that line in the file twice. This will likely cause the daemon to fail when
-restarted.
+For Example:
+- Script appends line to file and restarts daemon.
+- Second execution appends duplicate line and restarts daemon.
+  - Daemon doesn't accept duplicate lines and service refuses to run.
 
-Imperative starts at known state A and transforms to known state B.
+*Imperative starts at known state A and transforms to known state B.*
 
 ** Declarative is Descriptive
 :PROPERTIES:
 :ID:       440944c7-b77e-427e-a263-c745fe75bac0
 :END:
 
-It is not a list of steps to arrive achieve an outcome but a *description* of
-the desired state. Because of this any deviation from the desired state can be
+It is not a list of steps to achieve an outcome but a *description* of the
+desired state. Because of this any deviation from the desired state can be
 detected and corrected.
 
 In other words, a declarative system can begin in /any/ state, not simply a
@@ -351,8 +351,8 @@ the promise.
 
 #+BEGIN_SRC cfengine3
   body type name {
-    attribute1 => "value";
-    attribute2 => "value";
+    attribute1 => "value",
+    attribute2 => "values";
   }
 #+END_SRC
 
@@ -367,7 +367,7 @@ Take a moment to let this sink in.
 The distinction is subtle, especially at first and many people are tripped up by
 this.
 
-In a body each attribute ends with a *semi-colon*.
+In a body, each attribute ends with a *semi-colon*.
 
 * Abstraction and Re-usability
 :PROPERTIES:
@@ -1089,7 +1089,7 @@ is ideally handled by your provisioning process. Along with automating server
 function you should also be automating your provisioning process.
 
 Some ways of automating provisioning are [[http://fedoraproject.org/wiki/Anaconda/Kickstart][kickstart]], [[http://wiki.debian.org/DebianInstaller/Preseed][preseed]], [[http://wiki.debian.org/FAI][fai]], [[http://www.cobblerd.org][cobbler]], [[http://www.osalt.com/g4u][disk
-imaging]], [[http://aws.amazon.com/ec2/][instance cloning]], etc, etc. This of course is not a complete list.
+imaging]], [[http://aws.amazon.com/ec2/][instance cloning]], etc, etc. This, of course, is not a complete list.
 
 ** Bootstraping the Server and Client
 :PROPERTIES:
@@ -1392,20 +1392,19 @@ the [reference manual][reference-manual].
   library bundles and bodies there. This helps with upgrading because you won't
   have to patch your changes into the new version of the library. When you feel
   a bundle or body is ready for public use you can submit it to CFEngine by
-  opening a pull request on [Github][masterfiles].
+  opening a pull request on [[http://github.com/cfengine/masterfiles][Github]].
 - /Make built-in classes and user defined classes easy to distinguish by sight./
   CFEngine creates hard classes =all_lower_case_separated_by_underscores=.
   Whenever I define classes myself I use =CamelCase=.
-- /Not sure how to organize =masterfiles=?/ Check [A Case Study in CFEngine
-  Layout][layout] by Brian Bennett.
+- /Not sure how to organize =masterfiles=?/
+  - [[https://digitalelf.net/2013/04/a-case-study-in-cfengine-layout/][A Case Study in CFEngine Layout]] by Brian Bennett.
+  - [[https://github.com/nickanderson/example-a10042][Example a10042]]
 - /Use =git=/ to revision control =masterfiles=.
 - /Syntax errors?/ Only read the very first error. Fix it, then try again. A
   missing character in one promise will throw the whole file off.
-
-[cfengine]: http://github.com/cfengine/core
-[masterfiles]: http://github.com/cfengine/masterfiles
-[layout]: https://digitalelf.net/2013/04/a-case-study-in-cfengine-layout/
-[reference-manual]: https://docs.cfengine.com/lts/reference.html
+- Checkout the [[https://docs.cfengine.com/lts/guide-language-concepts-augments.html][Augments file]]
+- Checkout [[https://stedolan.github.io/jq/][jq]] (because you can use it with [[https://docs.cfengine.com/docs/3.9/reference-functions-mapdata.html][mapdata()]] in 3.9+)
+- Read the [[https://docs.cfengine.com/lts/reference.html][reference manual]] (all of it)
 
 * Thanks
 :PROPERTIES:
@@ -1415,10 +1414,19 @@ the [reference manual][reference-manual].
 :PROPERTIES:
 :ID:       f313ffe6-4543-48a3-bff8-26784f3acfce
 :END:
-** TODO Mention the augments file somewhere
+** DONE Mention the augments file somewhere
+:PROPERTIES:
+:ID:       c0d0db24-6eee-4891-a364-cad415eccc41
+:END:
+
+CLOSED: [2016-05-19 Thu 13:13]
 :PROPERTIES:
 :ID:       725599cb-9873-432e-b772-ef2f548a49fc
 :END:
+
+Mentioned in Pro tips. There is sooooooo much to share! And this presentation is
+only 45 minutes.
+
 ** TODO Review shadow file perms danger
 :PROPERTIES:
 :ID:       724482bb-e91c-4191-9280-2f5243ddadb8

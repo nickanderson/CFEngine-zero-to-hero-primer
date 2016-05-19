@@ -4,3 +4,5 @@ This presentation is derived from Brian Bennett and Aleksey Tsalolikhin's great
 [[https://github.com/bahamat/cf-primer][cf-primer]].
 
 This presentation uses the excelent [[https://github.com/yjwen/org-reveal][ox-reveal]] to export from [[http://orgmode.org/][org-mode]].
+
+This is supposed to be ~ 45 minutes. So it really is just the *tip* of the iceberg.
