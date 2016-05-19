@@ -1369,7 +1369,7 @@ output.
 
 Here's a list of topics that I didn't cover. This is to give you a taste of the
 rest of the power that is behind CFEngine. Dig deeper by checking them out in
-the [reference manual][reference-manual].
+the [[https://docs.cfengine.com/lts/reference.html][reference manual]].
 
 - =vars:= promises — Varables, strings, integers and reals (and lists of each).
 - =methods:= promises — Create a self-contained bundle that can be called like a
