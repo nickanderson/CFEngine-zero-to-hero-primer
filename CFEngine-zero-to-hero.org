@@ -227,11 +227,11 @@ about itself which cooperates toward an end.
 :END:
 
 #+BEGIN_SRC cfengine3
-    type:
-      context::
-        "promiser" -> "promisee"
-          attribute1 => "value",
-          attribute2 => value2;
+  type:
+    context::
+      "promiser" -> "promisee"
+        attribute1 => "value",
+        attribute2 => value2;
 #+END_SRC
 
 - *type* is the kind of promise being made (e.g., files, commands, etc.).
@@ -246,12 +246,11 @@ about itself which cooperates toward an end.
 :END:
 
 #+BEGIN_SRC cfengine3
-
-    type:
-      context::
-        "promiser" -> "promisee"
-          attribute1 => "value",
-          attribute2 => body;
+  type:
+    context::
+      "promiser" -> "promisee"
+        attribute1 => "value",
+        attribute2 => body;
 #+END_SRC
 
 Each promise can have one or more attributes that describe the parameters of the
@@ -269,10 +268,10 @@ Attributes are separated by *commas*. Each promise ends with a *semi-colon*.
 :END:
 
 #+BEGIN_SRC cfengine3
-    files:
-      linux::
-        "/tmp/hello/world" -> { "Student" }
-          create => "true";
+  files:
+    linux::
+      "/tmp/hello/world" -> { "Student" }
+        create => "true";
 #+END_SRC
 
 - This is a promise of *type* =files=.
@@ -524,17 +523,17 @@ because these attributes take a list of strings (aka, an =slist=).
 
 #+caption: =sshd_permit_root_login_no.cf=
 #+BEGIN_SRC cfengine3 :tangle examples/sshd_permit_root_login_no.cf
-    bundle agent main {
-      files:
-        "/etc/ssh/sshd_config"     edit_line => deny_root_ssh;
-    }
+  bundle agent main {
+    files:
+      "/etc/ssh/sshd_config"     edit_line => deny_root_ssh;
+  }
 
-    bundle edit_line deny_root_ssh {
-      delete_lines:
-        "^PermitRootLogin.*"
-      insert_lines:
-        "PermitRootLogin no"
-    }
+  bundle edit_line deny_root_ssh {
+    delete_lines:
+      "^PermitRootLogin.*"
+    insert_lines:
+      "PermitRootLogin no"
+  }
 #+END_SRC
 
 - This will delete any line matching the regular expression =^PermitRootLogin.*=.
@@ -798,11 +797,11 @@ accomplishes 80%, *this slide* is the 5% that accomplishes 95%.
 :END:
 
 #+BEGIN_SRC cfengine3
-      commands:
-        RestartApache.debian::
-          "/usr/sbin/apache2ctl graceful";
-        RestartApache.redhat::
-          "/usr/sbin/apachectl graceful";
+  commands:
+    RestartApache.debian::
+      "/usr/sbin/apache2ctl graceful";
+    RestartApache.redhat::
+      "/usr/sbin/apachectl graceful";
 #+END_SRC
 
 This example is similar to the last one, except that Debian and Redhat each have
@@ -816,11 +815,11 @@ define our class context. The expression =RestartApache.debian= means
 :END:
 
 #+BEGIN_SRC cfengine3
-      commands:
-        RestartApache.debian::
-          "/usr/sbin/apache2ctl graceful";
-        RestartApache.redhat::
-          "/usr/sbin/apachectl graceful";
+  commands:
+    RestartApache.debian::
+      "/usr/sbin/apache2ctl graceful";
+    RestartApache.redhat::
+      "/usr/sbin/apachectl graceful";
 #+END_SRC
 
 |--------------+-------------------+-------------------------------------|
@@ -962,7 +961,6 @@ The same restrictions about distros apply to stopping services promises.
 :END:
 
 #+BEGIN_SRC cfengine3
-
     bundle agent install {
       packages:
         "zsh"
@@ -994,13 +992,13 @@ easier to dig into the specific details of how packages should be managed.
 :END:
 
 #+BEGIN_SRC cfengine3
-    bundle agent install {
-      packages:
-        "zsh"
-          policy  => "present",
-          package_module  => yum,
-          version => "latest";
-    }
+  bundle agent install {
+    packages:
+      "zsh"
+        policy  => "present",
+        package_module  => yum,
+        version => "latest";
+  }
 #+END_SRC
 
 - The =policy= of =present= will make sure the package is installed on the
@@ -1041,10 +1039,10 @@ easier to dig into the specific details of how packages should be managed.
 
 #+Caption: =template.mustache=
 #+BEGIN_SRC text :tangle examples/template.mustache
-Hello from {{{vars.sys.fqhost}}}!
+  Hello from {{{vars.sys.fqhost}}}!
 
-{{#classes.linux}}I am a Linux Box!{{/classes.linux}}
-{{^classes.windows}}I am NOT a Windows Box{{/classes.windows}}
+  {{#classes.linux}}I am a Linux Box!{{/classes.linux}}
+  {{^classes.windows}}I am NOT a Windows Box{{/classes.windows}}
 #+END_SRC
 
 #+Caption: =template_file.cf=
@@ -1064,12 +1062,12 @@ Hello from {{{vars.sys.fqhost}}}!
 :END:
 
 #+BEGIN_SRC cfengine3
-    bundle agent tidy {
-      files:
-        "/var/log/.*"
-          file_select => days_old("7"),
-          delete => tidy;
-    }
+  bundle agent tidy {
+    files:
+      "/var/log/.*"
+        file_select => days_old("7"),
+        delete => tidy;
+  }
 #+END_SRC
 
 This policy will delete any files in =/var/log/= older than 7 days. The
@@ -1153,10 +1151,10 @@ Bundles are executed in the order they are listed in the =bundlesequence=, but
 CFEngine logs to =/var/cfengine/promise_summary.log=. Here's an example log message:
 
 #+BEGIN_EXAMPLE
-1463018982,1463018990: Outcome of version CFEngine Promises.cf 3.7.0 (agent-0):\
- Promises observed - Total promise compliance: 93% kept, 3% repaired,\ 4% not kept (out of 148 events).\
- User promise compliance: 93% kept, 2% repaired, 5% not kept (out of 130 events).
- CFEngine system compliance: 94% kept, 6% repaired, 0% not kept (out of 18 events).
+  1463018982,1463018990: Outcome of version CFEngine Promises.cf 3.7.0 (agent-0):\
+   Promises observed - Total promise compliance: 93% kept, 3% repaired,\ 4% not kept (out of 148 events).\
+   User promise compliance: 93% kept, 2% repaired, 5% not kept (out of 130 events).
+   CFEngine system compliance: 94% kept, 6% repaired, 0% not kept (out of 18 events).
 #+END_EXAMPLE
 
 *Note:* The timestamp is a Unix epoch.
@@ -1203,7 +1201,7 @@ CFEngine's verbose output can be fantastic for debugging. Use the =-v= flag to
 turn it on.
 
 #+BEGIN_SRC sh :results raw :exports both :wrap EXAMPLE
-cf-agent -Kv | grep -A 5 "BEGIN bundle"
+  cf-agent -Kv | grep -A 5 "BEGIN bundle"
 #+END_SRC
 
 When viewing =verbose= output, look for =BUNDLE <name>= for the bundle that you
@@ -1211,24 +1209,24 @@ suspect is having trouble.
 
 #+RESULTS:
 #+BEGIN_EXAMPLE
- verbose: B: BEGIN bundle main
- verbose: B: *****************************************************************
- verbose: P: .........................................................
- verbose: P: BEGIN promise 'promise_promises_cf_4' of type "reports" (pass 1)
- verbose: P:    Promiser/affected object: 'Hello World!'
- verbose: P:    Part of bundle: main
+  verbose: B: BEGIN bundle main
+  verbose: B: *****************************************************************
+  verbose: P: .........................................................
+  verbose: P: BEGIN promise 'promise_promises_cf_4' of type "reports" (pass 1)
+  verbose: P:    Promiser/affected object: 'Hello World!'
+  verbose: P:    Part of bundle: main
 #+END_EXAMPLE
 
 CFEngine will tell you exactly what is going on with each promise, in
 excruciating detail.
 
 #+BEGIN_EXAMPLE
- verbose: Using literal pathtype for '/tmp/touch'
- verbose: No mode was set, choose plain file default 0600
-    info: Created file '/tmp/touch', mode 0600
- verbose: Handling file existence constraints on '/tmp/touch'
- verbose: A: Promise REPAIRED
- verbose: P: END files promise (/tmp/touch...)
+  verbose: Using literal pathtype for '/tmp/touch'
+  verbose: No mode was set, choose plain file default 0600
+     info: Created file '/tmp/touch', mode 0600
+  verbose: Handling file existence constraints on '/tmp/touch'
+  verbose: A: Promise REPAIRED
+  verbose: P: END files promise (/tmp/touch...)
 #+END_EXAMPLE
 
 *** Comments
@@ -1240,21 +1238,21 @@ CFEngine supports /comments/ as part of its data structure. Every promise can
 have a =comment= attribute whose value is a quoted text string.
 
 #+BEGIN_SRC cfengine3
-bundle agent example {
-  files:
-    "/etc/bind/named.cache"
-      copy_from => scp("$(def.files)/bind/named.cache"),
-      comment   => "More recent copy of named.cache than shipped with bind";
-}
+  bundle agent example {
+    files:
+      "/etc/bind/named.cache"
+        copy_from => scp("$(def.files)/bind/named.cache"),
+        comment   => "More recent copy of named.cache than shipped with bind";
+  }
 #+END_SRC
 
 Comments show up in the verbose output.
 
 #+BEGIN_EXAMPLE
- verbose: P:    Container path : '/default/main/files/'/etc/bind/named.cache'[0]'
- verbose: P:
- verbose: P:    Comment:  More recent copy of named.cache than shipped with bind.
- verbose: P: .........................................................
+  verbose: P:    Container path : '/default/main/files/'/etc/bind/named.cache'[0]'
+  verbose: P:
+  verbose: P:    Comment:  More recent copy of named.cache than shipped with bind.
+  verbose: P: .........................................................
 #+END_EXAMPLE
 
 The comment should always be *why* the promise is being made. Up until now none
@@ -1277,22 +1275,22 @@ When debugging, promise /handles/ are also useful. Again, every promise can have
 a =handle= attribute whose value is a quoted canonical string.
 
 #+BEGIN_SRC cfengine3
-bundle agent example{
-  files:
-    "/etc/bind/named.cache"
-      copy_from => scp("$(def.files)/bind/named.cache"),
-      handle    => "update_etc_bind_named_cache",
-      comment   => "More recent copy of named.cache than shipped with bind";
-}
+  bundle agent example{
+    files:
+      "/etc/bind/named.cache"
+        copy_from => scp("$(def.files)/bind/named.cache"),
+        handle    => "update_etc_bind_named_cache",
+        comment   => "More recent copy of named.cache than shipped with bind";
+  }
 #+END_SRC
 
 CFEngine will tell you the handle of each promise in the verbose output.
 
 #+BEGIN_EXAMPLE
- verbose: P: BEGIN promise 'update_etc_bind_named_cache' of type "files" (pass 1)
- verbose: P:    Promiser/affected object: '/etc/bind/named.cache'
- verbose: P:    Part of bundle: example
- verbose: P:    Base context class: any
+  verbose: P: BEGIN promise 'update_etc_bind_named_cache' of type "files" (pass 1)
+  verbose: P:    Promiser/affected object: '/etc/bind/named.cache'
+  verbose: P:    Part of bundle: example
+  verbose: P:    Base context class: any
 #+END_EXAMPLE
 
 By giving each promise a unique handle you can swiftly jump back and forth
@@ -1321,13 +1319,13 @@ When debugging, promise /stakeholders/ aka /promisees/ are useful for
 understanding who cares about a given promise.
 
 #+BEGIN_SRC cfengine3
-bundle agent example {
-  files:
-    "/etc/bind/named.cache" -> { "Operations", "Nick Anderson" }
-      copy_from => scp("$(def.files)/bind/named.cache"),
-      handle    => "update_etc_bind_named_cache",
-      comment   => "More recent copy of named.cache than shipped with bind";
-}
+  bundle agent example {
+    files:
+      "/etc/bind/named.cache" -> { "Operations", "Nick Anderson" }
+        copy_from => scp("$(def.files)/bind/named.cache"),
+        handle    => "update_etc_bind_named_cache",
+        comment   => "More recent copy of named.cache than shipped with bind";
+  }
 #+END_SRC
 
 CFEngine will tell you additional info about each promise.
@@ -1413,3 +1411,16 @@ the [reference manual][reference-manual].
 :PROPERTIES:
 :ID:       a2fc6d66-53af-437a-99cd-db190f54580b
 :END:
+* Todos
+:PROPERTIES:
+:ID:       f313ffe6-4543-48a3-bff8-26784f3acfce
+:END:
+** TODO Mention the augments file somewhere
+:PROPERTIES:
+:ID:       725599cb-9873-432e-b772-ef2f548a49fc
+:END:
+** TODO Review shadow file perms danger
+:PROPERTIES:
+:ID:       724482bb-e91c-4191-9280-2f5243ddadb8
+:END:
+Noted by Trix Farrar @BasementTrix
