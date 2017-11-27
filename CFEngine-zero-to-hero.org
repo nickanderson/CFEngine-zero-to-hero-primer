@@ -543,6 +543,11 @@ because these attributes take a list of strings (aka, an =slist=).
 - This is an overly simplistic example. When editing configuration files you
   probably want to copy the whole file or use =set_config_values()= from the
   standard library.
+* Variables
+- strings
+- lists
+- numbers
+- data (JSON/YAML/CSV)
 
 * Classification and Classes
 :PROPERTIES:
@@ -709,7 +714,7 @@ type is declared the class context is reset as well.
         "/dev/shm/hello_world"
           create => "true";
     commands:
-        "echo Hello World";
+        "/bin/echo Hello World";
   }
 #+END_SRC
 
@@ -744,11 +749,11 @@ will be also defined.
 
       "/etc/apache2/apache2.conf"
         copy_from => remote_cp("/cfengine/repo/debian/apache2.conf","$(sys.policy_hub)")
-          classes => if_repaired("RestartApache");
+          classes => results("bundle", "apache_config");
 
     commands:
 
-      RestartApache::
+      apache_config_repaired::
         "/usr/sbin/apache2ctl graceful";
   }
 #+END_SRC
@@ -773,11 +778,11 @@ restarted.
 
       "/etc/apache2/apache2.conf"
         copy_from => remote_cp("/cfengine/repo/debian/apache2.conf","$(sys.policy_hub)"),
-        classes => if_repaired("RestartApache");
+        classes => results("bundle", "apache_config");
 
     commands:
 
-      RestartApache::
+      apache_config_repaired::
         "/usr/sbin/apache2ctl graceful";
   }
 #+END_SRC
@@ -798,16 +803,16 @@ accomplishes 80%, *this slide* is the 5% that accomplishes 95%.
 
 #+BEGIN_SRC cfengine3
   commands:
-    RestartApache.debian::
+    apache_config_repaired.debian::
       "/usr/sbin/apache2ctl graceful";
-    RestartApache.redhat::
+    apache_config_repaired.redhat::
       "/usr/sbin/apachectl graceful";
 #+END_SRC
 
 This example is similar to the last one, except that Debian and Redhat each have
 different commands used to restart Apache. Therefore, we use an expression to
-define our class context. The expression =RestartApache.debian= means
-"RestartApache *and* debian".
+define our class context. The expression =apache_config_repaired.debian= means
+"=apache_config_repaired= *and* =debian=".
 
 ** Class Expressions
 :PROPERTIES:
@@ -816,9 +821,9 @@ define our class context. The expression =RestartApache.debian= means
 
 #+BEGIN_SRC cfengine3
   commands:
-    RestartApache.debian::
+    apache_config_repaired.debian::
       "/usr/sbin/apache2ctl graceful";
-    RestartApache.redhat::
+    apache_config_reparied.redhat::
       "/usr/sbin/apachectl graceful";
 #+END_SRC
 
@@ -826,13 +831,15 @@ define our class context. The expression =RestartApache.debian= means
 | Operator     | Meaning           | Example                             |
 |--------------+-------------------+-------------------------------------|
 | =.= and =&=  | boolean *and*     | =debian.Tuesday::=                  |
-| =ǀ= and =ǀǀ= | boolean *or*      | =TuesdayǀWednesday::=               |
+| =ǀ= and =ǀǀ=  | boolean *or*      | =TuesdayǀWednesday::=               |
 | =!=          | boolean *not*     | =!Monday::=                         |
 | =( )=        | Explicit grouping | =(debianǀredhat).!ubuntu.!centos::= |
 |--------------+-------------------+-------------------------------------|
 
 # Note the vertical pipes inside the table are actually unicode characters, this
 # is just to make it work inside org-mode
+
+* Augments (=def.json=)
 
 * Managing Processes
 :PROPERTIES:
@@ -1032,10 +1039,20 @@ easier to dig into the specific details of how packages should be managed.
 :ID:       84c4b634-81e2-4a05-ac60-b66f0224f360
 :END:
 
+** Methodologies
+
+- Full file management
+- Partial file management
+ 
 ** Templating a file
 :PROPERTIES:
 :ID:       6005b838-5e30-45f1-acfb-7de243839169
 :END:
+
+- [[http://mustache.github.io/][mustache]] :: Logic-less templating engine (*preferred*)
+- [[https://docs.cfengine.com/lts/reference-promise-types-files.html#edit_template][cfengine]] :: CFEngine's original line based templating
+
+*** Mustache Templating 
 
 #+Caption: =template.mustache=
 #+BEGIN_SRC text :tangle examples/template.mustache
@@ -1055,6 +1072,93 @@ easier to dig into the specific details of how packages should be managed.
           template_method => "mustache";
   }
 #+END_SRC
+
+*** Mustache Extensions
+
+- =-top-= :: Special key representing the complete data given to the templating
+             engine.
+- =@= :: Expands to the key that is currently iterating.
+- =%= :: Variable prefix causing the data to be rendered as the multi-line JSON
+         representation of the data given to the templating engine.
+- =$= :: Variable prefix causing the data to be rendered as the serialized JSON
+         representation of the data given to the templating engine.
+
+*** Exercise: Render multiline JSON for =packagesmatching()=
+
+=packagesmatching()= returns data. Render the multiline JSON representation of the data.
+
+#+BEGIN_SRC cfengine3
+  bundle agent main
+  {
+    vars:
+        "p" data => packagesmatching( "emacs.*", ".*", ".*", ".*");
+
+        "r" string => string_mustache( "{{%-top-}}", p ),
+          if => not(isvariable( r ) );
+
+    reports:
+        "$(r)";
+
+  }
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+R: [
+  {
+    "arch": "default",
+    "method": "dpkg",
+    "name": "emacsen-common",
+    "version": "2.0.8"
+  },
+  {
+    "arch": "default",
+    "method": "dpkg",
+    "name": "emacs24-common-non-dfsg",
+    "version": "24.4+1-2"
+  },
+  {
+    "arch": "default",
+    "method": "dpkg",
+    "name": "emacs24-common",
+    "version": "24.5+1-1ubuntu2"
+  },
+  {
+    "arch": "default",
+    "method": "dpkg",
+    "name": "emacs24-bin-common",
+    "version": "24.5+1-1ubuntu2"
+  },
+  {
+    "arch": "default",
+    "method": "dpkg",
+    "name": "emacs24",
+    "version": "24.5+1-1ubuntu2"
+  },
+  {
+    "arch": "default",
+    "method": "dpkg",
+    "name": "emacs",
+    "version": "46.1"
+  }
+]
+#+end_example
+
+*** Mustache Tips
+
+- Render raw values with ={{{VAR}}}= or ={{& VAR}}=. Mustache html escapes by
+  default.
+
+- Use =[[https://docs.cfengine.com/lts/reference-functions-string_mustache.html][string_mustache()]]= to render mustache into a string.
+
+- =[[https://docs.cfengine.com/lts/reference-promise-types-files.html#template_data][template_data()]]= Helps to separate CFEngine specifics from templates.
+
+#+BEGIN_NOTES
+  - Watch out for html escaped values
+  - =template_method => "inline_mustache"= coming in future release
+  - Separating cfengine specifics from templates can ease offloading templates
+    and data to external agents.
+#+END_NOTES 
 
 ** Deleting a file
 :PROPERTIES:
