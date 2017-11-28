@@ -1,11 +1,12 @@
 #+Title: CFEngine Zero to Hero Primer
 #+Author: Nick Anderson
 #+Email: nick@cmdln.org
+#+REVEAL_ROOT: file:///home/nickanderson/src/reveal.js/
 #+OPTIONS: reveal_center:t reveal_progress:t reveal_history:nil reveal_control:t
 #+OPTIONS: reveal_rolling_links:t reveal_keyboard:t reveal_overview:t num:nil
 #+OPTIONS: reveal_width:1200 reveal_height:800
 # The TOC is a bit much for a slide show IMHO
-#+OPTIONS: toc:0
+#+OPTIONS: toc:nil
 #+REVEAL_MARGIN: 0.1
 #+REVEAL_MIN_SCALE: 0.5
 #+REVEAL_MAX_SCALE: 2.5
@@ -45,7 +46,7 @@ limitations under the License.
 :END:
 
 *CFEngine* contains a powerful language for controlling all aspects of a system.
-CFEngine runs primarily on UNIX and UNIX like operating systems, but can also
+CFEngine runs primarily on UNIX and UNIX-like operating systems, but can also
 run on Windows.
 
 CFEngine is very extensive and powerful. In this presentation you will learn
@@ -56,7 +57,7 @@ the 20% of CFEngine that will do 80% of the work.
 Want to know more?
 - [[http://verticalsysadmin.com/][Vertical Sysadmin's CFEngine courses]]
 - [[https://docs.cfengine.com/lts/reference.html][CFEngine Reference Manual]]
-- [[mailto:contact@cfengine.com][CFEngine Training & Professional Services]]
+- [[mailto:contact@cfengine.com][CFEngine Training & Professional Services]] (Email)
 - [[http://shop.oreilly.com/product/110000787.do][Beyond Automation with CFEngine3]] (Video Training)
 
 ** Fork Me on Github!
@@ -86,9 +87,10 @@ day basis.
 :ID:       171881f4-8e19-44dd-b6d1-5e52d64b59c7
 :END:
 
-=cf-agent= is the command you will use most often. It is used to apply policy to
-your system. If you are running any CFEngine command from the command line,
-there's a greater than 99% chance that this is it.
+=cf-agent= is the command you will use most often. It is used to run
+policy(code) and ensure your system is in the desired state. If you are running
+any CFEngine command from the command line, there's a greater than 99% chance
+that this is it.
 
 ** =cf-monitord=
 :PROPERTIES:
@@ -130,6 +132,7 @@ is responsible for making that happen.
 :END:
 #+DOWNLOADED: https://codepumpkin.files.wordpress.com/2014/10/imperative-vs-declarative1.png?w=723 @ 2016-05-11 16:31:47
 #+REVEAL_HTML: <iframe width=600" height=300" src=./media/imperative-vs-declarative1_2016-05-11_16-31-47.png" frameborder=0" allowfullscreen></iframe>
+[[file:./media/imperative-vs-declarative1_2016-05-11_16-31-47.png]]
 
 ** Imperative vs. Declarative
 :PROPERTIES:
@@ -191,7 +194,6 @@ Promise theory is the *fundamental underlying philosophy* that drives CFEngine.
 It is a model of voluntary cooperation between individual, autonomous actors or
 agents who publish their intentions to one another in the form of promises.
 
-
 ** What makes promises?
 :PROPERTIES:
 :ID:       200e380a-dd5d-4f0a-a36f-7734801183ba
@@ -204,7 +206,7 @@ A process (e.g., =httpd=) can make a promise that it will be running. But it
 does not make any promises about its configuration.
 
 The configuration file and the process are /autonomous/. Each makes promises
-about itself which cooperates toward an end.
+about itself which cooperate toward an end.
 
 ** Going Deeper
 :PROPERTIES:
@@ -213,7 +215,7 @@ about itself which cooperates toward an end.
 
 - [[https://www.amazon.com/Thinking-Promises-Mark-Burgess-ebook/dp/B01092PYG8/ref=pd_cp_351_2?ie=UTF8&refRID=P8MMWZ7H2X6B52JEAHNB][Thinking in Promises]]
 - [[https://www.amazon.com/Search-Certainty-Science-Information-Infrastructure-ebook/dp/B00WL6SPR6/ref=pd_sim_351_3?ie=UTF8&dpID=61EbYHkv7NL&dpSrc=sims&preST=_OU01_AC_UL160_SR107%252C160_&refRID=R1NF58A2W7Z570MN6V3P][In Search of Certainty]]
-- [[https://www.amazon.com/Promise-Theory-Jan-Bergstra-ebook/dp/B00IAQQ8PM?ie=UTF8&btkr=1&redirect=true&ref_=dp-kindle-redirect][Promise Theory: Principals and Applications]]
+- [[https://www.amazon.com/Promise-Theory-Principles-Applications-1/dp/1495437779/][Promise Theory: Principals and Applicationcs]]
 
 [[./media/thinking-in-promises-cover.jpg]] [[./media/in-search-of-certainty-cover.png]]
 
@@ -226,41 +228,89 @@ about itself which cooperates toward an end.
 :ID:       3f44af59-010c-4f53-9ffc-6ebbd10f99b7
 :END:
 
-#+BEGIN_SRC cfengine3
+#+BEGIN_SRC artist
   type:
     context::
       "promiser" -> "promisee"
-        attribute1 => "value",
-        attribute2 => value2;
+                      ----------|
+        attribute1 => "value",  |
+        attribute2 => body;     |-- Promise Body
+                      ----------|
 #+END_SRC
 
-- *type* is the kind of promise being made (e.g., files, commands, etc.).
-- *context* is optional and defaults to =any::=. Promises with a context will
-  only apply if the given context is true.
-- *promiser* is what is making the promise. (e.g., a file or a process).
-- *promisee* is an optional recipient or beneficiary of the promise.
+- type :: is the kind of promise being made (e.g., files, commands, etc.).
+- context :: Optional and defaults to =any::=. Promises with a context will only
+             apply if the given context is true.
+- promiser :: What is making the promise. (e.g., a file or a process).
+- promisee :: An optional recipient or beneficiary of the promise.
+- promise body :: is a collection of promise attributes (not to be confused with
+                  a body used as an attribute value)
 
 ** Promise Attributes
 :PROPERTIES:
 :ID:       0a74a05e-a6e3-4ceb-9eed-7dd44ecc311d
 :END:
 
+- Sported by commas
+- Vary by *promise type*
+- Value is quoted string or unquoted object (function/body/bundle)
+
 #+BEGIN_SRC cfengine3
-  type:
-    context::
-      "promiser" -> "promisee"
-        attribute1 => "value",
-        attribute2 => body;
+  bundle agent main {
+    files:
+      linux::
+        "/tmp/multiple-attributes"
+          create => "true",
+          perms => m(600);
+  }
+  body perms m(mode)
+  {
+          mode => "$(mode)";
+  }
 #+END_SRC
 
-Each promise can have one or more attributes that describe the parameters of the
-promise. The available attributes will vary depending on the *promise type*.
+#+BEGIN_NOTES
+  Each promise can have one or more attributes that describe the parameters of the
+  promise. The available attributes will vary depending on the *promise type*.
 
-The value can be either a text string (which must be quoted) or another object
-(which must not be quoted). All of the attributes together are called the *body*
-of the promise (as in "the body of an e-mail", or "the body of a contract").
+  The value can be either a text string (which must be quoted) or another object
+  (which must not be quoted). All of the attributes together are called the
+  *promise body* of the promise (as in "the body of an e-mail", or "the body of a
+  contract").
 
-Attributes are separated by *commas*. Each promise ends with a *semi-colon*.
+  When an attribute value is a body the body specified *must have a type matching
+  the attribute name*.
+
+  Attributes are separated by *commas*. Each promise ends with a *semicolon*.
+#+END_NOTES
+
+** Body
+
+- Complex attribute values
+- Not to be confused with *promise body*
+- TYPE must match promise attribute
+
+#+Caption: Anatomy of an attribute body
+#+BEGIN_SRC cfengine3
+  body TYPE NAME(OPTIONAL, PARAMS)
+  {
+          ATTRIBUTE => "value";
+          ATTRIBUTEn => { "more", "values";
+  }
+#+END_SRC
+
+#+Caption: Body example
+#+BEGIN_SRC cfengine3
+  bundle agent main {
+    files:
+        "/tmp/file"
+          perms => m(600);
+  }
+  body perms m(mode)
+  {
+          mode => "$(mode)";
+  }
+#+END_SRC
 
 ** Example Promise
 :PROPERTIES:
@@ -274,15 +324,17 @@ Attributes are separated by *commas*. Each promise ends with a *semi-colon*.
         create => "true";
 #+END_SRC
 
-- This is a promise of *type* =files=.
-- This promise has a *class context* of =linux= (it will only apply if running a
-  Linux kernel).
-- The *promiser* is the POSIX path =/tmp/hello/world=.
-- This promise has only one *attribute*, specifying that the file should be
-  created if it does not exist.
-- The *promisee* is /you!/
-- To create a directory instead, use a =files:= promise and append a =.= to the
-  directory name (e.g., =/tmp/hello/.=)
+#+BEGIN_NOTES
+  - This is a promise of *type* =files=.
+  - This promise has a *class context* of =linux= (it will only apply if running a
+    Linux kernel).
+  - The *promiser* is the POSIX path =/tmp/hello/world=.
+  - This promise has only one *attribute*, specifying that the file should be
+    created if it does not exist.
+  - The *promisee* is /you!/
+  - To create a directory instead, use a =files:= promise and append a =.= to the
+    directory name (e.g., =/tmp/hello/.=)
+#+END_NOTES
 
 * Bundles
 :PROPERTIES:
@@ -295,7 +347,7 @@ everything necessary for Apache to function properly.
 
 For example, a bundle to configure Apache might:
 
-- install the apache2 package
+- install the =apache2= package
 - edit the configuration file
 - copy the web server content
 - configure filesystem permissions
@@ -351,7 +403,7 @@ the promise.
 
 #+BEGIN_SRC cfengine3
   body type name {
-    attribute1 => "value",
+    attribute1 => "value";
     attribute2 => "values";
   }
 #+END_SRC
@@ -368,6 +420,10 @@ The distinction is subtle, especially at first and many people are tripped up by
 this.
 
 In a body, each attribute ends with a *semi-colon*.
+
+(Note that in a bundle each promise ends with a *semicolon*, while attributes of
+each promise are separated by *commas*.
+
 
 * Abstraction and Re-usability
 :PROPERTIES:
@@ -413,7 +469,7 @@ The standard library contains ready to use bundles and bodies that you can
 include in your promises and is growing with every version of CFEngine. Get to
 know the standard library well, it will save you much time.
 
-- [[https://docs.cfengine.com/latest/reference-standard-library.html][Standard Library Reference]]
+- [[https://docs.cfengine.com/lts/reference-masterfiles-policy-framework-lib.html][Standard Library Reference]]
 
 * Putting it All together
 :PROPERTIES:
@@ -421,7 +477,6 @@ know the standard library well, it will save you much time.
 :END:
 
 These are the building blocks. You now know what they all are.
-
 * Examples
 :PROPERTIES:
 :ID:       68586360-89e3-4971-9ecb-c99031283c8a
@@ -436,7 +491,7 @@ I encourage you to try executing the examples as we go along.
 To execute a policy run the following command:
 
 #+BEGIN_EXAMPLE
-$ cf-agent --file ./test.cf --bundle bundlename
+$ cf-agent --inform --file ./test.cf --bundle bundlename
 #+END_EXAMPLE
 
 *Note:* Make sure you use the correct file and bundle name! For any examples
@@ -470,10 +525,11 @@ Commands are *not* the best way to accomplish automation.
 
 #+caption: =set_file_permissions.cf=
 #+BEGIN_SRC cfengine3 :tangle examples/set_file_permissions.cf
-  bundle agent example {
+  bundle agent main {
     files:
       "/etc/shadow"     perms => perms_for_shadow_files;
       "/etc/gshadow"    perms => perms_for_shadow_files;
+    reports: "Please run this policy as root" if => not( strcmp( "$(sys.user_data[gid]", "0" ) )); 
   }
 
   body perms perms_for_shadow_files {
@@ -482,6 +538,32 @@ Commands are *not* the best way to accomplish automation.
     mode   => "0640";
   }
 #+END_SRC
+
+#+RESULTS:
+#+begin_example
+/home/nickanderson/src/presentations/CFEngine-zero-to-hero/cfengine3-22885Fvr:6:95: error: syntax error
+  reports: "Please run this policy as root" if => not( strcmp( "$(sys.user_data[gid]", "0" ) )); 
+                                                                                              ^
+/home/nickanderson/src/presentations/CFEngine-zero-to-hero/cfengine3-22885Fvr:6:95: error: Check previous line, Expected ';', got ')'
+  reports: "Please run this policy as root" if => not( strcmp( "$(sys.user_data[gid]", "0" ) )); 
+                                                                                              ^
+   error: There are syntax errors in policy files
+   error: Policy failed validation with command '"/home/nickanderson/.cfagent/bin/cf-promises" -c "/home/nickanderson/src/presentations/CFEngine-zero-to-hero/cfengine3-22885Fvr"'
+   error: CFEngine was not able to get confirmation of promises from cf-promises, so going to failsafe
+   error: CFEngine failsafe.cf: /home/nickanderson/.cfagent/inputs /home/nickanderson/.cfagent/inputs/failsafe.cf
+   error: No suitable server found
+   error: No suitable server found
+R: Built-in failsafe policy triggered
+  notice: Q: ".../cf-agent" -f /":    error: Link '/usr/local/sbin/cf-key' points to '/var/cfengine/bin/cf-key' not '/home/nickanderson/.cfagent/bin/cf-key', error removing link
+Q: ".../cf-agent" -f /":    error: Link '/usr/local/sbin/cf-agent' points to '/var/cfengine/bin/cf-agent' not '/home/nickanderson/.cfagent/bin/cf-agent', error removing link
+Q: ".../cf-agent" -f /":    error: Link '/usr/local/sbin/cf-promises' points to '/var/cfengine/bin/cf-promises' not '/home/nickanderson/.cfagent/bin/cf-promises', error removing link
+Q: ".../cf-agent" -f /":    error: Link '/usr/local/sbin/cf-runagent' points to '/var/cfengine/bin/cf-runagent' not '/home/nickanderson/.cfagent/bin/cf-runagent', error removing link
+Q: ".../cf-agent" -f /":    error: Link '/usr/local/sbin/cf-monitord' points to '/var/cfengine/bin/cf-monitord' not '/home/nickanderson/.cfagent/bin/cf-monitord', error removing link
+Q: ".../cf-agent" -f /":    error: Link '/usr/local/sbin/cf-serverd' points to '/var/cfengine/bin/cf-serverd' not '/home/nickanderson/.cfagent/bin/cf-serverd', error removing link
+Q: ".../cf-agent" -f /":    error: No suitable server found
+Q: ".../cf-agent" -f /":    error: No suitable server found
+Q: ".../cf-agent" -f /":    error: No suitable server found
+#+end_example
 
 - This is an *agent* bundle (meaning that it is processed by =cf-agent=).
 - Its purpose is to set the permissions on =/etc/shadow= and =/etc/gshadow=.
@@ -530,20 +612,25 @@ because these attributes take a list of strings (aka, an =slist=).
 
   bundle edit_line deny_root_ssh {
     delete_lines:
-      "^PermitRootLogin.*"
+      "^PermitRootLogin.*";
     insert_lines:
-      "PermitRootLogin no"
+      "PermitRootLogin no";
   }
 #+END_SRC
 
 - This will delete any line matching the regular expression =^PermitRootLogin.*=.
 - This also inserts the line =PermitRootLogin no= *at the end of the file*.
+- Delete is always applied before insert, so it will not delete the inserted line.
 - CFEngine is smart enough to know not to edit the file if the end result is
   already /converged/.
 - This is an overly simplistic example. When editing configuration files you
   probably want to copy the whole file or use =set_config_values()= from the
   standard library.
+
 * Variables
+
+Can be one of several types:
+
 - strings
 - lists
 - numbers
@@ -720,7 +807,8 @@ type is declared the class context is reset as well.
 
 The first three promises are of type =files=. The first two will only execute on
 =solaris= while the third will only execute on =linux=. The last promise has a
-new promise type, of =commands=, and will always execute.
+new promise type, of =commands=, and will always execute. (Context is implicitly
+reset to =any::= when entering a new promise type.)
 
 ** A Note About Classes and Distributions Based on Other Distributions
 :PROPERTIES:
@@ -978,7 +1066,7 @@ The same restrictions about distros apply to stopping services promises.
     }
 #+END_SRC
 
-- The =package_policy= of =add update= will install or upgrade. Using =add=
+- The =package_policy= of =addupdate= will install or upgrade. Using =add=
   will only install, never upgrade, =upgrade= will upgrade only and =delete=
   will uninstall.
 - The =package_method= of =apt= is in the standard library, look there for other
@@ -1179,7 +1267,7 @@ This policy will delete any files in =/var/log/= older than 7 days. The
 
 To delete a file indiscriminately, omit the =file_select=.
 
-Look up [[https://docs.cfengine.com/lts/reference-promise-types-files.html#file_select][=file_select=]] and [[https://docs.cfengine.com/lts/reference-standard-library-files.html#tidy][=tidy=]] in the [[https://docs.cfengine.com/lts/reference.html][reference-manual]] to find more ways to
+Look up [[https://docs.cfengine.com/lts/reference-promise-types-files.html#file_select][=file_select=]] and [[https://docs.cfengine.com/lts/reference-masterfiles-policy-framework-lib-files.html#tidy][=tidy=]] in the [[https://docs.cfengine.com/lts/reference.html][reference-manual]] to find more ways to
 use this.
 
 * Setting Up a Client/Server Environment
@@ -1192,7 +1280,7 @@ and the server FQDN must be set properly in DNS (or use the IP addresses). This
 is ideally handled by your provisioning process. Along with automating server
 function you should also be automating your provisioning process.
 
-Some ways of automating provisioning are [[http://fedoraproject.org/wiki/Anaconda/Kickstart][kickstart]], [[http://wiki.debian.org/DebianInstaller/Preseed][preseed]], [[http://wiki.debian.org/FAI][fai]], [[http://www.cobblerd.org][cobbler]], [[http://www.osalt.com/g4u][disk
+Some ways of automating provisioning are [[http://fedoraproject.org][kickstart]], [[http://wiki.debian.org/DebianInstaller/Preseed][preseed]], [[http://wiki.debian.org/FAI][fai]], [[http://cobbler.github.io/][cobbler]], [[http://www.osalt.com/g4u][disk
 imaging]], [[http://aws.amazon.com/ec2/][instance cloning]], etc, etc. This, of course, is not a complete list.
 
 ** Bootstraping the Server and Client
@@ -1234,8 +1322,6 @@ You can use the server's IP address instead of the DNS name.
 The policy files are in =/var/cfengine/masterfiles= on the server (also known as
 the =policy_hub=) and are copied to =/var/cfengine/inputs=. All clients then
 copy =/var/cfengine/inputs= from the server.
-
-<div style=text-align:center">![](policy_propagation.png)</div>
 
 Now edit the policy in =/var/cfengine/masterfiles= on the server and watch for
 the changes to happen on the client.
