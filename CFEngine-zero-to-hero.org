@@ -147,6 +147,20 @@ CFEngine is a *declarative* language. The CFEngine language is merely a
 /description/ of the final state. CFEngine uses *convergence* to arrive at the
 described state.
 
+*** Declarative Policy vs Imperative Script
+
+#+BEGIN_EXAMPLE
+  bundle agent main           | #!/bin/env/bash
+  {                           |
+    packages:                 |
+                              |
+      "openssh-server"        |
+        policy => "present",  | yum install openssh-server
+        version => "latest";  | yum upgrade openssh-server
+
+  }
+#+END_EXAMPLE
+
 ** Imperative is Sequential
 :PROPERTIES:
 :ID:       c828ad3f-79d0-42d4-9fc8-76d2348f8fa5
@@ -424,7 +438,6 @@ In a body, each attribute ends with a *semi-colon*.
 (Note that in a bundle each promise ends with a *semicolon*, while attributes of
 each promise are separated by *commas*.
 
-
 * Abstraction and Re-usability
 :PROPERTIES:
 :ID:       f2c206eb-fd36-40f0-8f2b-0f390f0c5992
@@ -477,7 +490,8 @@ know the standard library well, it will save you much time.
 :END:
 
 These are the building blocks. You now know what they all are.
-* Examples
+
+* A few examples
 :PROPERTIES:
 :ID:       68586360-89e3-4971-9ecb-c99031283c8a
 :END:
@@ -488,10 +502,12 @@ I encourage you to try executing the examples as we go along.
 
 - https://github.com/nickanderson/CFEngine-zero-to-hero-primer/tree/master/examples
 
+** Executing the agent 
+
 To execute a policy run the following command:
 
 #+BEGIN_EXAMPLE
-$ cf-agent --inform --file ./test.cf --bundle bundlename
+  $ cf-agent --inform --file ./test.cf --bundle bundlename
 #+END_EXAMPLE
 
 *Note:* Make sure you use the correct file and bundle name! For any examples
@@ -574,7 +590,7 @@ Q: ".../cf-agent" -f /":    error: No suitable server found
 Note: The values for =owners= and =groups= is enclosed in curly braces. This is
 because these attributes take a list of strings (aka, an =slist=).
 
-** Copy an Entire File
+** Copy an entire file
 :PROPERTIES:
 :ID:       4112e831-3a36-41f8-86df-6c0327623979
 :END:
@@ -590,13 +606,67 @@ because these attributes take a list of strings (aka, an =slist=).
     source      => "$(from)";
     compare     => "digest";
   }
+  body server my_access_rules
+  {
+    access:
+      policy_server|am_policy_hub::
+        "/repo"
+          admit_ips => { "192.168.0.1/24" },
+          admit_keys => { "SHA=12345" };
+  }
 #+end_src
 
-- The purpose of this bundle is to copy =/etc/motd= from the CFEngine server
+#+BEGIN_NOTES
+- The purpose of this policy is to copy =/etc/motd= from the CFEngine server
 - =$(sys.policy_hub)= is an automatic variable which contains the CFEngine
   server's address.
 - The path =/repo/motd= is on the /server's/ filesystem.
 - The =compare= type tells CFEngine how to know when the file needs updating.
+#+END_NOTES
+
+*** Copy an entire file agent bundle
+
+#+begin_src cfengine3
+  bundle agent example {
+    files:
+      "/etc/motd"     copy_from => cp("/repo/motd");
+  }
+#+end_src
+
+- The file =/etc/motd= should be a copy of a file described by the =cp=
+  =copy_from= body.
+  
+*** Copy an entire file =copy_from= body
+
+#+BEGIN_SRC cfengine3
+  body copy_from cp (from) {
+    servers     => { "$(sys.policy_hub)" };
+    source      => "$(from)";
+    compare     => "digest";
+  }
+#+END_SRC
+
+- =source= :: The path to the file that should be copied.
+- =servers= :: Servers which the file should be attempted to be copied from.
+- =compare= :: How to determine if the file differs and requires update.
+
+*** Copy an entire file =server= bundle
+
+#+BEGIN_SRC cfengine3
+  body server my_access_rules
+  {
+    access:
+      policy_server|am_policy_hub::
+        "/repo"
+          admit_ips => { "192.168.0.1/24" },
+          admit_keys => { "SHA=12345" };
+  }
+#+END_SRC
+
+- =admit_ips= :: List of IPs or subnets that should be allowed to copy from
+                 =/repo=.
+- =admi_keys= :: List of cfengine ids that should be allowed to copy from
+                 =/repo=.
 
 ** Edit a File
 :PROPERTIES:
@@ -626,6 +696,7 @@ because these attributes take a list of strings (aka, an =slist=).
 - This is an overly simplistic example. When editing configuration files you
   probably want to copy the whole file or use =set_config_values()= from the
   standard library.
+
 
 * Variables
 
