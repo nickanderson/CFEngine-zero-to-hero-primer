@@ -309,7 +309,7 @@ about itself which cooperate toward an end.
   body TYPE NAME(OPTIONAL, PARAMS)
   {
           ATTRIBUTE => "value";
-          ATTRIBUTEn => { "more", "values";
+          ATTRIBUTEn => { "more", "values" };
   }
 #+END_SRC
 
@@ -433,10 +433,10 @@ Take a moment to let this sink in.
 The distinction is subtle, especially at first and many people are tripped up by
 this.
 
-In a body, each attribute ends with a *semi-colon*.
+In a body, each attribute ends with a *semicolon*.
 
 (Note that in a bundle each promise ends with a *semicolon*, while attributes of
-each promise are separated by *commas*.
+each promise are separated by *commas*)
 
 * Abstraction and Re-usability
 :PROPERTIES:
