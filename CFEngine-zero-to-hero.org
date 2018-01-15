@@ -129,14 +129,12 @@ is responsible for making that happen.
 
 =cf-runagent= allows you to request ad-hoc policy runs. I rarely use it.
 
-* How vs. What
+*  
 :PROPERTIES:
 :ID:       d0330294-0334-4d64-97cd-fabe1c3ec6f3
+:REVEAL_BACKGROUND: ./media/imperative-vs-declarative1_2016-05-11_16-31-47.png
+:REVEAL_BACKGROUND_SIZE: 600px
 :END:
-
-#+DOWNLOADED: https://codepumpkin.files.wordpress.com/2014/10/imperative-vs-declarative1.png?w=723 @ 2016-05-11 16:31:47
-#+ATTR_HTML: :align center
-[[file:./media/imperative-vs-declarative1_2016-05-11_16-31-47.png]]
 
 ** Imperative vs. Declarative
 :PROPERTIES:
