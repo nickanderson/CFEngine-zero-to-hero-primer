@@ -5,14 +5,16 @@
 #+OPTIONS: reveal_center:t reveal_progress:t reveal_history:nil reveal_control:t
 #+OPTIONS: reveal_rolling_links:t reveal_keyboard:t reveal_overview:t num:nil
 #+OPTIONS: reveal_width:1200 reveal_height:800
+#+OPTIOnS: reveal_single_file:t
 # The TOC is a bit much for a slide show IMHO
-#+OPTIONS: toc:nil
+#+OPTIONS: toc:nil tags:nil timestamp:nil
 #+REVEAL_MARGIN: 0.1
 #+REVEAL_MIN_SCALE: 0.5
 #+REVEAL_MAX_SCALE: 2.5
 # Available Transitions: default|cube|page|concave|zoom|linear|fade|none.
 #+REVEAL_TRANS: fade
-#+REVEAL_THEME: night
+# Themes: Black (default) - White - League - Sky - Beige - Simple - Serif - Blood - Night - Moon - Solarized 
+#+REVEAL_THEME: white 
 # ?? Guess this flattens up to x levels deep
 #+REVEAL_HLEVEL: 1
 #+REVEAL_HEAD_PREAMBLE: <meta name=description" content=CFEngine Zero to Hero Primer.">
@@ -24,7 +26,7 @@
 # Derived from [[http://github.com/bahamat/cf-primer][CF-Primer: Zero to Hero]]
 # Brian Bennett <bahamat@digitalelf.net>, @bahamat
 # Aleksey Tsalolikhin <aleksey@verticalsysadmin.com>
-#
+
 Copyright 2013 Brian Bennett, Nick Anderson
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -123,6 +125,7 @@ is responsible for making that happen.
 
 - On servers it is responsible for serving files to clients.
 - On clients it accepts =cf-runagent= requests
+- In Enterprise it serves reports to queries from =cf-hub=
 
 =cf-runagent= allows you to request ad-hoc policy runs. I rarely use it.
 
@@ -130,8 +133,9 @@ is responsible for making that happen.
 :PROPERTIES:
 :ID:       d0330294-0334-4d64-97cd-fabe1c3ec6f3
 :END:
+
 #+DOWNLOADED: https://codepumpkin.files.wordpress.com/2014/10/imperative-vs-declarative1.png?w=723 @ 2016-05-11 16:31:47
-#+REVEAL_HTML: <iframe width=600" height=300" src=./media/imperative-vs-declarative1_2016-05-11_16-31-47.png" frameborder=0" allowfullscreen></iframe>
+#+ATTR_HTML: :align center
 [[file:./media/imperative-vs-declarative1_2016-05-11_16-31-47.png]]
 
 ** Imperative vs. Declarative
@@ -265,23 +269,9 @@ about itself which cooperate toward an end.
 :ID:       0a74a05e-a6e3-4ceb-9eed-7dd44ecc311d
 :END:
 
-- Sported by commas
+- Separated by commas
 - Vary by *promise type*
 - Value is quoted string or unquoted object (function/body/bundle)
-
-#+BEGIN_SRC cfengine3
-  bundle agent main {
-    files:
-      linux::
-        "/tmp/multiple-attributes"
-          create => "true",
-          perms => m(600);
-  }
-  body perms m(mode)
-  {
-          mode => "$(mode)";
-  }
-#+END_SRC
 
 #+BEGIN_NOTES
   Each promise can have one or more attributes that describe the parameters of the
@@ -298,54 +288,34 @@ about itself which cooperate toward an end.
   Attributes are separated by *commas*. Each promise ends with a *semicolon*.
 #+END_NOTES
 
-** Body
-
-- Complex attribute values
-- Not to be confused with *promise body*
-- TYPE must match promise attribute
-
-#+Caption: Anatomy of an attribute body
-#+BEGIN_SRC cfengine3
-  body TYPE NAME(OPTIONAL, PARAMS)
-  {
-          ATTRIBUTE => "value";
-          ATTRIBUTEn => { "more", "values" };
-  }
-#+END_SRC
-
-#+Caption: Body example
-#+BEGIN_SRC cfengine3
-  bundle agent main {
-    files:
-        "/tmp/file"
-          perms => m(600);
-  }
-  body perms m(mode)
-  {
-          mode => "$(mode)";
-  }
-#+END_SRC
-
 ** Example Promise
 :PROPERTIES:
 :ID:       c87caf72-3377-4a84-9113-1b71a86ad340
 :END:
 
-#+BEGIN_SRC cfengine3
-  files:
-    linux::
-      "/tmp/hello/world" -> { "Student" }
-        create => "true";
+#+BEGIN_SRC cfengine3 :exports both
+  bundle agent main {
+    files:
+      linux::
+        "/tmp/example" -> { "Instructor", "Students" }
+          create => "true",
+          touch => "true",
+          action => warn_only;
+  }
 #+END_SRC
+
+#+RESULTS:
+:  warning: Need to touch (update time stamps) for '/tmp/multiple-attributes', but only a warning was promised!
 
 #+BEGIN_NOTES
   - This is a promise of *type* =files=.
   - This promise has a *class context* of =linux= (it will only apply if running a
     Linux kernel).
-  - The *promiser* is the POSIX path =/tmp/hello/world=.
-  - This promise has only one *attribute*, specifying that the file should be
-    created if it does not exist.
-  - The *promisee* is /you!/
+  - The *promiser* is the POSIX path =/tmp/example=.
+  - This promise has three *attribute*, specifying that the file should be
+    created if it does not exist, it's timestamp should be updated, and only
+    warn about what the agent would do.
+  - The *promisee* is both of us
   - To create a directory instead, use a =files:= promise and append a =.= to the
     directory name (e.g., =/tmp/hello/.=)
 #+END_NOTES
@@ -355,18 +325,19 @@ about itself which cooperate toward an end.
 :ID:       52089c14-f3f9-44fa-9c78-665051e5454a
 :END:
 
-A *bundle* is a collection of *promises*. It is a logical grouping of any number
-of promises, usually for a common purpose. E.g., a bundle to configure
-everything necessary for Apache to function properly.
+- collection of *promises*
+- logical grouping
+- can have parameters
+- *ARE NOT FUNCTIONS*
 
-For example, a bundle to configure Apache might:
+** A bundle for Apache web-server might 
 
-- install the =apache2= package
-- edit the configuration file
-- copy the web server content
-- configure filesystem permissions
+- ensure the =apache2= package is installed
+- ensure the content in the config file is correct
+- ensure content is present for serving
+- ensure proper permissions of files
 - ensure the =httpd= process is running
-- restart the =httpd= process when necessary
+- ensure the =httpd= process is restarted when the configuration changes
 
 ** Anatomy of a Bundle
 :PROPERTIES:
@@ -376,16 +347,15 @@ For example, a bundle to configure Apache might:
 #+BEGIN_SRC cfengine3
   bundle type name
   {
-
       type:
         context::
-          "promiser" -> "promisee"
+          "promiser" -> { "promisee" }
             attribute1 => "value",
             attribute2 => value;
 
       type:
         context::
-          "promiser" -> "promisee"
+          "promiser" -> { "promisee" }
             attribute1 => "value",
             attribute2 => value;
   }
@@ -396,7 +366,76 @@ Bundles apply to the binary that executes them. E.g., =agent= bundles apply to
 
 Bundles of type =common= apply to any CFEngine binary.
 
-For now you will only create =agent= or =common= bundles.
+** What component(s) use this bundle?
+*** Example 1
+
+#+BEGIN_SRC cfengine3
+  bundle common globals
+  {
+    vars:
+
+        "tool_path" string => "/srv/tools"
+  }
+#+END_SRC
+
+#+BEGIN_NOTES
+  - cf-agent, cf-monitord, cf-serverd
+#+END_NOTES
+
+*** Example 2
+
+#+BEGIN_SRC cfengine3
+  bundle server my_access_rules
+  {
+    access:
+
+        "$(globals.tool_path)"
+          admit_ips => { "192.168.0.0/24" };
+  }
+#+END_SRC
+
+*** Example 3
+
+#+BEGIN_SRC cfengine3
+  bundle agent my_policy
+  {
+      
+    vars:
+
+      "config[PermitRootLogin]" string => "no";
+      "config[Port]" string => "22";
+
+    files:
+
+        "/etc/ssh/sshd_config"
+          edit_line => set_line_based( "my_policy.config", " ", "\s+", ".*", "\s*#\s*");
+  }
+#+END_SRC
+
+*** Example 4
+
+#+BEGIN_SRC cfengine3
+  bundle monitor measure_cf_serverd
+  {
+    vars:
+
+      "pid[cf-serverd]"
+        string => readfile( "$(sys.piddir)/cf-serverd.pid", 4k );
+
+      "reg_stat[rss]" string =>"(?:[^\s+]*\s+){23}([^\s]+)(?:.*)";
+
+    measurements:
+
+     "/proc/$(pid[cf-serverd])/stat"
+       handle => "cf_serverd_vsize",
+       stream_type => "file",
+       data_type => "int",
+       history_type => "weekly",
+       units => "pages in memory",
+       match_value => line_match_value(".*", $(reg_stat[rss]) );
+  }
+#+END_SRC
+
 
 * Bodies
 :PROPERTIES:
@@ -410,22 +449,23 @@ body. Depending on the specific attribute the value of an attribute can be an
 A *body* is a collection of /attributes/. These are attributes that supplement
 the promise.
 
-** Anatomy of a Body
+** Anatomy of an external body
 :PROPERTIES:
 :ID:       9e437e47-6827-4813-b692-80212b7314e0
 :END:
 
 #+BEGIN_SRC cfengine3
-  body type name {
-    attribute1 => "value";
-    attribute2 => "values";
+  body TYPE NAME(OPTIONAL, PARAMS)
+  {
+          ATTRIBUTE => "value";
+          ATTRIBUTEn => { "more", "values" };
   }
 #+END_SRC
 
 The difference between a /bundle/ and a /body/ is that a bundle contains
 /promises/ while a /body/ contains only /attributes/.
 
-Take a moment to let this sink in.
+*** Take a moment to let this sink in
 
 - A *bundle* is a collection of /promises/.
 - A *body* is a collection of /attributes/ that are applied to a promise.
@@ -437,6 +477,37 @@ In a body, each attribute ends with a *semicolon*.
 
 (Note that in a bundle each promise ends with a *semicolon*, while attributes of
 each promise are separated by *commas*)
+
+** External body example
+
+#+Caption: The m perms body takes one paramater
+#+BEGIN_SRC cfengine3
+  bundle agent main {
+    files:
+        "/tmp/file"
+          perms => m(600);
+  }
+#+END_SRC
+
+*** What is m?
+
+*PRO TIP:* The [[https://github.com/cfengine/core/tree/master/contrib/cf-locate][=cf-locate=]] script in [[https://github.com/cfengine/core/tree/master/contrib/][core/contrib]] can help you find and view
+body and bundle definitions within your policy set.
+
+#+BEGIN_SRC shell :results output :exports both
+  cf-locate -f "perms m\(.*"
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+-> body or bundle matching 'perms m\(.*' found in /home/nickanderson/.cfagent/inputs/lib/files.cf:1582
+body perms m(mode)
+# @brief Set the file mode
+# @param mode The new mode
+{
+      mode   => "$(mode)";
+}
+#+end_example
 
 * Abstraction and Re-usability
 :PROPERTIES:
@@ -606,7 +677,7 @@ because these attributes take a list of strings (aka, an =slist=).
     source      => "$(from)";
     compare     => "digest";
   }
-  body server my_access_rules
+  bundle server my_access_rules
   {
     access:
       policy_server|am_policy_hub::
@@ -653,7 +724,7 @@ because these attributes take a list of strings (aka, an =slist=).
 *** Copy an entire file =server= bundle
 
 #+BEGIN_SRC cfengine3
-  body server my_access_rules
+  bundle server my_access_rules
   {
     access:
       policy_server|am_policy_hub::
@@ -697,7 +768,6 @@ because these attributes take a list of strings (aka, an =slist=).
   probably want to copy the whole file or use =set_config_values()= from the
   standard library.
 
-
 * Variables
 
 Can be one of several types:
@@ -707,118 +777,129 @@ Can be one of several types:
 - numbers
 - data (JSON/YAML/CSV)
 
+Reference: [[https://docs.cfengine.com/lts/reference-special-variables.html][Special Variables]], [[https://docs.cfengine.com/lts/reference-language-concepts-variables.html][Language Concepts -> Variables]], [[https://docs.cfengine.com/lts/reference-promise-types-vars.html][Promise Types and
+Attributes -> vars]]
+
+** Implicit iteration
+
+CFEngine doesn't have for loops, but it implicitly iterates over lists and data
+structure values.
+
+#+Name: implicit-iteration
+#+Caption: implicit-iteration.cf
+#+BEGIN_SRC cfengine3 :tangle ./examples/list-iteration.cf :exports both
+  bundle agent main
+  {
+    vars:
+        "l" slist => { "two", "one", "three" };
+        "d" data => '[ "three", "one", "two"]';
+        "d2" data => '{ "one":"1", "two":"2", "three":"3"}';
+
+    reports:
+        "l contains $(l)";
+        "d contains $(d)";
+        "d2 contains $(d2)";
+  }
+#+END_SRC
+
+*** Example output 
+
+#+RESULTS: implicit-iteration
+: R: l contains two
+: R: l contains one
+: R: l contains three
+: R: d contains three
+: R: d contains one
+: R: d contains two
+: R: d2 contains 1
+: R: d2 contains 2
+: R: d2 contains 3
+
+** Data and arrays
+
+#+Name: data-and-arrays.cf
+#+Caption: data-and-arrays.cf
+#+BEGIN_SRC cfengine3 :tangle ./examples/data-and-arrays.cf
+  bundle agent main
+  {
+    vars:
+        "d" data => '{ "key": { "subkey": "value" } }';
+
+        "a[key][subkey]" string => "value";
+
+    reports:
+        "$(const.dollar)(d[key][subkey]) == $(d[key][subkey])";
+        "$(const.dollar)(a[key][subkey]) == $(a[key][subkey])";
+        "d contains$(const.n)$(with)" with => string_mustache( "{{%-top-}}", d );
+        "a contains$(const.n)$(with)" with => string_mustache( "{{%-top-}}", a );
+  }
+#+END_SRC
+
+*** Example Output
+
+#+RESULTS: data-and-arrays.cf
+#+begin_example
+R: $(d[key][subkey]) == value
+R: $(a[key][subkey]) == value
+R: d contains
+{
+  "key": {
+    "subkey": "value"
+  }
+}
+R: a contains
+{
+  "key": {
+    "subkey": "value"
+  }
+}
+#+end_example
+
 * Classification and Classes
 :PROPERTIES:
 :ID:       28958fde-5ec8-4305-bd03-6873bec81c3f
 :END:
 
 A *class* is like a tag (like tagging a photo). Classes are used to give a
-promise *context*. There are two types of classes.
+promise *context*. Valid characters in classes are [A-Za-z0-9_] (alphanumeric
+and underscores). There are two types of classes.
 
-1. *Built in classes*. These so called *hard classes* are classes that CFEngine
+- *Built in classes*. These so called *hard classes* are classes that CFEngine
    will create automatically. Hard classes are determined based on the system
    attributes. For example a server running Linux will have the class =linux=.
 
-2. *User defined classes*. These so called *soft classes* are classes that are
+- *User defined classes*. These so called *soft classes* are classes that are
    defined by you. You can create them based on the outcome of a promise, based
    on the existence of other classes, or for no reason.
 
-** My classes
+** What classes are defined?
 :PROPERTIES:
 :ID:       813aca93-3777-49c0-9c6b-0ff1face8e5f
 :END:
 
-Here is a list of hard classes defined on an actual system running CFEngine.
+Use ~cf-promsies --show-classes~ to see the first order of resolved classes. 
 
+#+Name: cf-promsies --show-classes
 #+BEGIN_SRC sh :exports both :results raw :wrap EXAMPLE
-cf-promises --show-classes
+  cf-promises --show-classes
 #+END_SRC
 
-#+RESULTS:
+*** sample cf-promises --show-classes output
+
 #+BEGIN_EXAMPLE
-Class name                                                   Meta tags
-127_0_0_1                                                    inventory,attribute_name=none,source=agent,hardclass
-172_17_0_1                                                   inventory,attribute_name=none,source=agent,hardclass
-192_168_42_189                                               inventory,attribute_name=none,source=agent,hardclass
-4_cpus                                                       source=agent,derived-from=sys.cpus,hardclass
-64_bit                                                       source=agent,hardclass
-Afternoon                                                    time_based,source=agent,hardclass
-Day7                                                         time_based,source=agent,hardclass
-GMT_Day7                                                     time_based,source=agent,hardclass
-GMT_Evening                                                  time_based,source=agent,hardclass
-GMT_Hr21                                                     time_based,source=agent,hardclass
-GMT_Hr21_Q3                                                  time_based,source=agent,hardclass
-GMT_Lcycle_0                                                 time_based,source=agent,hardclass
-GMT_May                                                      time_based,source=agent,hardclass
-GMT_Min40_45                                                 time_based,source=agent,hardclass
-GMT_Min43                                                    time_based,source=agent,hardclass
-GMT_Q3                                                       time_based,source=agent,hardclass
-GMT_Saturday                                                 time_based,source=agent,hardclass
-GMT_Yr2016                                                   time_based,source=agent,hardclass
-Hr16                                                         time_based,source=agent,hardclass
-Hr16_Q3                                                      time_based,source=agent,hardclass
-Lcycle_0                                                     time_based,source=agent,hardclass
-May                                                          time_based,source=agent,hardclass
-Min40_45                                                     time_based,source=agent,hardclass
-Min43                                                        time_based,source=agent,hardclass
-Q3                                                           time_based,source=agent,hardclass
-Saturday                                                     time_based,source=agent,hardclass
-Yr2016                                                       time_based,source=agent,hardclass
-any                                                          source=agent,hardclass
-cfengine                                                     inventory,attribute_name=none,source=agent,hardclass
-cfengine_3                                                   inventory,attribute_name=none,source=agent,hardclass
-cfengine_3_8                                                 inventory,attribute_name=none,source=agent,hardclass
-cfengine_3_8_1                                               inventory,attribute_name=none,source=agent,hardclass
-common                                                       cfe_internal,source=agent,hardclass
-compiled_on_linux_gnu                                        source=agent,hardclass
-debian                                                       inventory,attribute_name=none,source=agent,hardclass
-debian_jessie                                                inventory,attribute_name=none,source=agent,hardclass
-enterprise                                                   inventory,attribute_name=none,source=agent,hardclass
-enterprise_3                                                 inventory,attribute_name=none,source=agent,hardclass
-enterprise_3_8                                               inventory,attribute_name=none,source=agent,hardclass
-enterprise_3_8_1                                             inventory,attribute_name=none,source=agent,hardclass
-enterprise_edition                                           inventory,attribute_name=none,source=agent,hardclass
-fe80__5ee0_c5ff_fe9f_f38f                                    inventory,attribute_name=none,source=agent,hardclass
-feature                                                      source=agent,hardclass
-feature_curl                                                 source=agent,hardclass
-feature_def                                                  source=agent,hardclass
-feature_def_json                                             source=agent,hardclass
-feature_def_json_preparse                                    source=agent,hardclass
-feature_xml                                                  source=agent,hardclass
-feature_yaml                                                 source=agent,hardclass
-have_aptitude                                                inventory,attribute_name=none,source=agent,hardclass
-ipv4_127                                                     inventory,attribute_name=none,source=agent,hardclass
-ipv4_127_0                                                   inventory,attribute_name=none,source=agent,hardclass
-ipv4_127_0_0                                                 inventory,attribute_name=none,source=agent,hardclass
-ipv4_127_0_0_1                                               inventory,attribute_name=none,source=agent,hardclass
-ipv4_172                                                     inventory,attribute_name=none,source=agent,hardclass
-ipv4_172_17                                                  inventory,attribute_name=none,source=agent,hardclass
-ipv4_172_17_0                                                inventory,attribute_name=none,source=agent,hardclass
-ipv4_172_17_0_1                                              inventory,attribute_name=none,source=agent,hardclass
-ipv4_192                                                     inventory,attribute_name=none,source=agent,hardclass
-ipv4_192_168                                                 inventory,attribute_name=none,source=agent,hardclass
-ipv4_192_168_42                                              inventory,attribute_name=none,source=agent,hardclass
-ipv4_192_168_42_189                                          inventory,attribute_name=none,source=agent,hardclass
-linux                                                        inventory,attribute_name=none,source=agent,derived-from=sys.class,hardclass
-linux_4_2_0_25_generic                                       source=agent,derived-from=sys.sysname,derived-from=sys.release,hardclass
-linux_x86_64                                                 source=agent,derived-from=sys.sysname,derived-from=sys.machine,hardclass
-linux_x86_64_4_2_0_25_generic                                source=agent,derived-from=sys.sysname,derived-from=sys.machine,derived-from=sys.release,hardclass
-mac_02_42_73_74_b9_97                                        inventory,attribute_name=none,source=agent,hardclass
-mac_5c_e0_c5_9f_f3_8f                                        inventory,attribute_name=none,source=agent,hardclass
-net_iface_docker0                                            source=agent,hardclass
-net_iface_lo                                                 source=agent,hardclass
-net_iface_wlan0                                              source=agent,hardclass
-nickanderson_thinkpad_w550s                                  inventory,attribute_name=none,source=agent,derived-from=sys.fqhost,hardclass
-nova                                                         inventory,attribute_name=none,source=agent,hardclass
-nova_3                                                       inventory,attribute_name=none,source=agent,hardclass
-nova_3_8                                                     inventory,attribute_name=none,source=agent,hardclass
-nova_3_8_1                                                   inventory,attribute_name=none,source=agent,hardclass
-nova_edition                                                 source=agent,hardclass
-systemd                                                      inventory,attribute_name=none,source=agent,hardclass
-ubuntu                                                       inventory,attribute_name=none,source=agent,hardclass
-ubuntu_15                                                    inventory,attribute_name=none,source=agent,derived-from=sys.flavor,hardclass
-ubuntu_15_10                                                 inventory,attribute_name=none,source=agent,hardclass
-x86_64                                                       source=agent,derived-from=sys.machine,hardclass
+Class name               Meta tags                               
+4_cpus                   source=agent,derived-from=sys.cpus,hardclass
+64_bit                   source=agent,hardclass                  
+GMT_December             time_based,cfengine_internal_time_based_autoremove,source=agent,hardclass
+Hr14                     time_based,cfengine_internal_time_based_autoremove,source=agent,hardclass
+Min10_15                 time_based,cfengine_internal_time_based_autoremove,source=agent,hardclass
+Yr2017                   time_based,cfengine_internal_time_based_autoremove,source=agent,hardclass
+_stdlib_has_path_awk     source=promise                          
+cfengine_3_11_0          inventory,attribute_name=none,source=agent,hardclass
+ipv4_192_168_122_1       inventory,attribute_name=none,source=agent,hardclass
+ipv4_gw_192_168_3_1      inventory,networking,/proc,source=agent,attribute_name=none,procfs,hardclass
+mac_52_54_00_6b_62_06    inventory,attribute_name=none,source=agent,hardclass
+ubuntu_17_10             inventory,attribute_name=none,source=agent,hardclass
 #+END_EXAMPLE
 
 ** Control Promise Selection
@@ -842,22 +923,13 @@ x86_64                                                       source=agent,derive
   }
 #+END_SRC
 
-This set of promises will copy the appropriate apache config file depending on
-the type of server. Notice that each file promise is prefixed by a *class*. The
-promise will be skipped unless that class is defined on the system.
+- Copy the appropriate config file for the given platform
+- Promises outside of the specified context are skipped
 
-Thus, only Debian systems will run the =debian::= context promise, only Red Hat
-will run =redhat::= and only Solaris will run =solaris::=.
-
-** Promise Type and Class Context Can be Implicit
+** Promise Type and Class Context apply until they are reset
 :PROPERTIES:
 :ID:       5f448af0-c91c-4da9-bdbc-297979c5e110
 :END:
-
-The /promise type/ and /class context/ don't need to be listed for every
-promise. Think of each like a heading in an outline. Everything that follows is
-still under the same heading until a new heading is declared. If a new promise
-type is declared the class context is reset as well.
 
 #+caption: =implicit_class_context.cf=
 #+BEGIN_SRC cfengine3 :tangle examples/implicit_class_context.cf
@@ -876,26 +948,40 @@ type is declared the class context is reset as well.
   }
 #+END_SRC
 
-The first three promises are of type =files=. The first two will only execute on
-=solaris= while the third will only execute on =linux=. The last promise has a
-new promise type, of =commands=, and will always execute. (Context is implicitly
-reset to =any::= when entering a new promise type.)
+- New class expression sets context for following promises
+- New promise type resets context to =any= (implicit default)
+ 
+#+BEGIN_NOTES
+  The /promise type/ and /class context/ don't need to be listed for every
+  promise. Think of each like a heading in an outline. Everything that follows is
+  still under the same heading until a new heading is declared. If a new promise
+  type is declared the class context is reset as well.
+  
+  The first three promises are of type =files=. The first two will only execute on
+  =solaris= while the third will only execute on =linux=. The last promise has a
+  new promise type, of =commands=, and will always execute. (Context is implicitly
+  reset to =any::= when entering a new promise type.)
+#+END_NOTES
 
-** A Note About Classes and Distributions Based on Other Distributions
-:PROPERTIES:
-:ID:       d3e97cff-8043-4494-9735-7e5bb6d4ebb3
-:END:
+** Classes are NOT nested
 
-I said that only Debian systems will run =debian::= and only Red Hat will run
-=redhat::=. This isn't exactly true.
+#+Name: There are no nested contexts
+#+BEGIN_SRC cfengine3
+  bundle agent main
+  {
+    reports:
+        redhat:: # <- This context has no promises.
+          64_bit:: # <- This context has one promise. (not additive)
+            "I am $(sys.flavor) running on $(sys.arch)";
+  }
+#+END_SRC
 
-- Ubuntu is based on Debian, and so will have both =ubuntu= and =debian= defined
-  as hard classes.
-- Likewise, CentOS is based on Red Hat and so will have both =centos= and
-  =redhat= defined as hard classes.
+- No promises are defined in the =redhat= context
+- One promise is defined in the =64_bit= context
+- Nesting class expressions does not make them additive
 
-This goes for any distro that is based on another distro. The "parent" classes
-will be also defined.
+#+RESULTS: There are no nested contexts
+: R: I am ubuntu_17 running on x86_64
 
 ** Use Classes to Control Flow
 :PROPERTIES:
@@ -904,74 +990,26 @@ will be also defined.
 
 #+BEGIN_SRC cfengine3
   bundle agent apache_config {
+    commands:
+
+      apache_config_repaired::
+        "/usr/sbin/apache2ctl graceful";
+
     files:
 
       "/etc/apache2/apache2.conf"
-        copy_from => remote_cp("/cfengine/repo/debian/apache2.conf","$(sys.policy_hub)")
+          copy_from => remote_cp("/cfengine/repo/debian/apache2.conf","$(sys.policy_hub)")
           classes => results("bundle", "apache_config");
 
-    commands:
-
-      apache_config_repaired::
-        "/usr/sbin/apache2ctl graceful";
   }
 #+END_SRC
 
-This set of promises will first copy the Apache configuration file. Once the
-Apache configuration file is updated, Apache must be restarted. In order to make
-sure that Apache gets restarted when necessary a class will be defined when the
-configuration file is updated.
-
-When CFEngine reaches the commands section, if the =RestartApache= class is
-defined (which only happens if the config file is updated) then Apache will be
-restarted.
-
-** Use Classes to Control Flow
-:PROPERTIES:
-:ID:       e1a9f2c4-904f-4785-ae7d-4c3cf5af9f8d
-:END:
-
-#+BEGIN_SRC cfengine3
-  bundle agent apache_config {
-    files:
-
-      "/etc/apache2/apache2.conf"
-        copy_from => remote_cp("/cfengine/repo/debian/apache2.conf","$(sys.policy_hub)"),
-        classes => results("bundle", "apache_config");
-
-    commands:
-
-      apache_config_repaired::
-        "/usr/sbin/apache2ctl graceful";
-  }
-#+END_SRC
-
-So, the workflow then is:
-
-1. Perform promise 1
-2. Define a class if repaired
-3. Perform promise 2 if the class has been set
-
+- Only when the apache config is updated define =apache_config_repaired=.
+- Only when =apache_config_repaired= is defined execute the command to restart
+  the service.
+  
 I use this *ALL*. *THE*. *TIME*. If this class is to teach you 20% that
 accomplishes 80%, *this slide* is the 5% that accomplishes 95%.
-
-** Class Expressions
-:PROPERTIES:
-:ID:       bf5f85c4-5096-4137-85cf-1d9a1f0788db
-:END:
-
-#+BEGIN_SRC cfengine3
-  commands:
-    apache_config_repaired.debian::
-      "/usr/sbin/apache2ctl graceful";
-    apache_config_repaired.redhat::
-      "/usr/sbin/apachectl graceful";
-#+END_SRC
-
-This example is similar to the last one, except that Debian and Redhat each have
-different commands used to restart Apache. Therefore, we use an expression to
-define our class context. The expression =apache_config_repaired.debian= means
-"=apache_config_repaired= *and* =debian=".
 
 ** Class Expressions
 :PROPERTIES:
@@ -998,7 +1036,116 @@ define our class context. The expression =apache_config_repaired.debian= means
 # Note the vertical pipes inside the table are actually unicode characters, this
 # is just to make it work inside org-mode
 
+** A Note About Classes and Distributions Based on Other Distributions
+:PROPERTIES:
+:ID:       d3e97cff-8043-4494-9735-7e5bb6d4ebb3
+:END:
+
+I said that only Debian systems will run =debian::= and only Red Hat will run
+=redhat::=. This isn't exactly true.
+
+- Ubuntu is based on Debian, and so will have both =ubuntu= and =debian= defined
+  as hard classes.
+- Likewise, CentOS is based on Red Hat and so will have both =centos= and
+  =redhat= defined as hard classes.
+- MPF defines =redat_pure= and =debian_pure=.
+
 * Augments (=def.json=)
+
+- Very early definition
+- Loaded if =def.json= is found next to policy entry
+- Classes based on system discovery (platform/networks/arch)
+- Variables defined in =def= bundle scope
+
+** Example augments
+
+- Define =supported_platform= if the class =ubuntu_14=, =ubuntu_16=, or
+  =ubuntu_17= is defined.
+- Define =by_hostname= if the class =nickanderson_thinkpad_w550s= is defined.
+ 
+#+Caption: =examples/augments/def.json=
+#+BEGIN_SRC json :tangle ./examples/augments/def.json
+  {
+    "classes": {
+        "supported_platform": [ "ubuntu_14", "ubuntu_16", "ubuntu_17" ],
+        "by_hostname": [ "nickanderson_thinkpad_w550s" ]
+    },
+    "vars": {
+        "myvar1": "defined from augments",
+        "myvar2": "defined from augments"
+      }
+  }
+#+END_SRC 
+
+** Example policy using augments
+
+#+Caption: =examples/augments/augments.cf=
+#+BEGIN_SRC cfengine3 :tangle ./examples/augments/augments.cf
+  bundle agent main
+  {
+    reports:
+      "I defined '$(const.dollar)(def.myvar1)' as '$(def.myvar1)'";
+      
+      supported_platform::
+        "This is a supported platform";
+
+      by_hostname::
+        "You can define classes from augments based on defined hostname";
+  }
+#+END_SRC
+
+** Example output
+
+#+BEGIN_SRC shell :results output
+  chmod 600 ./examples/augments/augments.cf
+  cf-agent -KIf ./examples/augments/augments.cf
+#+END_SRC
+
+#+RESULTS:
+: R: I defined '$(def.myvar1)' as 'defined from augments'
+: R: This is a supported platform
+: R: You can define classes from augments based on defined hostname
+
+** Policy always wins!
+
+#+Caption: =examples/augments/augments-policy-wins.cf=
+#+BEGIN_SRC cfengine3 :tangle ./examples/augments/augments-policy-wins.cf
+  bundle common def
+  {
+    vars:
+      "myvar1" string => "Defined in policy";
+      "myvar2" string => "Defined in policy", if => not( isvariable( myvar2 ) );
+  } 
+  bundle agent main
+  {
+    reports:
+      "I defined '$(const.dollar)(def.myvar1)' as '$(def.myvar1)'";
+      "I defined '$(const.dollar)(def.myvar2)' as '$(def.myvar2)'";
+
+      supported_platform::
+        "This is a supported platform";
+
+      by_hostname::
+        "You can define classes from augments based on defined hostname";
+  }
+#+END_SRC
+
+** Example output
+
+#+BEGIN_SRC shell :results output
+  chmod 600 ./examples/augments/augments-policy-wins.cf
+  cf-agent -KIf ./examples/augments/augments-policy-wins.cf
+#+END_SRC
+
+#+RESULTS:
+: R: I defined '$(def.myvar1)' as 'Defined in policy'
+: R: I defined '$(def.myvar2)' as 'defined from augments'
+: R: This is a supported platform
+: R: You can define classes from augments based on defined hostname
+
+** Multiple augments
+
+... coming soon to an agent near you (3.12+)
 
 * Managing Processes
 :PROPERTIES:
@@ -1121,6 +1268,47 @@ The same restrictions about distros apply to stopping services promises.
 :ID:       640d1c4c-8e50-4924-9196-7d45ff2f495d
 :END:
 
+** Package Managers
+:PROPERTIES:
+:ID:       60949620-51bb-456e-8847-35e52d82a0ca
+:END:
+
+- =package_methods=
+
+  =pip(flags)=, =npm(dir)=, =npm_g=, =brew(user)=, =apt=, =apt_get=,
+  =apt_get_permissive=, =apt_get_release(release)=, =dpkg_version(repo)=,
+  =rpm_version(repo)=, =windows_feature=, =msi_implicit(repo)=,
+  =msi_explicit(repo)=, =yum=, =yum_rpm=, =yum_rpm_permissive=,
+  =yum_rpm_enable_repo(repoid)=, =yum_group=, =rpm_filebased(path)=, =ips=,
+  =smartos=, =smartos_pkg_add(repo)=, =opencsw=, =solaris(pkgname, spoolfile,
+  adminfile)=, =solaris_install(adminfile)=, =freebsd=, =freebsd_portmaster=,
+  =alpinelinux=, =emerge=, =pacman=, =zypper=, =generic=
+
+- =package_modules=
+
+  =yum=, =apt_get=, =freebsd_ports=, =nimclient=, =pkg=, =pkgsrc=
+
+** New Implementation
+:PROPERTIES:
+:ID:       b3d20cf4-75cc-4a24-9188-d85c1b6f2be3
+:END:
+
+#+BEGIN_SRC cfengine3
+  bundle agent install {
+    packages:
+      "zsh"
+        policy  => "present",
+        package_module  => yum,
+        version => "latest";
+  }
+#+END_SRC
+
+- The =policy= of =present= will make sure the package is installed on the
+  system, while a =policy= of =absent= will ensure a package is not installed.
+- The =package_module= of =yum= is included in the Masterfiles Policy Framework.
+- The =version= of =latest= means the installed version should be the latest
+  available. Alternatively you can provide an explicit version.
+
 ** Legacy Implementation
 :PROPERTIES:
 :ID:       a4a244f9-fa44-48ce-8585-8f15824b1712
@@ -1151,47 +1339,6 @@ The same restrictions about distros apply to stopping services promises.
 Packages promises have be re-vamped with a new implementation that makes it
 easier to dig into the specific details of how packages should be managed.
 #+END_NOTES
-
-** New Implementation
-:PROPERTIES:
-:ID:       b3d20cf4-75cc-4a24-9188-d85c1b6f2be3
-:END:
-
-#+BEGIN_SRC cfengine3
-  bundle agent install {
-    packages:
-      "zsh"
-        policy  => "present",
-        package_module  => yum,
-        version => "latest";
-  }
-#+END_SRC
-
-- The =policy= of =present= will make sure the package is installed on the
-  system, while a =policy= of =absent= will ensure a package is not installed.
-- The =package_module= of =yum= is included in the Masterfiles Policy Framework.
-- The =version= of =latest= means the installed version should be the latest
-  available. Alternatively you can provide an explicit version.
-
-** Package Managers
-:PROPERTIES:
-:ID:       60949620-51bb-456e-8847-35e52d82a0ca
-:END:
-
-- =package_methods=
-
-  =pip(flags)=, =npm(dir)=, =npm_g=, =brew(user)=, =apt=, =apt_get=,
-  =apt_get_permissive=, =apt_get_release(release)=, =dpkg_version(repo)=,
-  =rpm_version(repo)=, =windows_feature=, =msi_implicit(repo)=,
-  =msi_explicit(repo)=, =yum=, =yum_rpm=, =yum_rpm_permissive=,
-  =yum_rpm_enable_repo(repoid)=, =yum_group=, =rpm_filebased(path)=, =ips=,
-  =smartos=, =smartos_pkg_add(repo)=, =opencsw=, =solaris(pkgname, spoolfile,
-  adminfile)=, =solaris_install(adminfile)=, =freebsd=, =freebsd_portmaster=,
-  =alpinelinux=, =emerge=, =pacman=, =zypper=, =generic=
-
-- =package_modules=
-
-  =yum=, =apt_get=, =freebsd_ports=, =nimclient=, =pkg=, =pkgsrc=
 
 * Managing Files
 :PROPERTIES:
@@ -1341,7 +1488,61 @@ To delete a file indiscriminately, omit the =file_select=.
 Look up [[https://docs.cfengine.com/lts/reference-promise-types-files.html#file_select][=file_select=]] and [[https://docs.cfengine.com/lts/reference-masterfiles-policy-framework-lib-files.html#tidy][=tidy=]] in the [[https://docs.cfengine.com/lts/reference.html][reference-manual]] to find more ways to
 use this.
 
-* Setting Up a Client/Server Environment
+* Troubleshooting
+
+** Which hub am I bootstrapped to?
+
+- ~cat /var/cfengine/policy_server.dat~
+- ~cf-promises --show-vars | grep sys.policy_hub~
+
+** Is cfengine running?
+
+- ~ps -ef | grep [c]f-~
+
+You should expect to find =cf-execd=, =cf-serverd=, and =cf-monitord= on all
+hosts. Additional processes will be seen on Enterprise Hubs
+
+** When did the agent last run?
+
+- ~ls -lh /var/cfengine/promise_summary.log~
+
+** Review output from previous agent runs
+
+- ~ls /var/cfengine/outputs~
+- ~cat /var/cfengine/outputs/previous~
+
+** Manual report collection from Enterprise Hub
+
+- ~cf-hub --hail <IP|HOSTNAME> --verbose --query rebase~
+- ~cf-hub -H <IP|HOSTNAME> -v -q delta~
+
+*** Unspecified server refusal
+
+#+BEGIN_EXAMPLE
+  [root@hub ~]# cf-hub -H 10.10.10.11 -q rebase
+     error: Abort transmission: got " Unspecified server refusal (see verbose server output)" from 10.10.10.11
+#+END_EXAMPLE
+
+- Usually indicates the host does not trust the hub.
+- Is the host bootstrapped to the hub you expect?
+
+*** =SSL_read=: receive timeout 
+
+#+BEGIN_EXAMPLE
+  [root@hub ~]# cf-hub -q rebase -H 10.10.10.11
+     error: SSL_read: receive timeout
+#+END_EXAMPLE
+
+- The report data is not able to be collected before =cf-hub= times out.
+- Run the agent on the remote host and define =cfe_internal_purge_reports= e.g.
+  ~cf-agent --no-lock --define cfe_internal_purge_reports~.
+
+*** Connection refused
+
+- Firewall blocking inbound connections on port =5308=
+- =cf-serverd= not running on remote host
+ 
+* Setting Up a Client/Server Environment                           :noexport:
 :PROPERTIES:
 :ID:       66515861-4365-48d4-9658-6a9788eddc67
 :END:
@@ -1431,12 +1632,320 @@ And finally you can use the =-I= flag to have CFEngine *inform* you of repairs.
   cf-agent -KI
 #+END_EXAMPLE
 
-** Enterprise Reporting
-:PROPERTIES:
-:ID:       bcc58a30-f948-4fde-8685-c691190ce489
-:END:
+*** CFEngine Core/Community
+**** The verbose agent log
 
-[[./media/enterprise-reporting.png]]
+Running the agent in verbose mode ( ~cf-agent --verbose~ | ~cf-agent -v~ )
+provides all of the details about each promise and its result
+
+#+BEGIN_SRC cfengine3 :tangle /tmp/example.cf
+  bundle agent main
+  {
+
+    files:
+
+        "/tmp/example"
+          handle => "example_file_exists_and_contains_date",
+          create => "true",
+          edit_line => lines_present( $(sys.date) );
+  }
+
+  bundle edit_line lines_present(lines)
+  # @brief Ensure `lines` are present in the file. Lines that do not exist are appended to the file
+  # @param List or string that should be present in the file
+  #
+  # **Example:**
+  #
+  # ```cf3
+  # bundle agent example
+  # {
+  #  vars:
+  #    "nameservers" slist => { "8.8.8.8", "8.8.4.4" };
+  #
+  #  files:
+  #      "/etc/resolv.conf" edit_line => lines_present( @(nameservers) );
+  #      "/etc/ssh/sshd_config" edit_line => lines_present( "PermitRootLogin no" );
+  # }
+  # ```
+  {
+    insert_lines:
+
+        "$(lines)"
+          comment => "Append lines if they don't exist";
+  }
+#+END_SRC
+
+In the verbose output as each promise is actuated a =BEGIN promsie= is emitted
+with the promise handle or filename and line number position if it does not have
+a handle. In the example output we can see that the promise for =/tmp/example=
+was =REPAIRED=.
+
+#+RESULTS:
+#+BEGIN_EXAMPLE
+ verbose: B: *****************************************************************
+ verbose: B: BEGIN bundle main
+ verbose: B: *****************************************************************
+ verbose: P: .........................................................
+ verbose: P: BEGIN promise 'example_file_exists_and_contains_date' of type "files" (pass 1)
+ verbose: P:    Promiser/affected object: '/tmp/example'
+ verbose: P:    Part of bundle: main
+ verbose: P:    Base context class: any
+ verbose: P:    Stack path: /default/main/files/'/tmp/example'[1]
+ verbose: Using literal pathtype for '/tmp/example'
+ verbose: No mode was set, choose plain file default 0600
+    info: Created file '/tmp/example', mode 0600
+ verbose: Handling file edits in edit_line bundle 'lines_present'
+ verbose: V:     +  Private parameter: 'lines' in scope 'lines_present' (type: s) in pass 1
+ verbose: P: .........................................................
+ verbose: P: BEGIN promise 'promise_example_cf_32' of type "insert_lines" (pass 1)
+ verbose: P:    Promiser/affected object: 'Mon Dec  4 21:08:38 2017'
+ verbose: P:    Part of bundle: lines_present
+ verbose: P:    Base context class: any
+ verbose: P:    Stack path: /default/main/files/'/tmp/example'/default/lines_present/insert_lines/'Mon Dec  4 21:08:38 2017'[1]
+ verbose: P:
+ verbose: P:    Comment:  Append lines if they don't exist
+ verbose: Additional promise info: source path './example.cf' at line 32 comment 'Append lines if they don't exist'
+ verbose: Inserting the promised line 'Mon Dec  4 21:08:38 2017' into '/tmp/example' after locator
+ verbose: P: .........................................................
+ verbose: P: BEGIN promise 'promise_example_cf_32' of type "insert_lines" (pass 1)
+ verbose: P:    Promiser/affected object: 'Mon Dec  4 21:08:38 2017'
+ verbose: P:    Part of bundle: lines_present
+ verbose: P:    Base context class: any
+ verbose: P:    Stack path: /default/main/files/'/tmp/example'/default/lines_present/insert_lines/'Mon Dec  4 21:08:38 2017'[1]
+ verbose: P:
+ verbose: P:    Comment:  Append lines if they don't exist
+ verbose: P: .........................................................
+ verbose: P: BEGIN promise 'promise_example_cf_32' of type "insert_lines" (pass 1)
+ verbose: P:    Promiser/affected object: 'Mon Dec  4 21:08:38 2017'
+ verbose: P:    Part of bundle: lines_present
+ verbose: P:    Base context class: any
+ verbose: P:    Stack path: /default/main/files/'/tmp/example'/default/lines_present/insert_lines/'Mon Dec  4 21:08:38 2017'[1]
+ verbose: P:
+ verbose: P:    Comment:  Append lines if they don't exist
+    info: Edit file '/tmp/example'
+ verbose: Handling file existence constraints on '/tmp/example'
+ verbose: A: Promise REPAIRED
+ verbose: P: END files promise (/tmp/example)
+ verbose: P: .........................................................
+ verbose: P: BEGIN promise 'example_file_exists_and_contains_date' of type "files" (pass 2)
+ verbose: P:    Promiser/affected object: '/tmp/example'
+ verbose: P:    Part of bundle: main
+ verbose: P:    Base context class: any
+ verbose: P:    Stack path: /default/main/files/'/tmp/example'[1]
+ verbose: Using literal pathtype for '/tmp/example'
+ verbose: P: .........................................................
+ verbose: P: BEGIN promise 'example_file_exists_and_contains_date' of type "files" (pass 3)
+ verbose: P:    Promiser/affected object: '/tmp/example'
+ verbose: P:    Part of bundle: main
+ verbose: P:    Base context class: any
+ verbose: P:    Stack path: /default/main/files/'/tmp/example'[1]
+ verbose: Using literal pathtype for '/tmp/example'
+ verbose: A: ...................................................
+ verbose: A: Bundle Accounting Summary for 'main' in namespace default
+ verbose: A: Promises kept in 'main' = 0
+ verbose: A: Promises not kept in 'main' = 0
+ verbose: A: Promises repaired in 'main' = 2
+ verbose: A: Aggregate compliance (promises kept/repaired) for bundle 'main' = 100.0%
+ verbose: A: ...................................................
+ verbose: B: *****************************************************************
+ verbose: B: END bundle main
+ verbose: B: *****************************************************************
+ verbose: Generate diff state reports for policy './example.cf' SKIPPED
+ verbose: No lock purging scheduled
+ verbose: Outcome of version (not specified) (agent-0): Promises observed - Total promise compliance: 0% kept, 100% repaired, 0% not kept (out of 2 events). User promise compliance: 0% kept, 100% repaired, 0% not kept (out of 2 events). CFEngine system compliance: 0% kept, 0% repaired, 0% not kept (out of 0 events).
+#+END_EXAMPLE
+
+**** Promise logging
+
+Promises can be configured to [[https://docs.cfengine.com/lts/reference-promise-types.html#log_repaired][log their outcomes]] to a file with =log_kept=,
+=log_repaired=, and =log_failed= attributes in an action body.
+
+#+BEGIN_SRC cfengine3
+  bundle agent main
+  {
+    commands:
+        "/bin/true"
+          action => log_my_repairs( '/tmp/repaired.log' );
+
+    reports:
+        "/tmp/repaired.log"
+          printfile => cat( $(this.promiser) );
+  }
+
+  body action log_my_repairs( file )
+  {
+        log_repaired => "$(file)";
+        log_string => "$(sys.date) REPAIRED $(this.promiser)";
+  }
+#+END_SRC
+
+#+RESULTS:
+: R: /tmp/repaired.log
+: R: Mon Dec  4 21:21:38 2017 REPAIRED /bin/true
+
+*** CFEngine Enterprise
+
+CFEngine enterprise provides details logging without special configuration.
+
+**** Changes UI
+
+The changes reporting interface is the easiest way to what repairs the agent is
+making to your infrastructure.
+
+#+DOWNLOADED: file:///home/nickanderson/Pictures/Screenshots/2017-12-04_Selection_001.png @ 2017-12-04 22:04:51
+[[file:./media/changes-ui.png]]
+
+**** Changes API
+
+Changes can also be queried from the [[https://docs.cfengine.com/lts/reference-enterprise-api-ref-changes.html][changes rest api]]. Here we query for repairs made
+by =files= type promises.
+#+BEGIN_EXAMPLE
+  [root@hub ~]# curl https://hub/api/v2/changes/policy?promisetype=files
+  {
+      "data": [
+          {
+              "bundlename": "cfe_internal_update_policy",
+              "changetime": 1512427971,
+              "hostkey": "SHA=01fe75e93ca88bbd381eb720e9b43d0840ea8727aae8fc84391c297c42798f5c",
+              "hostname": "hub",
+              "logmessages": [
+                  "Copying from 'localhost:/var/cfengine/masterfiles/cf_promises_release_id'"
+              ],
+              "policyfile": "/var/cfengine/inputs/cfe_internal/update/update_policy.cf",
+              "promisees": [],
+              "promisehandle": "cfe_internal_update_policy_files_inputs_dir",
+              "promiser": "/var/cfengine/inputs",
+              "promisetype": "files",
+              "stackpath": "/default/cfe_internal_update_policy/files/'/var/cfengine/inputs'[1]"
+          },
+          {
+              "bundlename": "cfe_internal_setup_knowledge",
+              "changetime": 1512428912,
+              "hostkey": "SHA=01fe75e93ca88bbd381eb720e9b43d0840ea8727aae8fc84391c297c42798f5c",
+              "hostname": "hub",
+              "logmessages": [
+                  "Owner of '/var/cfengine/httpd/htdocs/application/logs/./log-2017-12-04.log' was 0, setting to 497",
+                  "Group of '/var/cfengine/httpd/htdocs/application/logs/./log-2017-12-04.log' was 0, setting to 497",
+                  "Object '/var/cfengine/httpd/htdocs/application/logs/./log-2017-12-04.log' had permission 0644, changed it to 0640"
+              ],
+              "policyfile": "/var/cfengine/inputs/cfe_internal/enterprise/CFE_knowledge.cf",
+              "promisees": [],
+              "promisehandle": "cfe_internal_setup_knowledge_files_doc_root_application_logs",
+              "promiser": "/var/cfengine/httpd/htdocs/application/logs/.",
+              "promisetype": "files",
+              "stackpath": "/default/cfe_internal_management/methods/'CFEngine_Internals'/default/cfe_internal_enterprise_main/methods/'hub'/default/cfe_internal_setup_knowledge/files/'/var/cfengine/httpd/htdocs/application/logs/.'[1]"
+          }
+      ],
+      "total": 2,
+      "next": null,
+      "previous": null
+  }
+#+END_EXAMPLE
+
+See Also: [[https://docs.cfengine.com/lts/examples-enterprise-api-examples-changes-api-usage.html][query rest api]]
+
+**** Custom Reports and Query API
+
+The custom reports interface and associated [[https://docs.cfengine.com/lts/reference-enterprise-api-ref-query.html][query rest api]] allow more flexible
+reports to be run.
+
+Queries can be made against the =promiselog= table. This query finds the
+promises that are repaired the most excluding internal cfengine related promises
+and promises from the stdlib.
+
+#+BEGIN_SRC sql
+  -- Find most frequently repaired promises excluding lib and cfe_internal directories
+  SELECT namespace,bundlename,promisetype,promisehandle, promiser, count(promiseoutcome)
+  AS count
+  FROM promiselog
+  WHERE promiseoutcome = 'REPAIRED'
+  AND policyfile
+  NOT ilike '%/lib/%'
+  AND policyfile
+  NOT ilike '%cfe_internal%'
+  GROUP BY namespace, bundlename, promisetype,promisehandle,promiser
+  ORDER BY count DESC
+#+END_SRC
+  
+Reference: [[https://docs.cfengine.com/docs/3.10/examples-enterprise-api-examples-sql-queries.html][query api examples]]
+
+**** /var/cfengine/state/promise_log/*.csv
+
+*WARNING:* These logs are purged upon collection by the hub.
+
+In Enterprise 3.7 each agent run logs to a CSV file named for the time the agent
+started in =$(sys.workdir)/state/promise_log/=.
+
+The fields are =promise hash=, =policy file=, =release id=, unknown (waiting on
+developer feedback), =namespace=, =bundle=, =promise type=, =stack path= (call
+tree), =promise handle=, =promisees=, =log messages=
+
+#+BEGIN_SRC text
+  719b756d3dc8fd7bdd20284c1fd894ae40bac55d8790855b074159db8fe187ae,/var/cfengine/inputs/cfe_internal/enterprise/CFE_hub_specific.cf,<unknown-release-id>,114,default,cfe_internal_update_folders,files,/var/cfengine/master_software_updates/windows_i686,/default/cfe_internal_management/methods/'CFEngine_Internals'/default/cfe_internal_enterprise_main/methods/'hub'/default/cfe_internal_update_folders/files/'/var/cfengine/master_software_updates/windows_i686'[40],cfe_internal_update_folders_files_create_dirs,"[""goal_updated""]","[""Created directory '/var/cfengine/master_software_updates/windows_i686/.'""]"
+#+END_SRC
+
+**** promise_log.jsonl
+
+*WARNING:* These logs are purged upon collection by the hub.
+
+Beginning with Enterprise 3.9 we began logging promise outcomes to a JSON format
+in =$(sys.statedir)/promise_log.jsonl=.
+
+Each promise outcome is logged along with the bundle name, promise handle, log
+messages near the promise actuation, the promise namespace, policy filename,
+promise hash, promise type, promisees, promiser, release id, stack path (call
+path), and the timestamp of the agent ran.
+
+Here is an example of the output:
+
+#+Caption: promise_log.jsonl
+#+Name: promise_log.jsonl
+#+BEGIN_SRC json
+  {
+      "execution": {
+          "bundle":"file_make_mustache",
+          "handle":"",
+          "log_messages":[
+              "Created file '/var/cfengine/httpd/conf/httpd.conf.staged', mode 0600",
+              "Updated rendering of '/var/cfengine/httpd/conf/httpd.conf.staged' from mustache template '/var/cfengine/inputs/cfe_internal/enterprise/templates/httpd.conf.mustache'"
+          ],
+          "namespace":"default",
+          "policy_filename":"/var/cfengine/inputs/lib/files.cf",
+          "promise_hash":"ebc3dce615bcdb724e53a9761a24f2e7ed4f2e01aed1ce85dc217a9d3429fed7",
+          "promise_outcome":"REPAIRED",
+          "promise_type":"files",
+          "promisees":[
+              "CFEngine Enterprise",
+              "Mission Portal"],
+          "promiser":"/var/cfengine/httpd/conf/httpd.conf.staged",
+          "release_id":"<unknown-release-id>",
+          "stack_path":"/default/cfe_internal_management/methods/'CFEngine_Internals'/default/cfe_internal_enterprise_mission_portal/methods/'Apache Configuration'/default/cfe_internal_enterprise_mission_portal_apache/methods/'Stage Apache Config'/default/file_make_mustache/files/'/var/cfengine/httpd/conf/httpd.conf.staged'[0]"
+      },
+      "timestamp":1470326639
+  },
+  {
+      "execution":{
+          "bundle":"mission_portal_apache_from_stage",
+          "handle":"",
+          "log_messages":[
+              "Updated '/var/cfengine/httpd/conf/httpd.conf' from source '/var/cfengine/httpd/conf/httpd.conf.staged' on 'localhost'"
+          ],
+          "namespace":"default",
+          "policy_filename":"/var/cfengine/inputs/cfe_internal/enterprise/mission_portal.cf",
+          "promise_hash":"d730f2911834395411e4f3168847fc6cc522955f97652de41e02c8bc15f3f761",
+          "promise_outcome":"REPAIRED",
+          "promise_type":"files",
+          "promisees":[
+              "CFEngine Enterprise",
+              "Mission Portal"
+          ],
+          "promiser":"/var/cfengine/httpd/conf/httpd.conf",
+          "release_id":"<unknown-release-id>",
+          "stack_path":"/default/cfe_internal_management/methods/'CFEngine_Internals'/default/cfe_internal_enterprise_mission_portal/methods/'Apache Configuration'/default/cfe_internal_enterprise_mission_portal_apache/methods/'Manage Final Apache Config'/default/mission_portal_apache_from_stage/files/'/var/cfengine/httpd/conf/httpd.conf'[0]"
+      },
+      "timestamp":1470326639
+  }
+#+END_SRC
 
 ** Debugging
 :PROPERTIES:
@@ -1635,14 +2144,9 @@ the [[https://docs.cfengine.com/lts/reference.html][reference manual]].
 - =vars:= promises — Varables, strings, integers and reals (and lists of each).
 - =methods:= promises — Create a self-contained bundle that can be called like a
   function.
-- =guest_environments:= promises — Promise the existence of virtual machines.
 - =storage:= promises — For local or remote (NFS) filesystems.
-- =database= promises — Promise the schema of your database, CFEngine does the
-  SQL for you.
 - =edit_xml:= promises - Promise by path, CFEngine does the XML for you.
 - Monitoring — Using data from =cf-monitor=.
-- Implicit looping — Pass a list to a promise and it loops over the values in
-  the list.
 
 ** Pro Tips
 :PROPERTIES:
@@ -1671,33 +2175,7 @@ the [[https://docs.cfengine.com/lts/reference.html][reference manual]].
 :PROPERTIES:
 :ID:       a2fc6d66-53af-437a-99cd-db190f54580b
 :END:
-* Todos
+* Todos :noexport:
 :PROPERTIES:
 :ID:       f313ffe6-4543-48a3-bff8-26784f3acfce
 :END:
-** DONE Mention the augments file somewhere
-:PROPERTIES:
-:ID:       c0d0db24-6eee-4891-a364-cad415eccc41
-:END:
-
-CLOSED: [2016-05-19 Thu 13:13]
-:PROPERTIES:
-:ID:       725599cb-9873-432e-b772-ef2f548a49fc
-:END:
-
-Mentioned in Pro tips. There is sooooooo much to share! And this presentation is
-only 45 minutes.
-
-** DONE Review shadow file perms danger
-CLOSED: [2016-05-19 Thu 13:22]
-:PROPERTIES:
-:ID:       8f3e2276-4b9e-47ac-ad6f-d55b5668e20b
-:END:
-
-:PROPERTIES:
-:ID:       724482bb-e91c-4191-9280-2f5243ddadb8
-:END:
-Noted by Trix Farrar @BasementTrix
-
-Yeah, the group was set to shadow, probably not what people really want.
-Switched to =root=.
