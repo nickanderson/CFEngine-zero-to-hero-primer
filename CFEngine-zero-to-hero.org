@@ -2084,7 +2084,7 @@ I believe this will come into core in 3.9 or 3.10.
 :END:
 
 When debugging, promise /stakeholders/ aka /promisees/ are useful for
-understanding who cares about a given promise.
+understanding [[https://github.com/nickanderson/cfengine-inventory_users_last_login/commit/cd2fb3454cf362efa5621e39800984c1d7ad655e][who cares]] about a given promise.
 
 #+BEGIN_SRC cfengine3
   bundle agent example {
