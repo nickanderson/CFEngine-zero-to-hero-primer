@@ -1,6 +1,9 @@
 #+Title: CFEngine Zero to Hero Primer
 #+Author: Nick Anderson
 #+Email: nick@cmdln.org
+#+PROPERTY: header-args:cfengine3+ :eval never-export
+#+PROPERTY: header-args:sh+ :eval never-export
+#+PROPERTY: header-args:shell+ :eval never-export
 #+REVEAL_ROOT: file:///home/nickanderson/src/reveal.js/
 #+OPTIONS: reveal_center:t reveal_progress:t reveal_history:nil reveal_control:t
 #+OPTIONS: reveal_rolling_links:t reveal_keyboard:t reveal_overview:t num:nil
@@ -21,6 +24,9 @@
 #+REVEAL_POSTAMBLE: <p> Created by Nick Anderson. </p>
 #+REVEAL_PLUGINS: (markdown notes)
 #+REVEAL_EXTRA_CSS: ./local.css
+# Do not eval cfengine src blocks automatically on export
+# THIS WORKED #+property: header-args :eval never-export
+
 
 #+BEGIN_COMMENT
 # Derived from [[http://github.com/bahamat/cf-primer][CF-Primer: Zero to Hero]]
@@ -51,12 +57,14 @@ limitations under the License.
 CFEngine runs primarily on UNIX and UNIX-like operating systems, but can also
 run on Windows.
 
+** continued ...
 CFEngine is very extensive and powerful. In this presentation you will learn
 only a subset of what CFEngine can do. A mere tip of the iceberg, but this will
 represent the bulk of what you do with CFEngine. In other words, you'll learn
 the 20% of CFEngine that will do 80% of the work.
 
-Want to know more?
+** Want to know more?
+
 - [[http://verticalsysadmin.com/][Vertical Sysadmin's CFEngine courses]]
 - [[https://docs.cfengine.com/lts/reference.html][CFEngine Reference Manual]]
 - [[mailto:contact@cfengine.com][CFEngine Training & Professional Services]] (Email)
