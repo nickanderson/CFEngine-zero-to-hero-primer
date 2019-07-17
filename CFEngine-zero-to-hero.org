@@ -107,8 +107,8 @@ that this is it.
 :ID:       24db747a-4fcf-491c-ba39-f339f2730b8f
 :END:
 
-=cf-execd= is a periodic task scheduler. You can think of it like =cron= on
-steroids.
+=cf-execd= is a periodic task scheduler. You can think of it like =cron= with an
+understanding of CFEngine classes.
 
 By default CFEngine runs and enforces policies every /five minutes/. =cf-execd=
 is responsible for making that happen.
