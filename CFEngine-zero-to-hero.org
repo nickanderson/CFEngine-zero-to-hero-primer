@@ -1050,6 +1050,30 @@ accomplishes 80%, *this slide* is the 5% that accomplishes 95%.
 # Note the vertical pipes inside the table are actually unicode characters, this
 # is just to make it work inside org-mode
 
+** Variable class expressions
+
+Since 3.7.0 CFEngine is able to dereference variables directly within class
+expressions.
+
+#+BEGIN_SRC cfengine3
+  bundle agent main
+  {
+    vars:
+      "variable_containing_class" string => "cfengine";
+
+    reports:
+      "$(variable_containing_class)"::
+        "'$(variable_containing_class)' is defined";
+
+      "!$(variable_containing_class)"::
+        "'$(variable_containing_class)' is NOT defined";
+  }
+#+END_SRC
+
+#+RESULTS:
+: R: 'cfengine' is defined
+
+
 ** A Note About Classes and Distributions Based on Other Distributions
 :PROPERTIES:
 :ID:       d3e97cff-8043-4494-9735-7e5bb6d4ebb3
