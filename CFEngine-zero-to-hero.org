@@ -165,7 +165,7 @@ described state.
   {                           |
     packages:                 | rpm -q openssh-server || yum install openssh-server
                               | yum check-update openssh-server
-      "openssh-server"        | if [ $? -eq 100 ]; then 
+      "openssh-server"        | if [ $? -eq 100 ]; then # update available
         policy => "present",  |   yum upgrade openssh-server
         version => "latest";  | fi 
   }
