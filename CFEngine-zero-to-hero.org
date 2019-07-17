@@ -1055,7 +1055,8 @@ accomplishes 80%, *this slide* is the 5% that accomplishes 95%.
 ** Variable class expressions
 
 Since 3.7.0 CFEngine is able to dereference variables directly within class
-expressions.
+expressions. Note that quotes surrounding the entire expression ending before
+the =::= are required
 
 #+BEGIN_SRC cfengine3 :exports both
   bundle agent main
