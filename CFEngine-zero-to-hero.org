@@ -2,6 +2,8 @@
 #+Author: Nick Anderson
 #+Email: nick@cmdln.org
 #+PROPERTY: header-args:cfengine3+ :eval never-export
+# Export cfengine code block execution output by default
+#+PROPERTY: header-args:cfengine3+ :exports both
 #+PROPERTY: header-args:sh+ :eval never-export
 #+PROPERTY: header-args:shell+ :eval never-export
 #+REVEAL_ROOT: file:///home/nickanderson/src/reveal.js/
