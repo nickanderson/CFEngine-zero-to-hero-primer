@@ -1057,7 +1057,7 @@ accomplishes 80%, *this slide* is the 5% that accomplishes 95%.
 Since 3.7.0 CFEngine is able to dereference variables directly within class
 expressions.
 
-#+BEGIN_SRC cfengine3
+#+BEGIN_SRC cfengine3 :exports both
   bundle agent main
   {
     vars:
