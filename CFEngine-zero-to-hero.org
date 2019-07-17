@@ -223,10 +223,10 @@ agents who publish their intentions to one another in the form of promises.
 :ID:       200e380a-dd5d-4f0a-a36f-7734801183ba
 :END:
 
-A file (e.g., =/etc/apache2/httpd.conf=) can make promises about its own
+*A file* (e.g., =/etc/apache2/httpd.conf=) can make promises about its own
 contents, attributes, etc. But it does not make any promises about a process.
 
-A process (e.g., =httpd=) can make a promise that it will be running. But it
+*A process* (e.g., =httpd=) can make a promise that it will be running. But it
 does not make any promises about its configuration.
 
 The configuration file and the process are /autonomous/. Each makes promises
