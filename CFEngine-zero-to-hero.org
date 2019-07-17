@@ -2169,6 +2169,132 @@ the [[https://docs.cfengine.com/lts/reference.html][reference manual]].
 - Checkout [[https://stedolan.github.io/jq/][jq]] (because you can use it with [[https://docs.cfengine.com/docs/3.9/reference-functions-mapdata.html][mapdata()]] in 3.9+)
 - Read the [[https://docs.cfengine.com/lts/reference.html][reference manual]] (all of it)
 
+*** Magic in CFEngine
+:LOGBOOK:
+CLOCK: [2017-09-28 Thu 18:39]--[2017-09-28 Thu 18:48] =>  0:09
+:END:
+
+**** If I try to define a class with an illegal class character there is no error
+
+For example:
+
+#+BEGIN_SRC cfengine3 :exports both 
+  bundle agent main
+  {
+    classes:
+    
+      "my-illegal-class";
+      
+    reports:
+      "$(with)" with => join( " ", classesmatching( "my.illegal.class" ) );
+
+  }
+#+END_SRC
+
+#+RESULTS:
+: R: my_illegal_class
+
+The agent assumes you intended to canonify the string in the spirit of auto
+correction it canonifies it for you.
+
+This courtesy is not extended when checking classes. You must explicitly
+canonify your string when using it in a class expression.
+
+For example: 
+
+#+BEGIN_SRC cfengine3 :exports both 
+  bundle agent main
+  {
+    vars:
+    
+      "hostname" string => "$(sys.uqhost)";
+    
+    reports:
+    
+      any::
+      
+        "$(hostname) contains invalid class characters";
+        "The class expression containing a nonvalid character is not a valid class expression";
+        "The agent silently skips the section"; 
+      
+      "$(hostname)"::
+        "hello";
+        
+      any::
+      
+        "See that explicit canonification works";
+        "Hi"
+          if => canonify( $(hostname) );
+  }
+  
+#+END_SRC
+
+#+RESULTS:
+: R: nickanderson-thinkpad-w550s contains invalid class characters
+: R: The class expression containing a nonvalid character is not a valid class expression
+: R: The agent silently skips the section
+: R: See that explicit canonification works
+: R: Hi
+
+**** When I promise a directory is 600 it gets set to 700
+
+For example: 
+
+#+BEGIN_SRC cfengine3
+  bundle agent main
+  {
+    files:
+      "/tmp/dir/."
+        create => "true",
+        perms => m(600);
+        
+   vars:
+     "mode" string => filestat( "/tmp/dir", permoct );
+     
+     reports:
+       "/tmp/dir mode is $(with)" with => filestat( "/tmp/dir", permoct );
+     
+  }
+#+END_SRC
+
+#+RESULTS:
+: R: /tmp/dir mode is 700
+
+This is configurable behavior but by default if you promise a directory should
+be readable (list the files within the directory) the agent assumes that you
+also meant for it to be executable so that it can be entered and access the file
+and directories inside.
+     
+To disable the feature set [[https://docs.cfengine.com/lts/reference-promise-types-files.html#rxdirs][rxdirs]] to =false= in the =perms= body you are
+using.
+
+For example:
+
+#+BEGIN_SRC cfengine3
+  bundle agent main
+  {
+    files:
+      "/tmp/dir/."
+        create => "true",
+        perms => my_m_norxdir(600);
+        
+   vars:
+     "mode" string => filestat( "/tmp/dir", permoct );
+     
+     reports:
+       "/tmp/dir mode is $(with)" with => filestat( "/tmp/dir", permoct );
+  }
+  
+  body perms my_m_norxdir(mode)
+  {
+    rxdirs => "false";
+    inherit_from => m( $(mode) ); # body inheritance available since 3.8.0
+  }
+#+END_SRC
+
+#+RESULTS:
+: R: /tmp/dir mode is 600
+
 * Thanks
 :PROPERTIES:
 :ID:       a2fc6d66-53af-437a-99cd-db190f54580b
@@ -2177,3 +2303,10 @@ the [[https://docs.cfengine.com/lts/reference.html][reference manual]].
 :PROPERTIES:
 :ID:       f313ffe6-4543-48a3-bff8-26784f3acfce
 :END:
+
+How not to cfengine
+commands:
+ 
+    redhat.64_bit::
+     " cd /etc;if grep '10.135.130.11\|10.135.130.12\|10.135.128.11\|10.135.128.12' /etc/resolv.conf; then /bin/sed -i 's/10.135.130.11/10.135.139.11/;s/10.135.130.12/10.135.139.12/;s/10.135.128.11/10.135.139.11/;s/10.135.128.12/10.135.139.12/' /etc/resolv.conf ; service network restart; fi"
+        contain => in_shell;
