@@ -75,7 +75,8 @@ the 20% of CFEngine that will do 80% of the work.
 :ID:       688caa3c-27be-483e-9c6b-9ce91134fea7
 :END:
 
-You can get a copy of this presentation any time on Github.
+This presentation was made with love using org-mode 9.2.4, cfengine 3.12.2, and
+reveal.js 3.8.0. You can get a copy of this presentation any time on Github.
 
 <http://github.com/nickanderson/CFEngine-zero-to-hero-primer>
 
