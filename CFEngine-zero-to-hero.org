@@ -233,10 +233,18 @@ does not make any promises about its configuration.
 The configuration file and the process are /autonomous/. Each makes promises
 about itself which cooperate toward an end.
 
-** Going Deeper
+** Going deeper
 :PROPERTIES:
 :ID:       4eda301f-e34c-4088-9c61-caee91158454
 :END:
+
+- [[https://www.youtube.com/playlist?list=PLYwRmweZvwB1C9HXvT4g6jXfZYET_cgXP][Promise Theory (animated video series)]]
+  - [[https://www.youtube.com/watch?v=2TPsB5WuZgk&t=145s][Basic concepts]] (part 1)
+  - [[https://www.youtube.com/watch?v=2E9s4gsIo_s][The rules of delegation]] (part 2)
+  - [[https://www.youtube.com/watch?v=CZcWZokRRac][Scaling cooperation]] (part 3)
+  - [[https://www.youtube.com/watch?v=shEL7lrYeoY][Scaling goals]] (part 4)
+
+** Deeper still
 
 - [[https://www.amazon.com/Thinking-Promises-Mark-Burgess-ebook/dp/B01092PYG8/ref=pd_cp_351_2?ie=UTF8&refRID=P8MMWZ7H2X6B52JEAHNB][Thinking in Promises]]
 - [[https://www.amazon.com/Search-Certainty-Science-Information-Infrastructure-ebook/dp/B00WL6SPR6/ref=pd_sim_351_3?ie=UTF8&dpID=61EbYHkv7NL&dpSrc=sims&preST=_OU01_AC_UL160_SR107%252C160_&refRID=R1NF58A2W7Z570MN6V3P][In Search of Certainty]]
