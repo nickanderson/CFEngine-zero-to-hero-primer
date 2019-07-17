@@ -88,9 +88,9 @@ These are the major components of CFEngine that you will encounter on a day to
 day basis.
 
 - =cf-agent=
-- =cf-monitord=
 - =cf-execd=
 - =cf-serverd=
+- =cf-monitord=
 
 ** =cf-agent=
 :PROPERTIES:
@@ -101,17 +101,6 @@ day basis.
 policy(code) and ensure your system is in the desired state. If you are running
 any CFEngine command from the command line, there's a greater than 99% chance
 that this is it.
-
-** =cf-monitord=
-:PROPERTIES:
-:ID:       c3cbe444-b1a2-490f-85cb-29d94152c0c9
-:END:
-
-=cf-monitord= monitors various statistics about the running system. This
-information is made available in the form of *classes* and *variables*.
-
-You'll almost never use =cf-monitord= directly. However the data provided by
-=cf-monitord= is available to =cf-agent=.
 
 ** =cf-execd=
 :PROPERTIES:
@@ -136,6 +125,17 @@ is responsible for making that happen.
 - In Enterprise it serves reports to queries from =cf-hub=
 
 =cf-runagent= allows you to request ad-hoc policy runs. I rarely use it.
+
+** =cf-monitord=
+:PROPERTIES:
+:ID:       c3cbe444-b1a2-490f-85cb-29d94152c0c9
+:END:
+
+=cf-monitord= monitors various statistics about the running system. This
+information is made available in the form of *classes* and *variables*.
+
+You'll almost never use =cf-monitord= directly. However the data provided by
+=cf-monitord= is available to =cf-agent=.
 
 *  
 :PROPERTIES:
