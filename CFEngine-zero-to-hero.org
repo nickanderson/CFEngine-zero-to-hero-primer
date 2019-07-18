@@ -536,15 +536,6 @@ about itself which cooperate toward an end.
 - can have parameters
 - *ARE NOT FUNCTIONS*
 
-** A bundle for Apache web-server might 
-
-- ensure the =apache2= package is installed
-- ensure the content in the config file is correct
-- ensure content is present for serving
-- ensure proper permissions of files
-- ensure the =httpd= process is running
-- ensure the =httpd= process is restarted when the configuration changes
-
 ** Anatomy of a Bundle
 :PROPERTIES:
 :ID:       c47adf7f-d46e-4b24-9069-3f6df29a9463
@@ -571,6 +562,15 @@ Bundles apply to the binary that executes them. E.g., =agent= bundles apply to
 =cf-agent= while =server= bundles apply to =cf-serverd=.
 
 Bundles of type =common= apply to any CFEngine binary.
+
+** A bundle for Apache web-server might 
+
+- ensure the =apache2= package is installed
+- ensure the content in the config file is correct
+- ensure content is present for serving
+- ensure proper permissions of files
+- ensure the =httpd= process is running
+- ensure the =httpd= process is restarted when the configuration changes
 
 ** Quiz: What component(s) use this bundle?
 *** Example 1
