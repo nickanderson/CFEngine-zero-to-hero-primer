@@ -26,8 +26,6 @@
 #+REVEAL_POSTAMBLE: <p> Created by Nick Anderson. </p>
 #+REVEAL_PLUGINS: (markdown notes)
 #+REVEAL_EXTRA_CSS: ./local.css
-# Do not eval cfengine src blocks automatically on export
-# THIS WORKED #+property: header-args :eval never-export
 
 
 #+BEGIN_COMMENT
@@ -262,23 +260,189 @@ about itself which cooperate toward an end.
 :ID:       3f44af59-010c-4f53-9ffc-6ebbd10f99b7
 :END:
 
+#+CAPTION: Promise skeleton
 #+BEGIN_SRC artist
-  type:
-    context::
-      "promiser" -> "promisee"
-                      ----------|
-        attribute1 => "value",  |
-        attribute2 => body;     |-- Promise Body
-                      ----------|
+  bundle bundle_type bundle_name
+  {
+    type:
+      context::
+        "promiser" -> { "promisee", "stakeholder" }
+                        ----------|
+          attribute1 => "value",  |
+          attribute2 => body,     |-- Promise Body
+          attributeN => bundle;   |
+  }                     ----------|
 #+END_SRC
 
-- type :: is the kind of promise being made (e.g., files, commands, etc.).
-- context :: Optional and defaults to =any::=. Promises with a context will only
-             apply if the given context is true.
-- promiser :: What is making the promise. (e.g., a file or a process).
-- promisee :: An optional recipient or beneficiary of the promise.
-- promise body :: is a collection of promise attributes (not to be confused with
-                  a body used as an attribute value)
+** Anatomy of a Promise: bundle_type
+
+#+CAPTION: Promise skeleton
+#+BEGIN_SRC artist
+  bundle bundle_type bundle_name
+  {
+    type:
+      context::
+        "promiser" -> { "promisee", "stakeholder" }
+                        ----------|
+          attribute1 => "value",  |
+          attribute2 => body,     |-- Promise Body
+          attributeN => bundle;   |
+  }                     ----------|
+#+END_SRC
+
+- =bundle_type= :: The type of bundle the promise resides in. Promises must be
+                   inside of a bundle. Different bundle types are handled by
+                   different agents (=cf-agent=, =cf-serverd=, =cf-monitord=).
+
+** Anatomy of a Promise: bundle_name
+
+#+CAPTION: Promise skeleton
+#+BEGIN_SRC artist
+  bundle bundle_type bundle_name
+  {
+    type:
+      context::
+        "promiser" -> { "promisee", "stakeholder" }
+                        ----------|
+          attribute1 => "value",  |
+          attribute2 => body,     |-- Promise Body
+          attributeN => bundle;   |
+  }                     ----------|
+#+END_SRC
+
+- =bundle_name= :: The name of the bundle the promise resides in.
+
+** Anatomy of a Promise: type
+
+#+CAPTION: Promise skeleton
+#+BEGIN_SRC artist
+  bundle bundle_type bundle_name
+  {
+    type:
+      context::
+        "promiser" -> { "promisee", "stakeholder" }
+                        ----------|
+          attribute1 => "value",  |
+          attribute2 => body,     |-- Promise Body
+          attributeN => bundle;   |
+  }                     ----------|
+#+END_SRC
+
+- =type:= :: Marks the start of a section of promises. The kind of promise being
+             made (e.g., =files=, =commands=, =packages=, etc ...).
+
+** Anatomy of a Promise: context 
+
+#+CAPTION: Promise skeleton
+#+BEGIN_SRC artist
+  bundle bundle_type bundle_name
+  {
+    type:
+      context::
+        "promiser" -> { "promisee", "stakeholder" }
+                        ----------|
+          attribute1 => "value",  |
+          attribute2 => body,     |-- Promise Body
+          attributeN => bundle;   |
+  }                     ----------|
+#+END_SRC
+
+- =context::= :: Optional, defaults to =any::= (no restriction, run on any
+                 host). The context restriction applies until the next
+                 context/class expression or until it's reset to default at the
+                 start of the next promise type.
+             
+** Anatomy of a Promise: promiser
+
+#+CAPTION: Promise skeleton
+#+BEGIN_SRC artist
+  bundle bundle_type bundle_name
+  {
+    type:
+      context::
+        "promiser" -> { "promisee", "stakeholder" }
+                        ----------|
+          attribute1 => "value",  |
+          attribute2 => body,     |-- Promise Body
+          attributeN => bundle;   |
+  }                     ----------|
+#+END_SRC
+
+- =promiser= :: What is making the promise. (e.g., a *file*).
+
+** Anatomy of a Promise: promisee/stakeholder
+
+#+CAPTION: Promise skeleton
+#+BEGIN_SRC artist
+  bundle bundle_type bundle_name
+  {
+    type:
+      context::
+        "promiser" -> { "promisee", "stakeholder" }
+                        ----------|
+          attribute1 => "value",  |
+          attribute2 => body,     |-- Promise Body
+          attributeN => bundle;   |
+  }                     ----------|
+#+END_SRC
+
+- =promisee/stakeholder= :: An optional recipient or beneficiary of the promise
+     (who cares about the promise). Promisees provide documentation for cross
+     referencing, primarily for humans.
+
+** Anatomy of a Promise: promise body
+
+#+CAPTION: Promise skeleton
+#+BEGIN_SRC artist
+  bundle bundle_type bundle_name
+  {
+    type:
+      context::
+        "promiser" -> { "promisee", "stakeholder" }
+                        ----------|
+          attribute1 => "value",  |
+          attribute2 => body,     |-- Promise Body
+          attributeN => bundle;   |
+  }                     ----------|
+#+END_SRC
+
+- =promise body= :: A collection of promise attributes (not to be confused with
+                    a body used as an attribute value)
+** Anatomy of a Promise: body
+
+#+CAPTION: Promise skeleton
+#+BEGIN_SRC artist
+  bundle bundle_type bundle_name
+  {
+    type:
+      context::
+        "promiser" -> { "promisee", "stakeholder" }
+                        ----------|
+          attribute1 => "value",  |
+          attribute2 => body,     |-- Promise Body
+          attributeN => bundle;   |
+  }                     ----------|
+#+END_SRC
+
+- =body= :: A collection of attribute values.
+
+** Anatomy of a Promise: bundle
+
+#+CAPTION: Promise skeleton
+#+BEGIN_SRC artist
+  bundle bundle_type bundle_name
+  {
+    type:
+      context::
+        "promiser" -> { "promisee", "stakeholder" }
+                        ----------|
+          attribute1 => "value",  |
+          attribute2 => body,     |-- Promise Body
+          attributeN => bundle;   |
+  }                     ----------|
+#+END_SRC
+
+- =bundle= :: A collection of promises.
 
 ** Promise Attributes
 :PROPERTIES:
