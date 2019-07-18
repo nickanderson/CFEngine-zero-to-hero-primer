@@ -572,6 +572,67 @@ Bundles of type =common= apply to any CFEngine binary.
 - ensure the =httpd= process is running
 - ensure the =httpd= process is restarted when the configuration changes
 
+** How bundles hold state
+
+- Classic arrays are cleared at the beginning of a bundle actuation.
+- Lists, strings, ints, reals, and data-containers are preserved but can be
+  re-defined if not guarded with =if => isvariable()=.
+- bundle scoped classes are cleared at the end of the bundles execution
+- namespace scoped classes are not cleared automatically, though they can be
+  explicitly undefined.
+
+#+BEGIN_SRC cfengine3 :include-stdlib t :log-level info :exports none :command-in-result t :tangle ./examples/example_bundles_hold_state.cf
+  bundle agent holder(string, list, data)
+  {
+    vars:
+        "my_string" string => "$(string)";
+        "my_list" slist => { @(list) };
+        "my_classic_array[string]" string => "$(string)";
+        "my_data" data => mergedata( $(data) );
+
+    reports:
+        "inside $(this.bundle): my_string = '$(string)'";
+        "inside $(this.bundle): my_list = '$(list)'";
+        "inside $(this.bundle): my_classic_array[string] = '$(my_classic_array[string])'";
+        "inside $(this.bundle): my_data = '$(with)'"
+          with => string_mustache( "{{%-top-}}", @(my_data) );
+  }
+
+  bundle agent __main__
+  {
+    vars:
+      "first_list" slist => { "1" };
+      "first_data" data => '{ "first": "1" }';
+
+    methods:
+        #"example_bundle_holding_state";
+        "First call" usebundle => holder( "1", @(first_list), "$(this.bundle).first_data" );
+
+      # second call
+        "holder";
+    reports:
+      "inside $(this.bundle): my_data = '$(with)'"
+          with => string_mustache( "{{%-top-}}", @(holder.my_data) );
+  }
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+# cf-agent --no-lock --log-level info --file ./examples/example_bundle_holding_state.cf
+R: inside holder: my_string = '1'
+R: inside holder: my_list = '1'
+R: inside holder: my_classic_array[string] = '1'
+R: inside holder: my_data = '{
+  "first": "1"
+}'
+R: inside holder: my_string = '$(string)'
+R: inside holder: my_list = '$(list)'
+R: inside holder: my_classic_array[string] = '$(string)'
+R: inside main: my_data = '{
+  "first": "1"
+}'
+#+end_example
+
 ** Quiz: What component(s) use this bundle?
 *** Example 1
 
