@@ -1,0 +1,9 @@
+#!/var/cfengine/bin/cf-agent -f-
+bundle agent main {
+  files:
+    linux::
+      "/tmp/example" -> { "Instructor", "Students" }
+        create => "true",
+        touch => "true",
+        action => warn_only;
+}

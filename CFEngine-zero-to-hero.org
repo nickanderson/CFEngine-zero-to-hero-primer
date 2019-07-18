@@ -498,7 +498,7 @@ about itself which cooperate toward an end.
 :ID:       c87caf72-3377-4a84-9113-1b71a86ad340
 :END:
 
-#+BEGIN_SRC cfengine3 :exports both
+#+BEGIN_SRC cfengine3 :exports both :command-in-result t :tangle ./examples/example_promise.cf
   bundle agent main {
     files:
       linux::
@@ -510,7 +510,8 @@ about itself which cooperate toward an end.
 #+END_SRC
 
 #+RESULTS:
-:  warning: Need to touch (update time stamps) for '/tmp/multiple-attributes', but only a warning was promised!
+: # cf-agent --no-lock --file ./examples/example_promise.cf
+:  warning: Warning promised, need to create file '/tmp/example'
 
 #+BEGIN_NOTES
   - This is a promise of *type* =files=.
