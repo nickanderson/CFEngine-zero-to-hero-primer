@@ -574,6 +574,9 @@ Bundles of type =common= apply to any CFEngine binary.
 
 ** How bundles hold state
 
+This matters when you call the same bundle more than one time within a given
+execution.
+
 - Classic arrays are cleared at the beginning of a bundle actuation.
 - Lists, strings, ints, reals, and data-containers are preserved but can be
   re-defined if not guarded with =if => isvariable()=.
