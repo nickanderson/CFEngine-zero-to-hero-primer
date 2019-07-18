@@ -763,20 +763,18 @@ each promise are separated by *commas*)
 *PRO TIP:* The [[https://github.com/cfengine/core/tree/master/contrib/cf-locate][=cf-locate=]] script in [[https://github.com/cfengine/core/tree/master/contrib/][core/contrib]] can help you find and view
 body and bundle definitions within your policy set.
 
-#+BEGIN_SRC shell :results output :exports both
-  cf-locate -f "perms m\(.*"
+#+BEGIN_SRC sh :results output :exports both
+  cf-locate --plain --full "perms m\(.*"
 #+END_SRC
 
 #+RESULTS:
-#+begin_example
--> body or bundle matching 'perms m\(.*' found in /home/nickanderson/.cfagent/inputs/lib/files.cf:1582
-body perms m(mode)
-# @brief Set the file mode
-# @param mode The new mode
-{
-      mode   => "$(mode)";
-}
-#+end_example
+: 
+: body perms m(mode)
+: # @brief Set the file mode
+: # @param mode The new mode
+: {
+:       mode   => "$(mode)";
+: }
 
 * Abstraction and Re-usability
 :PROPERTIES:
