@@ -572,7 +572,7 @@ Bundles apply to the binary that executes them. E.g., =agent= bundles apply to
 
 Bundles of type =common= apply to any CFEngine binary.
 
-** What component(s) use this bundle?
+** Quiz: What component(s) use this bundle?
 *** Example 1
 
 #+BEGIN_SRC cfengine3
@@ -641,7 +641,6 @@ Bundles of type =common= apply to any CFEngine binary.
        match_value => line_match_value(".*", $(reg_stat[rss]) );
   }
 #+END_SRC
-
 
 * Bodies
 :PROPERTIES:
