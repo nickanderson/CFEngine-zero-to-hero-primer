@@ -408,6 +408,28 @@ about itself which cooperate toward an end.
 
 - =promise body= :: A collection of promise attributes (not to be confused with
                     a body used as an attribute value)
+
+** Anatomy of a Promise: value
+
+#+CAPTION: Promise skeleton
+#+BEGIN_SRC artist
+  bundle bundle_type bundle_name
+  {
+    type:
+      context::
+        "promiser" -> { "promisee", "stakeholder" }
+                        ----------|
+          attribute1 => "value",  |
+          attribute2 => body,     |-- Promise Body
+          attributeN => bundle;   |
+  }                     ----------|
+#+END_SRC
+
+- =value= :: A value to be used by a promise attribute. Attributes that take
+             values (in contrast to bodies and bundles) are not complex and have
+             a limited range of input. Note, promise attributes that do not take
+             bundles or bodies *must be quoted*.
+
 ** Anatomy of a Promise: body
 
 #+CAPTION: Promise skeleton
@@ -424,7 +446,8 @@ about itself which cooperate toward an end.
   }                     ----------|
 #+END_SRC
 
-- =body= :: A collection of attribute values.
+- =body= :: A collection of attribute values. Note, promise attributes that take
+            bodies *must not be quoted*.
 
 ** Anatomy of a Promise: bundle
 
@@ -442,7 +465,9 @@ about itself which cooperate toward an end.
   }                     ----------|
 #+END_SRC
 
-- =bundle= :: A collection of promises.
+- =bundle= :: A collection of promises. Complex promise attributes like
+              =edit_line= take bundles. Note, promise attributes that take
+              bundles *must not be quoted*;
 
 ** Promise Attributes
 :PROPERTIES:
