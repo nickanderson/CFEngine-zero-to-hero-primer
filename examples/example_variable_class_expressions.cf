@@ -1,0 +1,13 @@
+#!/var/cfengine/bin/cf-agent -f-
+bundle agent main
+{
+  vars:
+    "variable_containing_class" string => "cfengine";
+
+  reports:
+    "$(variable_containing_class)"::
+      "'$(variable_containing_class)' is defined";
+
+    "!$(variable_containing_class)"::
+      "'$(variable_containing_class)' is NOT defined";
+}

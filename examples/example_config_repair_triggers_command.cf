@@ -1,0 +1,14 @@
+#!/var/cfengine/bin/cf-agent -f-
+bundle agent apache_config {
+  commands:
+
+    apache_config_repaired::
+      "/usr/sbin/apache2ctl graceful";
+
+  files:
+
+    "/etc/apache2/apache2.conf"
+        copy_from => remote_cp("/cfengine/repo/debian/apache2.conf",
+                               $(sys.policy_hub)),
+        classes => results("bundle", "apache_config");
+}

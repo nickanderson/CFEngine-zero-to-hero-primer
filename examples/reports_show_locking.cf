@@ -1,0 +1,13 @@
+#!/var/cfengine/bin/cf-agent -f-
+bundle agent main
+{
+  reports:
+      "I started running CFEngine $(sys.cf_version) at '$(sys.date)'"
+        action => immediate; 
+      "Hello World!";
+}
+body action immediate
+# @brief Evaluate the promise at every `cf-agent` execution.
+{
+    ifelapsed => "0";
+}

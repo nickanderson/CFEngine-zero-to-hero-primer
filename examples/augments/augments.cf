@@ -1,0 +1,11 @@
+bundle agent main
+{
+  reports:
+    "I defined '$(const.dollar)(def.myvar1)' as '$(def.myvar1)'";
+
+    supported_platform::
+      "This is a supported platform";
+
+    by_hostname::
+      "You can define classes from augments based on defined hostname";
+}

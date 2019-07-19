@@ -1,0 +1,8 @@
+#!/var/cfengine/bin/cf-agent -f-
+bundle agent main
+{
+  reports:
+      redhat:: # <- This context has no promises.
+        64_bit:: # <- This context has one promise. (not additive)
+          "I am $(sys.flavor) running on $(sys.arch)";
+}

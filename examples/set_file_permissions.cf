@@ -1,7 +1,12 @@
-bundle agent example {
+#!/var/cfengine/bin/cf-agent -f-
+bundle agent main {
   files:
     "/etc/shadow"     perms => perms_for_shadow_files;
     "/etc/gshadow"    perms => perms_for_shadow_files;
+
+  reports:
+    "Please run this policy as root"
+      if => not( strcmp( "$(sys.user_data[gid])", "0" ) ); 
 }
 
 body perms perms_for_shadow_files {

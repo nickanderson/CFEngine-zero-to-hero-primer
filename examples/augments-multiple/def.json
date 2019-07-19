@@ -1,0 +1,7 @@
+{
+  "vars": {
+      "myvar1": "defined from augments for all",
+      "myvar2": "defined from augments for all"
+    },
+  "augments": [ "$(sys.policy_entry_dirname)/$(sys.os).json" ]
+}

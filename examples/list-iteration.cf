@@ -1,0 +1,12 @@
+bundle agent main
+{
+  vars:
+      "l" slist => { "two", "one", "three" };
+      "d" data => '[ "three", "one", "two"]';
+      "d2" data => '{ "one":"1", "two":"2", "three":"3"}';
+
+  reports:
+      "l contains $(l)";
+      "d contains $(d)";
+      "d2 contains $(d2)";
+}

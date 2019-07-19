@@ -1,0 +1,7 @@
+#!/var/cfengine/bin/cf-agent -f-
+bundle agent main
+{
+  reports:
+    "'$(const.dollar)(def.myvar1)' is '$(def.myvar1)'";
+    "'$(const.dollar)(def.myvar2)' is '$(def.myvar2)'";
+}

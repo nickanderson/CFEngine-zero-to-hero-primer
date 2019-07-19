@@ -1,0 +1,10 @@
+{
+  "classes": {
+      "supported_platform": [ "ubuntu_\\d+" ],
+      "by_hostname": [ "nickanderson_thinkpad_w550s" ]
+  },
+  "vars": {
+      "myvar1": "defined from augments",
+      "myvar2": "defined from augments"
+    }
+}

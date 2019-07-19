@@ -815,7 +815,8 @@ The parameter =my_param= is accessed as a variable by =$(my_param)=.
 The *Masterfiles Policy Framework* is the default policy that ships with
 CFEngine. The standard library is included.
 
-- [[https://github.com/cfengine/masterfiles][Masterfiles Policy Framework]]
+- [[https://github.com/cfengine/masterfiles][Source]]
+- [[https://docs.cfengine.com/docs/3.12/reference-masterfiles-policy-framework.html][Documentation]]
 
 ** CFEngine Standard Library
 :PROPERTIES:
@@ -829,50 +830,90 @@ The standard library contains ready to use bundles and bodies that you can
 include in your promises and is growing with every version of CFEngine. Get to
 know the standard library well, it will save you much time.
 
-- [[https://docs.cfengine.com/lts/reference-masterfiles-policy-framework-lib.html][Standard Library Reference]]
+- [[https://github.com/cfengine/masterfiles/tree/master/lib][Source]]
+- [[https://docs.cfengine.com/lts/reference-masterfiles-policy-framework-lib.html][Documentation]]
 
-* Putting it All together
+* Putting it all together
 :PROPERTIES:
 :ID:       8906e180-eeea-4af5-ace5-fbcf093cf075
+:REVEAL_BACKGROUND: ./media/building_blocks.jpg
 :END:
 
-These are the building blocks. You now know what they all are.
+#+DOWNLOADED: https://upload.wikimedia.org/wikipedia/commons/b/b6/JJ%27s_Building_Blocks_free_creative_commons_%284269399012%29.jpg @ 2019-07-19 10:40:19
 
 * A few examples
 :PROPERTIES:
 :ID:       68586360-89e3-4971-9ecb-c99031283c8a
 :END:
 
-Now we will go through some examples.
-
-I encourage you to try executing the examples as we go along.
-
-- https://github.com/nickanderson/CFEngine-zero-to-hero-primer/tree/master/examples
+- [[https://github.com/nickanderson/CFEngine-zero-to-hero-primer/tree/master/examples][examples]]
 
 ** Executing the agent 
 
-To execute a policy run the following command:
-
+#+CAPTION: Example illustrating promise locking
 #+BEGIN_EXAMPLE
-  $ cf-agent --inform --file ./test.cf --bundle bundlename
+  $ cf-agent --no-locks --log-level=info --file ./test.cf --bundle bundlename
 #+END_EXAMPLE
 
 *Note:* Make sure you use the correct file and bundle name! For any examples
-using a bundle named main you can skip specifying the bundle.
+including a bundle named main or __main__ you can skip specifying the bundle.
+
+** A quick note on promise locking
+
+By default promises (excluding defaults, vars, classes, and methods) are locked
+for 1 minute once they are evaluated. 
+
+#+caption: Execute the same policy multiple times over course of minute to see locking
+#+BEGIN_SRC sh  :command-in-result t :tangle no :exports both :async t :results output
+  for i in $(seq 3); do
+    cf-agent -f ./examples/reports_show_locking.cf
+    sleep 30 
+  done
+#+END_SRC
+
+#+RESULTS:
+: R: I started running CFEngine 3.14.0a.4e12fcf75 at 'Fri Jul 19 11:23:01 2019'
+: R: Hello World!
+: R: I started running CFEngine 3.14.0a.4e12fcf75 at 'Fri Jul 19 11:23:31 2019'
+: R: I started running CFEngine 3.14.0a.4e12fcf75 at 'Fri Jul 19 11:24:01 2019'
+: R: Hello World!
+
+*** Inspecting the policy
+
+#+caption: examples/reports_show_locking.cf/
+#+BEGIN_SRC cfengine3 :include-stdlib nil :tangle examples/reports_show_locking.cf :exports code
+  bundle agent main
+  {
+    reports:
+        "I started running CFEngine $(sys.cf_version) at '$(sys.date)'"
+          action => immediate; 
+        "Hello World!";
+  }
+  body action immediate
+  # @brief Evaluate the promise at every `cf-agent` execution.
+  {
+      ifelapsed => "0";
+  }
+#+END_SRC
+
 
 ** Running commands
 :PROPERTIES:
 :ID:       f1a0a12d-213b-47b4-a76f-e90af704ed17
 :END:
 
-#+caption: =commands_echo_hello_world.cf=
-#+BEGIN_SRC cfengine3 :tangle examples/commands_echo_hello_world.cf
+#+caption: examples/commands_echo_hello_world.cf
+#+BEGIN_SRC cfengine3 :tangle examples/commands_echo_hello_world.cf :command-in-result t :tangle ./examples/commands_echo_hello_world.cf :exports both
   bundle agent main
   {
     commands:
         "/bin/echo Hello World!";
   }
 #+END_SRC
+
+#+RESULTS:
+: # cf-agent --no-lock --file ./examples/commands_echo_hello_world.cf
+:   notice: Q: ".../bin/echo Hello": Hello World!
 
 #+BEGIN_NOTES
 Commands are *not* the best way to accomplish automation.
@@ -886,13 +927,16 @@ Commands are *not* the best way to accomplish automation.
 :ID:       759fe7c4-fd50-4e0b-b9bb-0460d25c013f
 :END:
 
-#+caption: =set_file_permissions.cf=
+#+caption: examples/set_file_permissions.cf
 #+BEGIN_SRC cfengine3 :tangle examples/set_file_permissions.cf
   bundle agent main {
     files:
       "/etc/shadow"     perms => perms_for_shadow_files;
       "/etc/gshadow"    perms => perms_for_shadow_files;
-    reports: "Please run this policy as root" if => not( strcmp( "$(sys.user_data[gid]", "0" ) )); 
+      
+    reports:
+      "Please run this policy as root"
+        if => not( strcmp( "$(sys.user_data[gid])", "0" ) ); 
   }
 
   body perms perms_for_shadow_files {
@@ -901,32 +945,6 @@ Commands are *not* the best way to accomplish automation.
     mode   => "0640";
   }
 #+END_SRC
-
-#+RESULTS:
-#+begin_example
-/home/nickanderson/src/presentations/CFEngine-zero-to-hero/cfengine3-22885Fvr:6:95: error: syntax error
-  reports: "Please run this policy as root" if => not( strcmp( "$(sys.user_data[gid]", "0" ) )); 
-                                                                                              ^
-/home/nickanderson/src/presentations/CFEngine-zero-to-hero/cfengine3-22885Fvr:6:95: error: Check previous line, Expected ';', got ')'
-  reports: "Please run this policy as root" if => not( strcmp( "$(sys.user_data[gid]", "0" ) )); 
-                                                                                              ^
-   error: There are syntax errors in policy files
-   error: Policy failed validation with command '"/home/nickanderson/.cfagent/bin/cf-promises" -c "/home/nickanderson/src/presentations/CFEngine-zero-to-hero/cfengine3-22885Fvr"'
-   error: CFEngine was not able to get confirmation of promises from cf-promises, so going to failsafe
-   error: CFEngine failsafe.cf: /home/nickanderson/.cfagent/inputs /home/nickanderson/.cfagent/inputs/failsafe.cf
-   error: No suitable server found
-   error: No suitable server found
-R: Built-in failsafe policy triggered
-  notice: Q: ".../cf-agent" -f /":    error: Link '/usr/local/sbin/cf-key' points to '/var/cfengine/bin/cf-key' not '/home/nickanderson/.cfagent/bin/cf-key', error removing link
-Q: ".../cf-agent" -f /":    error: Link '/usr/local/sbin/cf-agent' points to '/var/cfengine/bin/cf-agent' not '/home/nickanderson/.cfagent/bin/cf-agent', error removing link
-Q: ".../cf-agent" -f /":    error: Link '/usr/local/sbin/cf-promises' points to '/var/cfengine/bin/cf-promises' not '/home/nickanderson/.cfagent/bin/cf-promises', error removing link
-Q: ".../cf-agent" -f /":    error: Link '/usr/local/sbin/cf-runagent' points to '/var/cfengine/bin/cf-runagent' not '/home/nickanderson/.cfagent/bin/cf-runagent', error removing link
-Q: ".../cf-agent" -f /":    error: Link '/usr/local/sbin/cf-monitord' points to '/var/cfengine/bin/cf-monitord' not '/home/nickanderson/.cfagent/bin/cf-monitord', error removing link
-Q: ".../cf-agent" -f /":    error: Link '/usr/local/sbin/cf-serverd' points to '/var/cfengine/bin/cf-serverd' not '/home/nickanderson/.cfagent/bin/cf-serverd', error removing link
-Q: ".../cf-agent" -f /":    error: No suitable server found
-Q: ".../cf-agent" -f /":    error: No suitable server found
-Q: ".../cf-agent" -f /":    error: No suitable server found
-#+end_example
 
 - This is an *agent* bundle (meaning that it is processed by =cf-agent=).
 - Its purpose is to set the permissions on =/etc/shadow= and =/etc/gshadow=.
@@ -942,10 +960,11 @@ because these attributes take a list of strings (aka, an =slist=).
 :ID:       4112e831-3a36-41f8-86df-6c0327623979
 :END:
 
-#+begin_src cfengine3
+#+CAPTION: examples/example_copy_file.cf
+#+begin_src cfengine3 :tangle ./examples/example_copy_file.cf
   bundle agent example {
     files:
-      "/etc/motd"     copy_from => cp("/repo/motd");
+      "/etc/motd" copy_from => cp("/repo/motd");
   }
 
   body copy_from cp (from) {
@@ -1019,8 +1038,7 @@ because these attributes take a list of strings (aka, an =slist=).
 :PROPERTIES:
 :ID:       df23c2a4-0fc9-492a-9587-b5ab168609c0
 :END:
-
-#+caption: =sshd_permit_root_login_no.cf=
+#+caption: examples/sshd_permit_root_login_no.cf
 #+BEGIN_SRC cfengine3 :tangle examples/sshd_permit_root_login_no.cf
   bundle agent main {
     files:
@@ -1035,14 +1053,19 @@ because these attributes take a list of strings (aka, an =slist=).
   }
 #+END_SRC
 
-- This will delete any line matching the regular expression =^PermitRootLogin.*=.
-- This also inserts the line =PermitRootLogin no= *at the end of the file*.
-- Delete is always applied before insert, so it will not delete the inserted line.
-- CFEngine is smart enough to know not to edit the file if the end result is
-  already /converged/.
-- This is an overly simplistic example. When editing configuration files you
-  probably want to copy the whole file or use =set_config_values()= from the
-  standard library.
+#+BEGIN_NOTES
+  Editing files is most useful when management must be shared between multiple
+  agents.
+
+  - This will delete any line matching the regular expression =^PermitRootLogin.*=.
+  - This also inserts the line =PermitRootLogin no= *at the end of the file*.
+  - Delete is always applied before insert, so it will not delete the inserted line.
+  - CFEngine is smart enough to know not to edit the file if the end result is
+    already /converged/.
+  - This is an overly simplistic example. When editing configuration files you
+    probably want to copy the whole file or use =set_config_values()= from the
+    standard library.
+#+END_NOTES
 
 * Variables
 
@@ -1050,8 +1073,8 @@ Can be one of several types:
 
 - strings
 - lists
-- numbers
-- data (JSON/YAML/CSV)
+- numbers (int/real)
+- data (JSON/YAML/CSV/ENV)
 
 Reference: [[https://docs.cfengine.com/lts/reference-special-variables.html][Special Variables]], [[https://docs.cfengine.com/lts/reference-language-concepts-variables.html][Language Concepts -> Variables]], [[https://docs.cfengine.com/lts/reference-promise-types-vars.html][Promise Types and
 Attributes -> vars]]
@@ -1063,7 +1086,7 @@ structure values.
 
 #+Name: implicit-iteration
 #+Caption: implicit-iteration.cf
-#+BEGIN_SRC cfengine3 :tangle ./examples/list-iteration.cf :exports both
+#+BEGIN_SRC cfengine3 :tangle ./examples/list-iteration.cf :exports both :command-in-result t
   bundle agent main
   {
     vars:
@@ -1081,21 +1104,24 @@ structure values.
 *** Example output 
 
 #+RESULTS: implicit-iteration
-: R: l contains two
-: R: l contains one
-: R: l contains three
-: R: d contains three
-: R: d contains one
-: R: d contains two
-: R: d2 contains 1
-: R: d2 contains 2
-: R: d2 contains 3
+#+begin_example
+# cf-agent --no-lock --file ./examples/list-iteration.cf
+R: l contains two
+R: l contains one
+R: l contains three
+R: d contains three
+R: d contains one
+R: d contains two
+R: d2 contains 1
+R: d2 contains 2
+R: d2 contains 3
+#+end_example
 
 ** Data and arrays
 
 #+Name: data-and-arrays.cf
-#+Caption: data-and-arrays.cf
-#+BEGIN_SRC cfengine3 :tangle ./examples/data-and-arrays.cf
+#+Caption: examples/data-and-arrays.cf
+#+BEGIN_SRC cfengine3 :tangle ./examples/data-and-arrays.cf :command-in-result t
   bundle agent main
   {
     vars:
@@ -1115,6 +1141,7 @@ structure values.
 
 #+RESULTS: data-and-arrays.cf
 #+begin_example
+# cf-agent --no-lock --file ./examples/data-and-arrays.cf
 R: $(d[key][subkey]) == value
 R: $(a[key][subkey]) == value
 R: d contains
@@ -1140,11 +1167,11 @@ A *class* is like a tag (like tagging a photo). Classes are used to give a
 promise *context*. Valid characters in classes are [A-Za-z0-9_] (alphanumeric
 and underscores). There are two types of classes.
 
-- *Built in classes*. These so called *hard classes* are classes that CFEngine
+- *Built in classes*. These *hard classes* are classes that CFEngine
    will create automatically. Hard classes are determined based on the system
    attributes. For example a server running Linux will have the class =linux=.
 
-- *User defined classes*. These so called *soft classes* are classes that are
+- *User defined classes*. These *soft classes* are classes that are
    defined by you. You can create them based on the outcome of a promise, based
    on the existence of other classes, or for no reason.
 
@@ -1156,34 +1183,34 @@ and underscores). There are two types of classes.
 Use ~cf-promsies --show-classes~ to see the first order of resolved classes. 
 
 #+Name: cf-promsies --show-classes
+#+CAPTION: Example showing how to view first order classes
 #+BEGIN_SRC sh :exports both :results raw :wrap EXAMPLE
-  cf-promises --show-classes
+  cf-promises --show-classes | head
 #+END_SRC
 
 *** sample cf-promises --show-classes output
 
-#+BEGIN_EXAMPLE
-Class name               Meta tags                               
-4_cpus                   source=agent,derived-from=sys.cpus,hardclass
-64_bit                   source=agent,hardclass                  
-GMT_December             time_based,cfengine_internal_time_based_autoremove,source=agent,hardclass
-Hr14                     time_based,cfengine_internal_time_based_autoremove,source=agent,hardclass
-Min10_15                 time_based,cfengine_internal_time_based_autoremove,source=agent,hardclass
-Yr2017                   time_based,cfengine_internal_time_based_autoremove,source=agent,hardclass
-_stdlib_has_path_awk     source=promise                          
-cfengine_3_11_0          inventory,attribute_name=none,source=agent,hardclass
-ipv4_192_168_122_1       inventory,attribute_name=none,source=agent,hardclass
-ipv4_gw_192_168_3_1      inventory,networking,/proc,source=agent,attribute_name=none,procfs,hardclass
-mac_52_54_00_6b_62_06    inventory,attribute_name=none,source=agent,hardclass
-ubuntu_17_10             inventory,attribute_name=none,source=agent,hardclass
-#+END_EXAMPLE
+#+RESULTS: cf-promsies --show-classes
+#+begin_EXAMPLE
+Class name                                                   Meta tags                               
+127_0_0_1                                                    inventory,attribute_name=none,source=agent,hardclass
+172_17_0_1                                                   inventory,attribute_name=none,source=agent,hardclass
+172_27_224_133                                               inventory,attribute_name=none,source=agent,hardclass
+192_168_122_1                                                inventory,attribute_name=none,source=agent,hardclass
+192_168_42_189                                               inventory,attribute_name=none,source=agent,hardclass
+4_cpus                                                       source=agent,derived-from=sys.cpus,hardclass
+64_bit                                                       source=agent,hardclass                  
+Afternoon                                                    time_based,cfengine_internal_time_based_autoremove,source=agent,hardclass
+Day19                                                        time_based,cfengine_internal_time_based_autoremove,source=agent,hardclass
+#+end_EXAMPLE
 
 ** Control Promise Selection
 :PROPERTIES:
 :ID:       f702d707-312e-40b6-8bdd-967da8188cec
 :END:
 
-#+BEGIN_SRC cfengine3
+#+CAPTION: examples/example_apache_config_copied.cf
+#+BEGIN_SRC cfengine3 :tangle ./examples/example_apache_config_copied.cf
   bundle agent apache_config {
     files:
 
@@ -1207,7 +1234,7 @@ ubuntu_17_10             inventory,attribute_name=none,source=agent,hardclass
 :ID:       5f448af0-c91c-4da9-bdbc-297979c5e110
 :END:
 
-#+caption: =implicit_class_context.cf=
+#+caption: examples/implicit_class_context.cf
 #+BEGIN_SRC cfengine3 :tangle examples/implicit_class_context.cf
   bundle agent example {
     files:
@@ -1242,7 +1269,8 @@ ubuntu_17_10             inventory,attribute_name=none,source=agent,hardclass
 ** Classes are NOT nested
 
 #+Name: There are no nested contexts
-#+BEGIN_SRC cfengine3
+#+CAPTION: examples/example_no_nested_classes.cf
+#+BEGIN_SRC cfengine3 :tangle ./examples/example_no_nested_classes.cf :command-in-result t
   bundle agent main
   {
     reports:
@@ -1257,14 +1285,16 @@ ubuntu_17_10             inventory,attribute_name=none,source=agent,hardclass
 - Nesting class expressions does not make them additive
 
 #+RESULTS: There are no nested contexts
-: R: I am ubuntu_17 running on x86_64
+: # cf-agent --no-lock --file ./examples/example_no_nested_classes.cf
+: R: I am ubuntu_19 running on x86_64
 
 ** Use Classes to Control Flow
 :PROPERTIES:
 :ID:       f3ecf589-89b4-4a7b-aa3c-9fc68c710b07
 :END:
 
-#+BEGIN_SRC cfengine3
+#+CAPTION: examples/example_config_repair_triggers_command.cf
+#+BEGIN_SRC cfengine3 :tangle ./examples/example_config_repair_triggers_command.cf
   bundle agent apache_config {
     commands:
 
@@ -1274,18 +1304,20 @@ ubuntu_17_10             inventory,attribute_name=none,source=agent,hardclass
     files:
 
       "/etc/apache2/apache2.conf"
-          copy_from => remote_cp("/cfengine/repo/debian/apache2.conf","$(sys.policy_hub)")
+          copy_from => remote_cp("/cfengine/repo/debian/apache2.conf",
+                                 $(sys.policy_hub)),
           classes => results("bundle", "apache_config");
-
   }
 #+END_SRC
 
 - Only when the apache config is updated define =apache_config_repaired=.
 - Only when =apache_config_repaired= is defined execute the command to restart
   the service.
-  
-I use this *ALL*. *THE*. *TIME*. If this class is to teach you 20% that
-accomplishes 80%, *this slide* is the 5% that accomplishes 95%.
+
+#+BEGIN_NOTE
+  I use this *ALL*. *THE*. *TIME*. If this class is to teach you 20% that
+  accomplishes 80%, *this slide* is the 5% that accomplishes 95%.
+#+END_NOTE  
 
 ** Class Expressions
 :PROPERTIES:
@@ -1304,7 +1336,7 @@ accomplishes 80%, *this slide* is the 5% that accomplishes 95%.
 | Operator     | Meaning           | Example                             |
 |--------------+-------------------+-------------------------------------|
 | =.= and =&=  | boolean *and*     | =debian.Tuesday::=                  |
-| =ǀ= and =ǀǀ=  | boolean *or*      | =TuesdayǀWednesday::=               |
+| =ǀ= and =ǀǀ= | boolean *or*      | =TuesdayǀWednesday::=               |
 | =!=          | boolean *not*     | =!Monday::=                         |
 | =( )=        | Explicit grouping | =(debianǀredhat).!ubuntu.!centos::= |
 |--------------+-------------------+-------------------------------------|
@@ -1318,7 +1350,7 @@ Since 3.7.0 CFEngine is able to dereference variables directly within class
 expressions. Note that quotes surrounding the entire expression ending before
 the =::= are required.
 
-#+BEGIN_SRC cfengine3 :exports both
+#+BEGIN_SRC cfengine3 :exports both :tangle ./examples/example_variable_class_expressions.cf :command-in-result t
   bundle agent main
   {
     vars:
@@ -1334,8 +1366,8 @@ the =::= are required.
 #+END_SRC
 
 #+RESULTS:
+: # cf-agent --no-lock --file ./examples/example_variable_class_expressions.cf
 : R: 'cfengine' is defined
-
 
 ** A Note About Classes and Distributions Based on Other Distributions
 :PROPERTIES:
@@ -1364,11 +1396,11 @@ I said that only Debian systems will run =debian::= and only Red Hat will run
   =ubuntu_17= is defined.
 - Define =by_hostname= if the class =nickanderson_thinkpad_w550s= is defined.
  
-#+Caption: =examples/augments/def.json=
+#+Caption: examples/augments/def.json
 #+BEGIN_SRC json :tangle ./examples/augments/def.json
   {
     "classes": {
-        "supported_platform": [ "ubuntu_14", "ubuntu_16", "ubuntu_17" ],
+        "supported_platform": [ "ubuntu_\\d+" ],
         "by_hostname": [ "nickanderson_thinkpad_w550s" ]
     },
     "vars": {
@@ -1380,8 +1412,9 @@ I said that only Debian systems will run =debian::= and only Red Hat will run
 
 ** Example policy using augments
 
-#+Caption: =examples/augments/augments.cf=
-#+BEGIN_SRC cfengine3 :tangle ./examples/augments/augments.cf
+#+NAME: examples/augments/augments.cf
+#+Caption: examples/augments/augments.cf
+#+BEGIN_SRC cfengine3 :tangle ./examples/augments/augments.cf :command-in-result t
   bundle agent main
   {
     reports:
@@ -1397,9 +1430,8 @@ I said that only Debian systems will run =debian::= and only Red Hat will run
 
 ** Example output
 
-#+BEGIN_SRC shell :results output
-  chmod 600 ./examples/augments/augments.cf
-  cf-agent -KIf ./examples/augments/augments.cf
+#+BEGIN_SRC sh :results output :exports both
+  cf-agent --no-lock --file ./examples/augments/augments.cf
 #+END_SRC
 
 #+RESULTS:
@@ -1409,8 +1441,9 @@ I said that only Debian systems will run =debian::= and only Red Hat will run
 
 ** Policy always wins!
 
-#+Caption: =examples/augments/augments-policy-wins.cf=
-#+BEGIN_SRC cfengine3 :tangle ./examples/augments/augments-policy-wins.cf
+#+NAME: examples/augments/augments-policy-wins.cf
+#+Caption: examples/augments/augments-policy-wins.cf
+#+BEGIN_SRC cfengine3 :tangle ./examples/augments/augments-policy-wins.cf :command-in-result t
   bundle common def
   {
     vars:
@@ -1433,9 +1466,8 @@ I said that only Debian systems will run =debian::= and only Red Hat will run
 
 ** Example output
 
-#+BEGIN_SRC shell :results output
-  chmod 600 ./examples/augments/augments-policy-wins.cf
-  cf-agent -KIf ./examples/augments/augments-policy-wins.cf
+#+BEGIN_SRC sh :results output :exports both
+  cf-agent --no-lock --file ./examples/augments/augments-policy-wins.cf
 #+END_SRC
 
 #+RESULTS:
@@ -1446,7 +1478,49 @@ I said that only Debian systems will run =debian::= and only Red Hat will run
 
 ** Multiple augments
 
-... coming soon to an agent near you (3.12+)
+Merge more specific augments (based on sys vars) on top.
+
+#+Caption: examples/augments-multiple/def.json
+#+BEGIN_SRC json :tangle ./examples/augments-multiple/def.json
+  {
+    "vars": {
+        "myvar1": "defined from augments for all",
+        "myvar2": "defined from augments for all"
+      },
+    "augments": [ "$(sys.policy_entry_dirname)/$(sys.os).json" ]
+  }
+#+END_SRC 
+
+#+CAPTION: examples/augments-multiple/linux.json
+#+BEGIN_SRC json :tangle ./examples/augments-multiple/linux.json
+  {
+    "vars": {
+        "myvar2": "override for linux hosts"
+      }
+  }
+#+END_SRC 
+
+*** Multiple augments: Example policy
+
+#+NAME: examples/augments-multiple/promises.cf
+#+Caption: examples/augments-multiple/promises.cf
+#+BEGIN_SRC cfengine3 :tangle ./examples/augments-multiple/promises.cf :command-in-result t
+  bundle agent main
+  {
+    reports:
+      "'$(const.dollar)(def.myvar1)' is '$(def.myvar1)'";
+      "'$(const.dollar)(def.myvar2)' is '$(def.myvar2)'";
+  }
+#+END_SRC
+
+#+BEGIN_SRC sh :results output :exports both
+  cf-agent --no-lock --file ./examples/augments-multiple/promises.cf
+#+END_SRC
+
+#+RESULTS:
+: R: '$(def.myvar1)' is 'defined from augments for all'
+: R: '$(def.myvar2)' is 'override for linux hosts'
+
 
 * Managing Processes
 :PROPERTIES:
@@ -1457,31 +1531,34 @@ I said that only Debian systems will run =debian::= and only Red Hat will run
 :ID:       bb6290e8-213e-484d-b412-9382d1d785c3
 :END:
 
-#+BEGIN_SRC cfengine3
+#+NAME: ./examples/example_apache_service_running.cf
+#+BEGIN_SRC cfengine3 :tangle ./examples/example_apache_service_running.cf
   bundle agent apache {
 
     processes:
-        "apache2"
-          restart_class => "StartApache";
+        ".*apache2.*"
+          restart_class => "apache2_not_running";
 
     commands:
-      StartApache::
+      apache2_not_running::
         "/etc/init.d/apache2 start";
   }
 #+END_SRC
 
+#+BEGIN_NOTE
 This policy uses a =processes= promise to check the process table (with =ps=)
 for the regular expression =.*apache2.*=. If it is not found then the class
-=StartApache= will get defined.
+=apache2_not_running= will get defined.
 
 When CFEngine executes =commands= promises Apache will be started.
+#+END_NOTE
 
 ** Ensuring Processes are Not Running: Using Processes and Commands
 :PROPERTIES:
 :ID:       bc4aa11f-fe91-4c70-b103-12fd4731be60
 :END:
 
-#+caption: =process_stop_bluetoothd.cf=
+#+caption: examples/process_stop_bluetoothd.cf
 #+BEGIN_SRC cfengine3 :tangle examples/process_stop_bluetoothd.cf
   bundle agent stop_bluetooth {
 
@@ -1501,13 +1578,13 @@ command is executed.
 :ID:       7dfc7a39-30e0-4c63-b7ab-3a598cab3f7d
 :END:
 
-#+caption: =process_signals_bluetoothd.cf=
+#+caption: examples/process_signals_bluetoothd.cf
 #+BEGIN_SRC cfengine3 :tangle examples/process_signals_bluetoothd.cf
   bundle agent stop_bluetooth {
 
     processes:
 
-      "bluetoothd"
+      ".*bluetoothd.*"
         signals => { "term", "kill" };
   }
 #+END_SRC
@@ -1516,17 +1593,20 @@ This policy uses a =processes= promise to check the process table (with =ps=)
 for the regular expression =.*bluetoothd.*=. Any matching process is sent the
 =term= signal, then sent the =kill= signal.
 
+#+begin_notes
 *Note:* The promise =bluetoothd= becomes the *regular expression*,
 =.*bluetoothd.*= that is matched against the output of =ps=. This means that it
 can match *anywhere* on the line (in versions prior to 3.9), not just the
 process name field. *Caveat emptor!*
+#+end_notes
 
 ** Keep Services Running: Using Services
 :PROPERTIES:
 :ID:       4e737c64-f5c6-41a6-b4c3-5a7c6082533c
 :END:
 
-#+BEGIN_SRC cfengine3
+#+NAME: examples/example_service_running.cf
+#+BEGIN_SRC cfengine3 :tangle ./examples/example_service_running.cf
   bundle agent apache {
     services:
 
@@ -1547,7 +1627,8 @@ check as appropriate for the init system in use.
 :ID:       52325dac-802a-4a7c-a286-41167a4349d2
 :END:
 
-#+caption: =services_bluetoothd_stop.cf=
+#+name: examples/services_bluetoothd_stop.cf
+#+caption: examples/services_bluetoothd_stop.cf
 #+BEGIN_SRC cfengine3 :tangle examples/services_bluetoothd_stop.cf
   bundle agent stop_bluetoothd {
     services:
@@ -1564,32 +1645,24 @@ higher.
 
 The same restrictions about distros apply to stopping services promises.
 
+** A note on the services promise abstraction
+
+Services promises are really an [[https://cmdln.org/2019/05/31/custom-services-in-cfengine-3/][abstraction on bundles]].
+
 * Managing Packages
 :PROPERTIES:
 :ID:       640d1c4c-8e50-4924-9196-7d45ff2f495d
 :END:
 
-** Package Managers
+** Package modules (newer implementation)
 :PROPERTIES:
 :ID:       60949620-51bb-456e-8847-35e52d82a0ca
 :END:
 
-- =package_methods=
+=apt_get=, =pkgsrc=, =freebsd_ports=, =slackpkg=, =msiexec=, =yum=, =nimclient=,
+ =zypper=, =pkg=
 
-  =pip(flags)=, =npm(dir)=, =npm_g=, =brew(user)=, =apt=, =apt_get=,
-  =apt_get_permissive=, =apt_get_release(release)=, =dpkg_version(repo)=,
-  =rpm_version(repo)=, =windows_feature=, =msi_implicit(repo)=,
-  =msi_explicit(repo)=, =yum=, =yum_rpm=, =yum_rpm_permissive=,
-  =yum_rpm_enable_repo(repoid)=, =yum_group=, =rpm_filebased(path)=, =ips=,
-  =smartos=, =smartos_pkg_add(repo)=, =opencsw=, =solaris(pkgname, spoolfile,
-  adminfile)=, =solaris_install(adminfile)=, =freebsd=, =freebsd_portmaster=,
-  =alpinelinux=, =emerge=, =pacman=, =zypper=, =generic=
-
-- =package_modules=
-
-  =yum=, =apt_get=, =freebsd_ports=, =nimclient=, =pkg=, =pkgsrc=
-
-** New Implementation
+*** Example use of package_module 
 :PROPERTIES:
 :ID:       b3d20cf4-75cc-4a24-9188-d85c1b6f2be3
 :END:
@@ -1610,7 +1683,17 @@ The same restrictions about distros apply to stopping services promises.
 - The =version= of =latest= means the installed version should be the latest
   available. Alternatively you can provide an explicit version.
 
-** Legacy Implementation
+** Package modules (legacy implementation)
+
+ =alpinelinux=, =freebsd=, =opencsw=, =solaris_install=, =apt=,
+ =freebsd_portmaster=, =pacman=, =windows_feature=, =apt_get=, =generic=, =pip=,
+ =yum=, =apt_get_permissive=, =ips=, =rpm_filebased=, =yum_group=,
+ =apt_get_release=, =msi_explicit=, =rpm_version=, =yum_rpm=, =brew=,
+ =msi_implicit=, =smartos=, =yum_rpm_enable_repo=, =dpkg_version=, =npm=,
+ =smartos_pkg_add(repo)=, =yum_rpm_permissive=, =emerge=, =npm_g=, =solaris=,
+ =zypper=,
+
+*** Example use of package_method
 :PROPERTIES:
 :ID:       a4a244f9-fa44-48ce-8585-8f15824b1712
 :END:
@@ -1661,7 +1744,7 @@ easier to dig into the specific details of how packages should be managed.
 
 *** Mustache Templating 
 
-#+Caption: =template.mustache=
+#+Caption: examples/template.mustache
 #+BEGIN_SRC text :tangle examples/template.mustache
   Hello from {{{vars.sys.fqhost}}}!
 
@@ -1669,7 +1752,7 @@ easier to dig into the specific details of how packages should be managed.
   {{^classes.windows}}I am NOT a Windows Box{{/classes.windows}}
 #+END_SRC
 
-#+Caption: =template_file.cf=
+#+Caption: examples/template_file.cf
 #+BEGIN_SRC cfengine3 :tangle examples/template_file.cf
   bundle agent main{
     files:
@@ -1690,11 +1773,12 @@ easier to dig into the specific details of how packages should be managed.
 - =$= :: Variable prefix causing the data to be rendered as the serialized JSON
          representation of the data given to the templating engine.
 
-*** Exercise: Render multiline JSON for =packagesmatching()=
+*** Example: Render multiline JSON for =packagesmatching()=
 
 =packagesmatching()= returns data. Render the multiline JSON representation of the data.
 
-#+BEGIN_SRC cfengine3
+#+NAME: examples/render_multiline_json_for_packagesmatching.cf
+#+BEGIN_SRC cfengine3 :tangle ./examples/render_multiline_json_for_packagesmatching.cf
   bundle agent main
   {
     vars:
@@ -1708,6 +1792,8 @@ easier to dig into the specific details of how packages should be managed.
 
   }
 #+END_SRC
+
+*** Output: Render multiline JSON for =packagesmatching()=
 
 #+RESULTS:
 #+begin_example
@@ -1753,12 +1839,12 @@ R: [
 
 *** Mustache Tips
 
-- Render raw values with ={{{VAR}}}= or ={{& VAR}}=. Mustache html escapes by
-  default.
+- Render raw values with ={{{VAR}}}= or ={{& VAR}}=. *Mustache html escapes by
+  default*.
 
-- Use =[[https://docs.cfengine.com/lts/reference-functions-string_mustache.html][string_mustache()]]= to render mustache into a string.
+- Use [[https://docs.cfengine.com/lts/reference-functions-string_mustache.html][string_mustache()]] to render mustache into a string.
 
-- =[[https://docs.cfengine.com/lts/reference-promise-types-files.html#template_data][template_data()]]= Helps to separate CFEngine specifics from templates.
+- [[https://docs.cfengine.com/lts/reference-promise-types-files.html#template_data][template_data()]] Helps to separate CFEngine specifics from templates.
 
 #+BEGIN_NOTES
   - Watch out for html escaped values
@@ -1772,7 +1858,8 @@ R: [
 :ID:       dcde8434-d578-4bd2-9798-390bab27d97b
 :END:
 
-#+BEGIN_SRC cfengine3
+#+Caption: examples/example_delete_old_log_files.cf
+#+BEGIN_SRC cfengine3 :tangle ./examples/example_delete_old_log_files.cf
   bundle agent tidy {
     files:
       "/var/log/.*"
@@ -1826,24 +1913,15 @@ hosts. Additional processes will be seen on Enterprise Hubs
 
 - Usually indicates the host does not trust the hub.
 - Is the host bootstrapped to the hub you expect?
-
-*** =SSL_read=: receive timeout 
-
-#+BEGIN_EXAMPLE
-  [root@hub ~]# cf-hub -q rebase -H 10.10.10.11
-     error: SSL_read: receive timeout
-#+END_EXAMPLE
-
-- The report data is not able to be collected before =cf-hub= times out.
-- Run the agent on the remote host and define =cfe_internal_purge_reports= e.g.
-  ~cf-agent --no-lock --define cfe_internal_purge_reports~.
+- Run cf-serverd on the client with =--verbose= and =--no-fork= to see why it's
+  refusing
 
 *** Connection refused
 
 - Firewall blocking inbound connections on port =5308=
 - =cf-serverd= not running on remote host
  
-* Setting Up a Client/Server Environment                           :noexport:
+* Setting Up a Client/Server Environment
 :PROPERTIES:
 :ID:       66515861-4365-48d4-9658-6a9788eddc67
 :END:
@@ -1892,19 +1970,9 @@ You can use the server's IP address instead of the DNS name.
 :ID:       d9e383b1-66ce-4c83-9bc1-249ba4d388b3
 :END:
 
-The policy files are in =/var/cfengine/masterfiles= on the server (also known as
+Policy is distributed from =/var/cfengine/masterfiles= on the server (also known as
 the =policy_hub=) and are copied to =/var/cfengine/inputs=. All clients then
 copy =/var/cfengine/inputs= from the server.
-
-Now edit the policy in =/var/cfengine/masterfiles= on the server and watch for
-the changes to happen on the client.
-
-As you write new policies, each bundle needs to be listed in the
-=bundlesequence= and each file needs to be listed in =inputs=. Both of these are
-under =body common control= inside of =promises.cf=.
-
-Bundles are executed in the order they are listed in the =bundlesequence=, but
-=inputs= can be listed in any order.
 
 * Reporting on Promise Outcomes
 :PROPERTIES:
@@ -2447,7 +2515,7 @@ the [[https://docs.cfengine.com/lts/reference.html][reference manual]].
   function.
 - =storage:= promises — For local or remote (NFS) filesystems.
 - =edit_xml:= promises - Promise by path, CFEngine does the XML for you.
-- Monitoring — Using data from =cf-monitor=.
+- Monitoring — Using data from =cf-monitord=.
 
 ** Pro Tips
 :PROPERTIES:

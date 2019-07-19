@@ -1,0 +1,14 @@
+#!/var/cfengine/bin/cf-agent -f-
+bundle agent apache_config {
+  files:
+
+    debian::
+      "/etc/apache2/apache2.conf"
+        copy_from => remote_cp("/cfengine/repo/debian/apache2.conf","$(sys.policy_hub)");
+    redhat::
+      "/etc/httpd/conf/httpd.conf"
+        copy_from => remote_cp("/cfengine/repo/redhat/httpd.conf","$(sys.policy_hub)");
+    solaris::
+      "/etc/apache2/2.2/httpd.conf"
+        copy_from => remote_cp("/cfengine/repo/solaris/httpd.conf","$(sys.policy_hub)");
+}
