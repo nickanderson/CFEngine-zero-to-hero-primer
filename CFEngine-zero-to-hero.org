@@ -25,6 +25,7 @@
 #+REVEAL_PLUGINS: (notes)
 #+REVEAL_ROOT: ./reveal.js
 # Set to true when exporting for github, must be false for speaker notes to work
+#+OPTIONS: reveal_single_file:t
 
 #+BEGIN_COMMENT
 # Derived from [[http://github.com/bahamat/cf-primer][CF-Primer: Zero to Hero]]
