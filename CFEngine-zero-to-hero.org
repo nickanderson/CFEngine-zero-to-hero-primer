@@ -1,4 +1,4 @@
-#+Title: CFEngine Zero to Hero Primer
+#+Title: CFEngine Zero to Hero
 #+Author: Nick Anderson
 #+Email: nick@cmdln.org
 #+PROPERTY: header-args:cfengine3+ :eval never-export
