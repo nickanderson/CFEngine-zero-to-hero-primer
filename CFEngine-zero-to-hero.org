@@ -9,7 +9,6 @@
 #+OPTIONS: reveal_center:t reveal_progress:t reveal_history:nil reveal_control:t
 #+OPTIONS: reveal_rolling_links:t reveal_keyboard:t reveal_overview:t num:nil
 #+OPTIONS: reveal_width:1200 reveal_height:800
-#+OPTIOnS: reveal_single_file:t
 # The TOC is a bit much for a slide show IMHO
 #+OPTIONS: toc:nil tags:nil timestamp:nil
 #+REVEAL_MARGIN: 0.1
@@ -24,7 +23,8 @@
 #+REVEAL_HEAD_PREAMBLE: <meta name=description" content=CFEngine Zero to Hero Primer.">
 #+REVEAL_POSTAMBLE: <p> Created by Nick Anderson. </p>
 #+REVEAL_PLUGINS: (notes)
-#+REVEAL_EXTRA_CSS: ./local.css
+#+REVEAL_ROOT: ./reveal.js
+# Set to true when exporting for github, must be false for speaker notes to work
 
 #+BEGIN_COMMENT
 # Derived from [[http://github.com/bahamat/cf-primer][CF-Primer: Zero to Hero]]
@@ -64,6 +64,15 @@ Goal for this presentation: Learn *20%* of CFEngine enabling *80%* of your work.
 - Fast
 - Flexible
 - Portable
+
+#+BEGIN_NOTES
+  - Mature :: Originally released in 1993 (same year as Linux)
+  - Small/Fast :: proliferation of /physical/ devices, you know your containers
+                  are still running on some host, and that host needs to be in
+                  compliance. Security issues in hardware, mitigation can
+                  degrade performance >10%
+  - Flexible/Portable :: Servers, workstations, IoT
+#+END_NOTES
 
 ** Want to know more?
 
@@ -762,11 +771,11 @@ each promise are separated by *commas*)
 
 *** What is m?
 
-#+BEGIN_NOTE
+#+BEGIN_NOTES
   Bodies and bundles that ship as part of the MPF are documented in-line and are
   rendered in the Masterfiles Policy Framework section of the Reference Manual
   at docs.cfengine.com.
-#+END_NOTE
+#+END_NOTES
 
 *PRO TIP:* The [[https://github.com/cfengine/core/tree/master/contrib/cf-locate][=cf-locate=]] script in [[https://github.com/cfengine/core/tree/master/contrib/][core/contrib]] can help you find and view
 body and bundle definitions within your policy set.
@@ -1314,10 +1323,10 @@ Day19                                                        time_based,cfengine
 - Only when =apache_config_repaired= is defined execute the command to restart
   the service.
 
-#+BEGIN_NOTE
+#+BEGIN_NOTES
   I use this *ALL*. *THE*. *TIME*. If this class is to teach you 20% that
   accomplishes 80%, *this slide* is the 5% that accomplishes 95%.
-#+END_NOTE  
+#+END_NOTES 
 
 ** Class Expressions
 :PROPERTIES:
@@ -1545,13 +1554,13 @@ Merge more specific augments (based on sys vars) on top.
   }
 #+END_SRC
 
-#+BEGIN_NOTE
+#+BEGIN_NOTES
 This policy uses a =processes= promise to check the process table (with =ps=)
 for the regular expression =.*apache2.*=. If it is not found then the class
 =apache2_not_running= will get defined.
 
 When CFEngine executes =commands= promises Apache will be started.
-#+END_NOTE
+#+END_NOTES
 
 ** Ensuring Processes are Not Running: Using Processes and Commands
 :PROPERTIES:
@@ -1931,8 +1940,7 @@ and the server FQDN must be set properly in DNS (or use the IP addresses). This
 is ideally handled by your provisioning process. Along with automating server
 function you should also be automating your provisioning process.
 
-Some ways of automating provisioning are [[http://fedoraproject.org][kickstart]], [[http://wiki.debian.org/DebianInstaller/Preseed][preseed]], [[http://wiki.debian.org/FAI][fai]], [[http://cobbler.github.io/][cobbler]], [[http://www.osalt.com/g4u][disk
-imaging]], [[http://aws.amazon.com/ec2/][instance cloning]], etc, etc. This, of course, is not a complete list.
+Some ways of automating provisioning are [[http://fedoraproject.org][kickstart]], [[http://wiki.debian.org/DebianInstaller/Preseed][preseed]], [[http://wiki.debian.org/FAI][fai]], [[http://cobbler.github.io/][cobbler]], [[http://www.osalt.com/g4u][disk imaging]], [[http://aws.amazon.com/ec2/][instance cloning]], etc, etc. This, of course, is not a complete list.
 
 ** Bootstraping the Server and Client
 :PROPERTIES:
