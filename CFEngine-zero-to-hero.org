@@ -55,11 +55,15 @@ limitations under the License.
 CFEngine runs primarily on UNIX and UNIX-like operating systems, but can also
 run on Windows.
 
-** continued ...
-CFEngine is very extensive and powerful. In this presentation you will learn
-only a subset of what CFEngine can do. A mere tip of the iceberg, but this will
-represent the bulk of what you do with CFEngine. In other words, you'll learn
-the 20% of CFEngine that will do 80% of the work.
+Goal for this presentation: Learn *20%* of CFEngine enabling *80%* of your work.
+
+** Why CFEngine?
+
+- Mature
+- Small
+- Fast
+- Flexible
+- Portable
 
 ** Want to know more?
 
