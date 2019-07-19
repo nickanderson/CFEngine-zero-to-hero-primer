@@ -6,7 +6,6 @@
 #+PROPERTY: header-args:cfengine3+ :exports both
 #+PROPERTY: header-args:sh+ :eval never-export
 #+PROPERTY: header-args:shell+ :eval never-export
-#+REVEAL_ROOT: file:///home/nickanderson/src/reveal.js/
 #+OPTIONS: reveal_center:t reveal_progress:t reveal_history:nil reveal_control:t
 #+OPTIONS: reveal_rolling_links:t reveal_keyboard:t reveal_overview:t num:nil
 #+OPTIONS: reveal_width:1200 reveal_height:800
@@ -24,9 +23,8 @@
 #+REVEAL_HLEVEL: 1
 #+REVEAL_HEAD_PREAMBLE: <meta name=description" content=CFEngine Zero to Hero Primer.">
 #+REVEAL_POSTAMBLE: <p> Created by Nick Anderson. </p>
-#+REVEAL_PLUGINS: (markdown notes)
+#+REVEAL_PLUGINS: (notes)
 #+REVEAL_EXTRA_CSS: ./local.css
-
 
 #+BEGIN_COMMENT
 # Derived from [[http://github.com/bahamat/cf-primer][CF-Primer: Zero to Hero]]
@@ -747,9 +745,9 @@ In a body, each attribute ends with a *semicolon*.
 (Note that in a bundle each promise ends with a *semicolon*, while attributes of
 each promise are separated by *commas*)
 
-** External body example
+** Example showing use of external body
 
-#+Caption: The m perms body takes one paramater
+#+Caption: The =m= perms body takes one paramater
 #+BEGIN_SRC cfengine3
   bundle agent main {
     files:
@@ -760,9 +758,16 @@ each promise are separated by *commas*)
 
 *** What is m?
 
+#+BEGIN_NOTE
+  Bodies and bundles that ship as part of the MPF are documented in-line and are
+  rendered in the Masterfiles Policy Framework section of the Reference Manual
+  at docs.cfengine.com.
+#+END_NOTE
+
 *PRO TIP:* The [[https://github.com/cfengine/core/tree/master/contrib/cf-locate][=cf-locate=]] script in [[https://github.com/cfengine/core/tree/master/contrib/][core/contrib]] can help you find and view
 body and bundle definitions within your policy set.
 
+#+CAPTION: Example running cf-locate to see the details of an external body
 #+BEGIN_SRC sh :results output :exports both
   cf-locate --plain --full "perms m\(.*"
 #+END_SRC
