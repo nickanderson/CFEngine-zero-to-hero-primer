@@ -637,7 +637,7 @@ R: inside main: my_data = '{
 #+end_example
 
 ** Quiz: What component(s) use this bundle?
-*** Example 1
+*** What component(s) use common bundles?
 
 #+BEGIN_SRC cfengine3
   bundle common globals
@@ -652,7 +652,7 @@ R: inside main: my_data = '{
   - cf-agent, cf-monitord, cf-serverd
 #+END_NOTES
 
-*** Example 2
+*** What component(s) use server bundles?
 
 #+BEGIN_SRC cfengine3
   bundle server my_access_rules
@@ -664,7 +664,7 @@ R: inside main: my_data = '{
   }
 #+END_SRC
 
-*** Example 3
+*** What component(s) use agent bundles?
 
 #+BEGIN_SRC cfengine3
   bundle agent my_policy
@@ -682,7 +682,7 @@ R: inside main: my_data = '{
   }
 #+END_SRC
 
-*** Example 4
+*** What component(s) use monitor bundles?
 
 #+BEGIN_SRC cfengine3
   bundle monitor measure_cf_serverd
