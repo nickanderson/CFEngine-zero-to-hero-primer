@@ -58,6 +58,16 @@ run on Windows.
 
 Goal for this presentation: Learn *20%* of CFEngine enabling *80%* of your work.
 
+** Fork Me on Github!
+:PROPERTIES:
+:ID:       688caa3c-27be-483e-9c6b-9ce91134fea7
+:END:
+
+This presentation was made with love using org-mode 9.2.4, cfengine 3.12.2, and
+reveal.js 3.8.0. You can get a copy of this presentation any time on Github.
+
+<http://github.com/nickanderson/CFEngine-zero-to-hero-primer>
+
 ** Why CFEngine?
 
 - Mature
@@ -82,16 +92,6 @@ Goal for this presentation: Learn *20%* of CFEngine enabling *80%* of your work.
 - [[https://docs.cfengine.com/lts/reference.html][CFEngine Reference Manual]]
 - [[mailto:contact@cfengine.com][CFEngine Training & Professional Services]] (Email)
 - [[http://shop.oreilly.com/product/110000787.do][Beyond Automation with CFEngine3]] (Video Training)
-
-** Fork Me on Github!
-:PROPERTIES:
-:ID:       688caa3c-27be-483e-9c6b-9ce91134fea7
-:END:
-
-This presentation was made with love using org-mode 9.2.4, cfengine 3.12.2, and
-reveal.js 3.8.0. You can get a copy of this presentation any time on Github.
-
-<http://github.com/nickanderson/CFEngine-zero-to-hero-primer>
 
 * CFEngine Components
 :PROPERTIES:
