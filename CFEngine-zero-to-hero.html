@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
-<title>CFEngine Zero to Hero Primer</title>
+<title>CFEngine Zero to Hero</title>
 <meta name="author" content="Nick Anderson"/>
 <style type="text/css">
 .underline { text-decoration: underline; }
@@ -1885,12 +1885,12 @@ body {
 <div class="reveal">
 <div class="slides">
 <section id="sec-title-slide">
-<h1 class="title">CFEngine Zero to Hero Primer</h1><h2 class="author">Nick Anderson</h2>
+<h1 class="title">CFEngine Zero to Hero</h1><h2 class="author">Nick Anderson</h2>
 </section>
 
 <section>
-<section id="slide-org7e9c878">
-<h2 id="org7e9c878">Introduction</h2>
+<section id="slide-orgce251e4">
+<h2 id="orgce251e4">Introduction</h2>
 <p>
 <b>CFEngine</b> contains a powerful language for controlling all aspects of a system.
 CFEngine runs primarily on UNIX and UNIX-like operating systems, but can also
@@ -1902,8 +1902,8 @@ Goal for this presentation: Learn <b>20%</b> of CFEngine enabling <b>80%</b> of 
 </p>
 
 </section>
-<section id="slide-org6902675">
-<h3 id="org6902675">Why CFEngine?</h3>
+<section id="slide-org3bc0cc7">
+<h3 id="org3bc0cc7">Why CFEngine?</h3>
 <ul>
 <li>Mature</li>
 <li>Small</li>
@@ -1927,9 +1927,10 @@ degrade performance &gt;10%</dd>
 </aside>
 
 </section>
-<section id="slide-org6618407">
-<h3 id="org6618407">Want to know more?</h3>
+<section id="slide-org4b50f5d">
+<h3 id="org4b50f5d">Want to know more?</h3>
 <ul>
+<li><a href="https://leanpub.com/learning-cfengine/">Learning CFEngine</a></li>
 <li><a href="http://verticalsysadmin.com/">Vertical Sysadmin's CFEngine courses</a></li>
 <li><a href="https://docs.cfengine.com/lts/reference.html">CFEngine Reference Manual</a></li>
 <li><a href="mailto:contact@cfengine.com">CFEngine Training &amp; Professional Services</a> (Email)</li>
@@ -1938,8 +1939,8 @@ degrade performance &gt;10%</dd>
 </ul>
 
 </section>
-<section id="slide-orgd00a8b2">
-<h3 id="orgd00a8b2">Fork Me on Github!</h3>
+<section id="slide-org2713526">
+<h3 id="org2713526">Fork Me on Github!</h3>
 <p>
 This presentation was made with love using org-mode 9.2.4, cfengine 3.12.2, and
 reveal.js 3.8.0. You can get a copy of this presentation any time on Github.
@@ -1952,8 +1953,8 @@ reveal.js 3.8.0. You can get a copy of this presentation any time on Github.
 </section>
 </section>
 <section>
-<section id="slide-orge5b32ba">
-<h2 id="orge5b32ba">CFEngine Components</h2>
+<section id="slide-org103325f">
+<h2 id="org103325f">CFEngine Components</h2>
 <p>
 These are the major components of CFEngine that you will encounter on a day to
 day basis.
@@ -1968,8 +1969,8 @@ day basis.
 </ul>
 
 </section>
-<section id="slide-org41b0c88">
-<h3 id="org41b0c88"><code>cf-agent</code></h3>
+<section id="slide-org3e5fbf6">
+<h3 id="org3e5fbf6"><code>cf-agent</code></h3>
 <p>
 <code>cf-agent</code> is the command you will use most often. It is used to run
 policy(code) and ensure your system is in the desired state. If you are running
@@ -1978,8 +1979,8 @@ that this is it.
 </p>
 
 </section>
-<section id="slide-org4372f78">
-<h3 id="org4372f78"><code>cf-execd</code></h3>
+<section id="slide-org6f6407e">
+<h3 id="org6f6407e"><code>cf-execd</code></h3>
 <p>
 <code>cf-execd</code> is a periodic task scheduler. You can think of it like <code>cron</code> with an
 understanding of CFEngine classes.
@@ -1991,8 +1992,8 @@ is responsible for making that happen.
 </p>
 
 </section>
-<section id="slide-org4aede09">
-<h3 id="org4aede09"><code>cf-serverd</code></h3>
+<section id="slide-org6de3005">
+<h3 id="org6de3005"><code>cf-serverd</code></h3>
 <p>
 <code>cf-serverd</code> runs on the CFEngine server, as well as all clients.
 </p>
@@ -2009,8 +2010,8 @@ is responsible for making that happen.
 </p>
 
 </section>
-<section id="slide-org476a1c7">
-<h3 id="org476a1c7"><code>cf-monitord</code></h3>
+<section id="slide-orga3aed6d">
+<h3 id="orga3aed6d"><code>cf-monitord</code></h3>
 <p>
 <code>cf-monitord</code> monitors various statistics about the running system. This
 information is made available in the form of <b>classes</b> and <b>variables</b>.
@@ -2024,11 +2025,9 @@ You'll almost never use <code>cf-monitord</code> directly. However the data prov
 </section>
 </section>
 <section>
-<section id="slide-org5683a4a" data-background="./media/imperative-vs-declarative1_2016-05-11_16-31-47.png" data-background-size="600px">
-<h2 id="org5683a4a"></h2>
-</section>
-<section id="slide-org35e1ecf">
-<h3 id="org35e1ecf">Imperative vs. Declarative</h3>
+<section id="slide-orgba5b42c" data-background="./media/imperative-vs-declarative1_2016-05-11_16-31-47.png" data-background-size="600px">
+<h2 id="orgba5b42c"></h2>
+<aside class="notes">
 <p>
 It is very likely that you have only ever used <b>imperative</b> languages. Examples
 of imperative languages include C, Perl, Ruby, Python, shell scripting, etc.
@@ -2041,33 +2040,44 @@ CFEngine is a <b>declarative</b> language. The CFEngine language is merely a
 described state.
 </p>
 
+</aside>
+
 </section>
-<section id="slide-org45f7f60">
-<h4 id="org45f7f60">Declarative Policy vs Imperative Script</h4>
+<section id="slide-org4d525cf">
+<h3 id="org4d525cf">Declarative Policy vs Imperative Script</h3>
 <pre class="example">
-bundle agent main           | #!/bin/env/bash
-{                           |
-  packages:                 | rpm -q openssh-server || yum install openssh-server
-                            | yum check-update openssh-server
-    "openssh-server"        | if [ $? -eq 100 ]; then # update available
-      policy =&gt; "present",  |   yum upgrade openssh-server
-      version =&gt; "latest";  | fi 
+bundle agent main             | #!/bin/env/bash
+{                             |
+  packages:                   | rpm -q openssh-server || yum install openssh-server
+    redhat|centos::           | yum check-update openssh-server
+      "openssh-server"        | if [ $? -eq 100 ]; then # update available
+        policy =&gt; "present",  |   yum upgrade openssh-server
+        version =&gt; "latest";  | fi 
 }
 </pre>
 
 </section>
-<section id="slide-org39b4955">
-<h3 id="org39b4955">Imperative is Sequential</h3>
-<p>
-Imperative languages execute step by step in <b>sequence</b>.
-</p>
+<section id="slide-org3bdef14">
+<h3 id="org3bdef14">Imperative is Sequential</h3>
+<div class="org-src-container">
 
+<pre  class="src src-sh"><span style="color: #7c6f64;">#</span><span style="color: #7c6f64;">!/bin/env/</span><span style="color: #fb4933;">bash</span>
+rpm -q openssh-server || <span style="color: #b8bb26;">\</span>
+  yum install openssh-server
+yum check-update openssh-server
+<span style="color: #fb4933;">if</span> <span style="color: #458588;">[</span> $<span style="color: #83a598;">?</span> -eq <span style="color: #d3869b;">100</span> <span style="color: #458588;">]</span>; <span style="color: #fb4933;">then</span> <span style="color: #7c6f64;"># </span><span style="color: #7c6f64;">update available</span>
+  yum upgrade openssh-server
+<span style="color: #fb4933;">fi</span> 
+</pre>
+</div>
+
+<aside class="notes">
 <ul>
-<li>Goes in order from start to finish.</li>
-<li>If interrupted the state is <i>inconsistent</i>.</li>
-<li>Subsequent executions <i>typically</i> repeat tasks already done.
+<li>Commonly
 <ul>
-<li>Potentially causing damage.</li>
+<li>expect to start and end at known states</li>
+<li>repute tasks unnecessarily on subsequent execution</li>
+<li>inconsistent state if interrupted</li>
 
 </ul></li>
 
@@ -2090,9 +2100,25 @@ For Example:
 <b>Imperative starts at known state A and transforms to known state B.</b>
 </p>
 
+</aside>
+
 </section>
-<section id="slide-org9fe866f">
-<h3 id="org9fe866f">Declarative is Descriptive</h3>
+<section id="slide-org7f43fcd">
+<h3 id="org7f43fcd">Declarative is Descriptive</h3>
+<div class="org-src-container">
+
+<pre  class="src src-cfengine3"><span style="color: #fe8019;">bundle</span> <span style="color: #d3869b;">agent</span> <span style="color: #fabd2f;">main</span>
+<span style="color: #458588;">{</span>
+  <span style="color: #fe8019;">packages</span>:
+    <span style="color: #fb4933;">redhat|centos</span>::
+      <span style="color: #b8bb26;">"openssh-server"</span>
+        policy =&gt; <span style="color: #b8bb26;">"present"</span>,
+        version =&gt; <span style="color: #b8bb26;">"latest"</span>;
+<span style="color: #458588;">}</span>
+</pre>
+</div>
+
+<aside class="notes">
 <p>
 It is not a list of steps to achieve an outcome but a <b>description</b> of the
 desired state. Because of this any deviation from the desired state can be
@@ -2114,23 +2140,33 @@ When a system has reached the desired state it is said to have reached
 <b>convergence</b>.
 </p>
 
+</aside>
+
 </section>
 </section>
 <section>
-<section id="slide-org6f18240">
-<h2 id="org6f18240">Promise Theory</h2>
+<section id="slide-org9d127b5" data-background="./data/9c/0c5886-4b07-423e-9e4a-0b55a73515b7/Screenshot_20190724_115600_2019-07-24_11-56-55.png" data-background-size="600px">
+<h2 id="org9d127b5"></h2>
+</section>
+<section id="slide-orgdeb8fe0">
+<h3 id="orgdeb8fe0">Promise Theory</h3>
+<ul>
+<li><b>fundamental underlying philosophy</b> that drives CFEngine</li>
+<li><b>model of voluntary cooperation between individual, autonomous actors</b></li>
+
+</ul>
+
+<aside class="notes">
 <p>
-Promise theory is the <b>fundamental underlying philosophy</b> that drives CFEngine.
+It is a <b>model of voluntary cooperation between individual, autonomous actors</b>
+or agents who publish their intentions to one another in the form of promises.
 </p>
 
-<p>
-It is a model of voluntary cooperation between individual, autonomous actors or
-agents who publish their intentions to one another in the form of promises.
-</p>
+</aside>
 
 </section>
-<section id="slide-org538a6bb">
-<h3 id="org538a6bb">What makes promises?</h3>
+<section id="slide-orgf8ec9c2">
+<h3 id="orgf8ec9c2">What makes promises?</h3>
 <p>
 <b>A file</b> (e.g., <code>/etc/apache2/httpd.conf</code>) can make promises about its own
 contents, attributes, etc. But it does not make any promises about a process.
@@ -2147,8 +2183,8 @@ about itself which cooperate toward an end.
 </p>
 
 </section>
-<section id="slide-org6a7bb87">
-<h3 id="org6a7bb87">Going deeper</h3>
+<section id="slide-org87e8342">
+<h3 id="org87e8342">Going deeper</h3>
 <ul>
 <li><a href="https://www.youtube.com/playlist?list=PLYwRmweZvwB1C9HXvT4g6jXfZYET_cgXP">Promise Theory (animated video series)</a>
 <ul>
@@ -2162,8 +2198,8 @@ about itself which cooperate toward an end.
 </ul>
 
 </section>
-<section id="slide-org702d485">
-<h3 id="org702d485">Deeper still</h3>
+<section id="slide-orgb3efa33">
+<h3 id="orgb3efa33">Deeper still</h3>
 <ul>
 <li><a href="https://www.amazon.com/Thinking-Promises-Mark-Burgess-ebook/dp/B01092PYG8/ref=pd_cp_351_2?ie=UTF8&amp;refRID=P8MMWZ7H2X6B52JEAHNB">Thinking in Promises</a></li>
 <li><a href="https://www.amazon.com/Search-Certainty-Science-Information-Infrastructure-ebook/dp/B00WL6SPR6/ref=pd_sim_351_3?ie=UTF8&amp;dpID=61EbYHkv7NL&amp;dpSrc=sims&amp;preST=_OU01_AC_UL160_SR107%2C160_&amp;refRID=R1NF58A2W7Z570MN6V3P">In Search of Certainty</a></li>
@@ -10085,11 +10121,11 @@ b8aEyoZQfRJHZzKZoM6AqCIFk7DpKOjhcyIb/j+g9kpCk5rtvAAAAABJRU5ErkJggg==" />
 </section>
 </section>
 <section>
-<section id="slide-orgc5895ba">
-<h2 id="orgc5895ba">Promises</h2>
+<section id="slide-org75a532b">
+<h2 id="org75a532b">Promises</h2>
 </section>
-<section id="slide-orga8f7dd3">
-<h3 id="orga8f7dd3">Anatomy of a Promise</h3>
+<section id="slide-orgedc5d31">
+<h3 id="orgedc5d31">Anatomy of a Promise</h3>
 <div class="org-src-container">
 <label class="org-src-name">Promise skeleton</label>
 <pre  class="src src-artist">bundle bundle_type bundle_name
@@ -10106,8 +10142,8 @@ b8aEyoZQfRJHZzKZoM6AqCIFk7DpKOjhcyIb/j+g9kpCk5rtvAAAAABJRU5ErkJggg==" />
 </div>
 
 </section>
-<section id="slide-orga649f93">
-<h3 id="orga649f93">Anatomy of a Promise: bundle_type</h3>
+<section id="slide-orgace8314">
+<h3 id="orgace8314">Anatomy of a Promise: bundle_type</h3>
 <div class="org-src-container">
 <label class="org-src-name">Promise skeleton</label>
 <pre  class="src src-artist">bundle bundle_type bundle_name
@@ -10131,8 +10167,8 @@ different agents (<code>cf-agent</code>, <code>cf-serverd</code>, <code>cf-monit
 </dl>
 
 </section>
-<section id="slide-org22af348">
-<h3 id="org22af348">Anatomy of a Promise: bundle_name</h3>
+<section id="slide-orgb61f156">
+<h3 id="orgb61f156">Anatomy of a Promise: bundle_name</h3>
 <div class="org-src-container">
 <label class="org-src-name">Promise skeleton</label>
 <pre  class="src src-artist">bundle bundle_type bundle_name
@@ -10154,8 +10190,8 @@ different agents (<code>cf-agent</code>, <code>cf-serverd</code>, <code>cf-monit
 </dl>
 
 </section>
-<section id="slide-org6e8bb54">
-<h3 id="org6e8bb54">Anatomy of a Promise: type</h3>
+<section id="slide-orga6a0294">
+<h3 id="orga6a0294">Anatomy of a Promise: type</h3>
 <div class="org-src-container">
 <label class="org-src-name">Promise skeleton</label>
 <pre  class="src src-artist">bundle bundle_type bundle_name
@@ -10178,8 +10214,8 @@ made (e.g., <code>files</code>, <code>commands</code>, <code>packages</code>, et
 </dl>
 
 </section>
-<section id="slide-org4997f11">
-<h3 id="org4997f11">Anatomy of a Promise: context</h3>
+<section id="slide-org8a10142">
+<h3 id="org8a10142">Anatomy of a Promise: context</h3>
 <div class="org-src-container">
 <label class="org-src-name">Promise skeleton</label>
 <pre  class="src src-artist">bundle bundle_type bundle_name
@@ -10204,8 +10240,8 @@ start of the next promise type.</dd>
 </dl>
 
 </section>
-<section id="slide-org7768dac">
-<h3 id="org7768dac">Anatomy of a Promise: promiser</h3>
+<section id="slide-org8a7acb7">
+<h3 id="org8a7acb7">Anatomy of a Promise: promiser</h3>
 <div class="org-src-container">
 <label class="org-src-name">Promise skeleton</label>
 <pre  class="src src-artist">bundle bundle_type bundle_name
@@ -10227,8 +10263,8 @@ start of the next promise type.</dd>
 </dl>
 
 </section>
-<section id="slide-orge2f18cf">
-<h3 id="orge2f18cf">Anatomy of a Promise: promisee/stakeholder</h3>
+<section id="slide-org8ffbf6d">
+<h3 id="org8ffbf6d">Anatomy of a Promise: promisee/stakeholder</h3>
 <div class="org-src-container">
 <label class="org-src-name">Promise skeleton</label>
 <pre  class="src src-artist">bundle bundle_type bundle_name
@@ -10252,8 +10288,8 @@ referencing, primarily for humans.</dd>
 </dl>
 
 </section>
-<section id="slide-orgb906470">
-<h3 id="orgb906470">Anatomy of a Promise: promise body</h3>
+<section id="slide-org0731993">
+<h3 id="org0731993">Anatomy of a Promise: promise body</h3>
 <div class="org-src-container">
 <label class="org-src-name">Promise skeleton</label>
 <pre  class="src src-artist">bundle bundle_type bundle_name
@@ -10276,8 +10312,8 @@ a body used as an attribute value)</dd>
 </dl>
 
 </section>
-<section id="slide-org55ec88b">
-<h3 id="org55ec88b">Anatomy of a Promise: value</h3>
+<section id="slide-org0ddce78">
+<h3 id="org0ddce78">Anatomy of a Promise: value</h3>
 <div class="org-src-container">
 <label class="org-src-name">Promise skeleton</label>
 <pre  class="src src-artist">bundle bundle_type bundle_name
@@ -10302,8 +10338,8 @@ bundles or bodies <b>must be quoted</b>.</dd>
 </dl>
 
 </section>
-<section id="slide-orgfd77a43">
-<h3 id="orgfd77a43">Anatomy of a Promise: body</h3>
+<section id="slide-orgbdd5565">
+<h3 id="orgbdd5565">Anatomy of a Promise: body</h3>
 <div class="org-src-container">
 <label class="org-src-name">Promise skeleton</label>
 <pre  class="src src-artist">bundle bundle_type bundle_name
@@ -10326,8 +10362,8 @@ bodies <b>must not be quoted</b>.</dd>
 </dl>
 
 </section>
-<section id="slide-org39cda44">
-<h3 id="org39cda44">Anatomy of a Promise: bundle</h3>
+<section id="slide-org49ac052">
+<h3 id="org49ac052">Anatomy of a Promise: bundle</h3>
 <div class="org-src-container">
 <label class="org-src-name">Promise skeleton</label>
 <pre  class="src src-artist">bundle bundle_type bundle_name
@@ -10351,8 +10387,8 @@ bundles <b>must not be quoted</b>;</dd>
 </dl>
 
 </section>
-<section id="slide-orgf12cb51">
-<h3 id="orgf12cb51">Promise Attributes</h3>
+<section id="slide-org41e9d4d">
+<h3 id="org41e9d4d">Promise Attributes</h3>
 <ul>
 <li>Separated by commas</li>
 <li>Vary by <b>promise type</b></li>
@@ -10385,8 +10421,8 @@ Attributes are separated by <b>commas</b>. Each promise ends with a <b>semicolon
 </aside>
 
 </section>
-<section id="slide-org1f42b9f">
-<h3 id="org1f42b9f">Example Promise</h3>
+<section id="slide-orgae6f327">
+<h3 id="orgae6f327">Example Promise</h3>
 <div class="org-src-container">
 
 <pre  class="src src-cfengine3"><span style="color: #fe8019;">bundle</span> <span style="color: #d3869b;">agent</span> <span style="color: #fabd2f;">main</span> <span style="color: #458588;">{</span>
@@ -10426,8 +10462,8 @@ directory name (e.g., <code>/tmp/hello/.</code>)</li>
 </section>
 </section>
 <section>
-<section id="slide-orgf9baa33">
-<h2 id="orgf9baa33">Bundles</h2>
+<section id="slide-org3d04c92">
+<h2 id="org3d04c92">Bundles</h2>
 <ul>
 <li>collection of <b>promises</b></li>
 <li>logical grouping</li>
@@ -10437,8 +10473,8 @@ directory name (e.g., <code>/tmp/hello/.</code>)</li>
 </ul>
 
 </section>
-<section id="slide-org1abc7ab">
-<h3 id="org1abc7ab">Anatomy of a Bundle</h3>
+<section id="slide-org26d4056">
+<h3 id="org26d4056">Anatomy of a Bundle</h3>
 <div class="org-src-container">
 
 <pre  class="src src-cfengine3"><span style="color: #fe8019;">bundle</span> <span style="color: #d3869b;">type</span> <span style="color: #fabd2f;">name</span>
@@ -10468,8 +10504,8 @@ Bundles of type <code>common</code> apply to any CFEngine binary.
 </p>
 
 </section>
-<section id="slide-orgfbf64b4">
-<h3 id="orgfbf64b4">A bundle for Apache web-server might</h3>
+<section id="slide-org884e283">
+<h3 id="org884e283">A bundle for Apache web-server might</h3>
 <ul>
 <li>ensure the <code>apache2</code> package is installed</li>
 <li>ensure the content in the config file is correct</li>
@@ -10481,8 +10517,8 @@ Bundles of type <code>common</code> apply to any CFEngine binary.
 </ul>
 
 </section>
-<section id="slide-org0cf5d30">
-<h3 id="org0cf5d30">How bundles hold state</h3>
+<section id="slide-org82af842">
+<h3 id="org82af842">How bundles hold state</h3>
 <p>
 This matters when you call the same bundle more than one time within a given
 execution.
@@ -10499,13 +10535,13 @@ explicitly undefined.</li>
 </ul>
 
 </section>
-<section id="slide-orgb68cf1a">
-<h3 id="orgb68cf1a">Quiz: What component(s) use this bundle?</h3>
-<div class="outline-text-3" id="text-orgb68cf1a">
+<section id="slide-org27956cd">
+<h3 id="org27956cd">Quiz: What component(s) use this bundle?</h3>
+<div class="outline-text-3" id="text-org27956cd">
 </div>
 </section>
-<section id="slide-org694d68b">
-<h4 id="org694d68b">What component(s) use common bundles?</h4>
+<section id="slide-org5f78c79">
+<h4 id="org5f78c79">What component(s) use common bundles?</h4>
 <div class="org-src-container">
 
 <pre  class="src src-cfengine3"><span style="color: #fe8019;">bundle</span> <span style="color: #d3869b;">common</span> <span style="color: #fabd2f;">globals</span>
@@ -10526,8 +10562,8 @@ explicitly undefined.</li>
 </aside>
 
 </section>
-<section id="slide-org48ee978">
-<h4 id="org48ee978">What component(s) use server bundles?</h4>
+<section id="slide-org442b776">
+<h4 id="org442b776">What component(s) use server bundles?</h4>
 <div class="org-src-container">
 
 <pre  class="src src-cfengine3"><span style="color: #fe8019;">bundle</span> <span style="color: #d3869b;">server</span> <span style="color: #fabd2f;">my_access_rules</span>
@@ -10541,8 +10577,8 @@ explicitly undefined.</li>
 </div>
 
 </section>
-<section id="slide-orgdd8ebd5">
-<h4 id="orgdd8ebd5">What component(s) use agent bundles?</h4>
+<section id="slide-orgd4f8613">
+<h4 id="orgd4f8613">What component(s) use agent bundles?</h4>
 <div class="org-src-container">
 
 <pre  class="src src-cfengine3"><span style="color: #fe8019;">bundle</span> <span style="color: #d3869b;">agent</span> <span style="color: #fabd2f;">my_policy</span>
@@ -10562,8 +10598,8 @@ explicitly undefined.</li>
 </div>
 
 </section>
-<section id="slide-org206d94d">
-<h4 id="org206d94d">What component(s) use monitor bundles?</h4>
+<section id="slide-org1575648">
+<h4 id="org1575648">What component(s) use monitor bundles?</h4>
 <div class="org-src-container">
 
 <pre  class="src src-cfengine3"><span style="color: #fe8019;">bundle</span> <span style="color: #d3869b;">monitor</span> <span style="color: #fabd2f;">measure_cf_serverd</span>
@@ -10591,8 +10627,8 @@ explicitly undefined.</li>
 </section>
 </section>
 <section>
-<section id="slide-org54de7df">
-<h2 id="org54de7df">Bodies</h2>
+<section id="slide-org9237662">
+<h2 id="org9237662">Bodies</h2>
 <p>
 I stated before that the attributes of a promise, collectively, are called the
 body. Depending on the specific attribute the value of an attribute can be an
@@ -10605,8 +10641,8 @@ the promise.
 </p>
 
 </section>
-<section id="slide-org18f3511">
-<h3 id="org18f3511">Anatomy of an external body</h3>
+<section id="slide-org48b44dc">
+<h3 id="org48b44dc">Anatomy of an external body</h3>
 <div class="org-src-container">
 
 <pre  class="src src-cfengine3"><span style="color: #fe8019;">body</span> <span style="color: #d3869b;">TYPE</span> <span style="color: #fabd2f;">NAME</span><span style="color: #458588;">(</span><span style="color: #83a598;">OPTIONAL, PARAMS</span><span style="color: #458588;">)</span>
@@ -10623,8 +10659,8 @@ The difference between a <i>bundle</i> and a <i>body</i> is that a bundle contai
 </p>
 
 </section>
-<section id="slide-orgc614df3">
-<h4 id="orgc614df3">Take a moment to let this sink in</h4>
+<section id="slide-orgbc6e5f7">
+<h4 id="orgbc6e5f7">Take a moment to let this sink in</h4>
 <ul>
 <li>A <b>bundle</b> is a collection of <i>promises</i>.</li>
 <li>A <b>body</b> is a collection of <i>attributes</i> that are applied to a promise.</li>
@@ -10646,8 +10682,8 @@ each promise are separated by <b>commas</b>)
 </p>
 
 </section>
-<section id="slide-org70aba35">
-<h3 id="org70aba35">Example showing use of external body</h3>
+<section id="slide-org51a8b1f">
+<h3 id="org51a8b1f">Example showing use of external body</h3>
 <div class="org-src-container">
 <label class="org-src-name">The <code>m</code> perms body takes one paramater</label>
 <pre  class="src src-cfengine3"><span style="color: #fe8019;">bundle</span> <span style="color: #d3869b;">agent</span> <span style="color: #fabd2f;">main</span> <span style="color: #458588;">{</span>
@@ -10659,8 +10695,8 @@ each promise are separated by <b>commas</b>)
 </div>
 
 </section>
-<section id="slide-org59b3fbe">
-<h4 id="org59b3fbe">What is m?</h4>
+<section id="slide-orgb6a3703">
+<h4 id="orgb6a3703">What is m?</h4>
 <aside class="notes">
 <p>
 Bodies and bundles that ship as part of the MPF are documented in-line and are
@@ -10694,8 +10730,8 @@ body perms m(mode)
 </section>
 </section>
 <section>
-<section id="slide-org3efaf7f">
-<h2 id="org3efaf7f">Abstraction and Re-usability</h2>
+<section id="slide-orgff18d29">
+<h2 id="orgff18d29">Abstraction and Re-usability</h2>
 <p>
 Bundles and bodies can be paramaterized for abstraction and re-usability. In
 other words you can define one and call it even passing in parameters which will
@@ -10703,8 +10739,8 @@ implicitly become variables.
 </p>
 
 </section>
-<section id="slide-org210405c">
-<h3 id="org210405c">Example</h3>
+<section id="slide-org6a94188">
+<h3 id="org6a94188">Example</h3>
 <div class="org-src-container">
 
 <pre  class="src src-cfengine3"><span style="color: #fe8019;">body</span> <span style="color: #d3869b;">type</span> <span style="color: #fabd2f;">name</span> <span style="color: #458588;">(</span>my_param<span style="color: #458588;">)</span> <span style="color: #458588;">{</span>
@@ -10720,8 +10756,8 @@ The parameter <code>my_param</code> is accessed as a variable by <code>$(my_para
 </section>
 </section>
 <section>
-<section id="slide-org18151f4">
-<h2 id="org18151f4">The Masterfiles Policy Framework</h2>
+<section id="slide-org0e02808">
+<h2 id="org0e02808">The Masterfiles Policy Framework</h2>
 <p>
 The <b>Masterfiles Policy Framework</b> is the default policy that ships with
 CFEngine. The standard library is included.
@@ -10734,8 +10770,8 @@ CFEngine. The standard library is included.
 </ul>
 
 </section>
-<section id="slide-org478cf3f">
-<h3 id="org478cf3f">CFEngine Standard Library</h3>
+<section id="slide-org73f87c2">
+<h3 id="org73f87c2">CFEngine Standard Library</h3>
 <p>
 The <b>CFEngine Standard Library</b> comes bundled with CFEngine in the
 <code>masterfiles/lib/</code> directory.
@@ -10756,22 +10792,22 @@ know the standard library well, it will save you much time.
 </section>
 </section>
 <section>
-<section id="slide-org15a41db" data-background="./media/building_blocks.jpg">
-<h2 id="org15a41db">Putting it all together</h2>
+<section id="slide-orga1dc37f" data-background="./media/building_blocks.jpg">
+<h2 id="orga1dc37f">Putting it all together</h2>
 
 </section>
 </section>
 <section>
-<section id="slide-org9e43bd9">
-<h2 id="org9e43bd9">A few examples</h2>
+<section id="slide-orgd6021d6">
+<h2 id="orgd6021d6">A few examples</h2>
 <ul>
 <li><a href="https://github.com/nickanderson/CFEngine-zero-to-hero-primer/tree/master/examples">examples</a></li>
 
 </ul>
 
 </section>
-<section id="slide-org154aab5">
-<h3 id="org154aab5">Executing the agent</h3>
+<section id="slide-org8ec6170">
+<h3 id="org8ec6170">Executing the agent</h3>
 <pre class="example">
 $ cf-agent --no-locks --log-level=info --file ./test.cf --bundle bundlename
 </pre>
@@ -10782,8 +10818,8 @@ including a bundle named main or <span class="underline"><span class="underline"
 </p>
 
 </section>
-<section id="slide-orgade2cc2">
-<h3 id="orgade2cc2">A quick note on promise locking</h3>
+<section id="slide-org8852cde">
+<h3 id="org8852cde">A quick note on promise locking</h3>
 <p>
 By default promises (excluding defaults, vars, classes, and methods) are locked
 for 1 minute once they are evaluated. 
@@ -10807,8 +10843,8 @@ R: Hello World!
 </pre>
 
 </section>
-<section id="slide-orgb0c3416">
-<h4 id="orgb0c3416">Inspecting the policy</h4>
+<section id="slide-orgfd35281">
+<h4 id="orgfd35281">Inspecting the policy</h4>
 <div class="org-src-container">
 <label class="org-src-name">examples/reports_show_locking.cf/</label>
 <pre  class="src src-cfengine3"><span style="color: #fe8019;">bundle</span> <span style="color: #d3869b;">agent</span> <span style="color: #fabd2f;">main</span>
@@ -10828,8 +10864,8 @@ R: Hello World!
 
 
 </section>
-<section id="slide-orga8e51f1">
-<h3 id="orga8e51f1">Running commands</h3>
+<section id="slide-org4f5deb2">
+<h3 id="org4f5deb2">Running commands</h3>
 <div class="org-src-container">
 <label class="org-src-name">examples/commands_echo_hello_world.cf</label>
 <pre  class="src src-cfengine3"><span style="color: #fe8019;">bundle</span> <span style="color: #d3869b;">agent</span> <span style="color: #fabd2f;">main</span>
@@ -10860,8 +10896,8 @@ Commands are <b>not</b> the best way to accomplish automation.
 </aside>
 
 </section>
-<section id="slide-org7526a06">
-<h3 id="org7526a06">Set File Permissions</h3>
+<section id="slide-org1fe7485">
+<h3 id="org1fe7485">Set File Permissions</h3>
 <div class="org-src-container">
 <label class="org-src-name">examples/set_file_permissions.cf</label>
 <pre  class="src src-cfengine3"><span style="color: #fe8019;">bundle</span> <span style="color: #d3869b;">agent</span> <span style="color: #fabd2f;">main</span> <span style="color: #458588;">{</span>
@@ -10897,8 +10933,8 @@ because these attributes take a list of strings (aka, an <code>slist</code>).
 </p>
 
 </section>
-<section id="slide-orgeefb23c">
-<h3 id="orgeefb23c">Copy an entire file</h3>
+<section id="slide-org62ba86a">
+<h3 id="org62ba86a">Copy an entire file</h3>
 <div class="org-src-container">
 <label class="org-src-name">examples/example_copy_file.cf</label>
 <pre  class="src src-cfengine3"><span style="color: #fe8019;">bundle</span> <span style="color: #d3869b;">agent</span> <span style="color: #fabd2f;">example</span> <span style="color: #458588;">{</span>
@@ -10935,8 +10971,8 @@ server's address.</li>
 </aside>
 
 </section>
-<section id="slide-org1dff42c">
-<h4 id="org1dff42c">Copy an entire file agent bundle</h4>
+<section id="slide-orgd8f30db">
+<h4 id="orgd8f30db">Copy an entire file agent bundle</h4>
 <div class="org-src-container">
 
 <pre  class="src src-cfengine3"><span style="color: #fe8019;">bundle</span> <span style="color: #d3869b;">agent</span> <span style="color: #fabd2f;">example</span> <span style="color: #458588;">{</span>
@@ -10953,8 +10989,8 @@ server's address.</li>
 </ul>
 
 </section>
-<section id="slide-orgc9afdd1">
-<h4 id="orgc9afdd1">Copy an entire file <code>copy_from</code> body</h4>
+<section id="slide-orgdd9b218">
+<h4 id="orgdd9b218">Copy an entire file <code>copy_from</code> body</h4>
 <div class="org-src-container">
 
 <pre  class="src src-cfengine3"><span style="color: #fe8019;">body</span> <span style="color: #d3869b;">copy_from</span> <span style="color: #fabd2f;">cp</span> <span style="color: #458588;">(</span>from<span style="color: #458588;">)</span> <span style="color: #458588;">{</span>
@@ -10973,8 +11009,8 @@ server's address.</li>
 </dl>
 
 </section>
-<section id="slide-org1638baa">
-<h4 id="org1638baa">Copy an entire file <code>server</code> bundle</h4>
+<section id="slide-org76e4b2c">
+<h4 id="org76e4b2c">Copy an entire file <code>server</code> bundle</h4>
 <div class="org-src-container">
 
 <pre  class="src src-cfengine3"><span style="color: #fe8019;">bundle</span> <span style="color: #d3869b;">server</span> <span style="color: #fabd2f;">my_access_rules</span>
@@ -10997,8 +11033,8 @@ server's address.</li>
 </dl>
 
 </section>
-<section id="slide-org090ce1f">
-<h3 id="org090ce1f">Edit a File</h3>
+<section id="slide-org6907c40">
+<h3 id="org6907c40">Edit a File</h3>
 <div class="org-src-container">
 <label class="org-src-name">examples/sshd_permit_root_login_no.cf</label>
 <pre  class="src src-cfengine3"><span style="color: #fe8019;">bundle</span> <span style="color: #d3869b;">agent</span> <span style="color: #fabd2f;">main</span> <span style="color: #458588;">{</span>
@@ -11038,8 +11074,8 @@ standard library.</li>
 </section>
 </section>
 <section>
-<section id="slide-org44c80ca">
-<h2 id="org44c80ca">Variables</h2>
+<section id="slide-org40c6204">
+<h2 id="org40c6204">Variables</h2>
 <p>
 Can be one of several types:
 </p>
@@ -11058,8 +11094,8 @@ Attributes -&gt; vars</a>
 </p>
 
 </section>
-<section id="slide-org85bfa66">
-<h3 id="org85bfa66">Implicit iteration</h3>
+<section id="slide-orgeb4fabe">
+<h3 id="orgeb4fabe">Implicit iteration</h3>
 <p>
 CFEngine doesn't have for loops, but it implicitly iterates over lists and data
 structure values.
@@ -11083,8 +11119,8 @@ structure values.
 </div>
 
 </section>
-<section id="slide-org45ff4e9">
-<h4 id="org45ff4e9">Example output</h4>
+<section id="slide-org6ceac66">
+<h4 id="org6ceac66">Example output</h4>
 <pre class="example">
 # cf-agent --no-lock --file ./examples/list-iteration.cf
 R: l contains two
@@ -11099,8 +11135,8 @@ R: d2 contains 3
 </pre>
 
 </section>
-<section id="slide-org9228776">
-<h3 id="org9228776">Data and arrays</h3>
+<section id="slide-orgf65fe05">
+<h3 id="orgf65fe05">Data and arrays</h3>
 <div class="org-src-container">
 <label class="org-src-name">examples/data-and-arrays.cf</label>
 <pre  class="src src-cfengine3" id="data-and-arrays.cf"><span style="color: #fe8019;">bundle</span> <span style="color: #d3869b;">agent</span> <span style="color: #fabd2f;">main</span>
@@ -11120,8 +11156,8 @@ R: d2 contains 3
 </div>
 
 </section>
-<section id="slide-orgbbee798">
-<h4 id="orgbbee798">Example Output</h4>
+<section id="slide-org84d014c">
+<h4 id="org84d014c">Example Output</h4>
 <pre class="example">
 # cf-agent --no-lock --file ./examples/data-and-arrays.cf
 R: $(d[key][subkey]) == value
@@ -11143,8 +11179,8 @@ R: a contains
 </section>
 </section>
 <section>
-<section id="slide-orgaf93f02">
-<h2 id="orgaf93f02">Classification and Classes</h2>
+<section id="slide-orgc4f46c1">
+<h2 id="orgc4f46c1">Classification and Classes</h2>
 <p>
 A <b>class</b> is like a tag (like tagging a photo). Classes are used to give a
 promise <b>context</b>. Valid characters in classes are [A-Za-z0-9_] (alphanumeric
@@ -11163,8 +11199,8 @@ on the existence of other classes, or for no reason.</li>
 </ul>
 
 </section>
-<section id="slide-org859fcd5">
-<h3 id="org859fcd5">What classes are defined?</h3>
+<section id="slide-orga1c2fc5">
+<h3 id="orga1c2fc5">What classes are defined?</h3>
 <p>
 Use <code>cf-promsies --show-classes</code> to see the first order of resolved classes. 
 </p>
@@ -11176,8 +11212,8 @@ Use <code>cf-promsies --show-classes</code> to see the first order of resolved c
 </div>
 
 </section>
-<section id="slide-org3d5c7fd">
-<h4 id="org3d5c7fd">sample cf-promises &#x2013;show-classes output</h4>
+<section id="slide-orgbb75219">
+<h4 id="orgbb75219">sample cf-promises &#x2013;show-classes output</h4>
 <pre class="example">
 Class name                                                   Meta tags                               
 127_0_0_1                                                    inventory,attribute_name=none,source=agent,hardclass
@@ -11192,8 +11228,8 @@ Day19                                                        time_based,cfengine
 </pre>
 
 </section>
-<section id="slide-orgb743c93">
-<h3 id="orgb743c93">Control Promise Selection</h3>
+<section id="slide-org3041100">
+<h3 id="org3041100">Control Promise Selection</h3>
 <div class="org-src-container">
 <label class="org-src-name">examples/example_apache_config_copied.cf</label>
 <pre  class="src src-cfengine3"><span style="color: #fe8019;">bundle</span> <span style="color: #d3869b;">agent</span> <span style="color: #fabd2f;">apache_config</span> <span style="color: #458588;">{</span>
@@ -11219,8 +11255,8 @@ Day19                                                        time_based,cfengine
 </ul>
 
 </section>
-<section id="slide-org81eb502">
-<h3 id="org81eb502">Promise Type and Class Context apply until they are reset</h3>
+<section id="slide-orge226f01">
+<h3 id="orge226f01">Promise Type and Class Context apply until they are reset</h3>
 <div class="org-src-container">
 <label class="org-src-name">examples/implicit_class_context.cf</label>
 <pre  class="src src-cfengine3"><span style="color: #fe8019;">bundle</span> <span style="color: #d3869b;">agent</span> <span style="color: #fabd2f;">example</span> <span style="color: #458588;">{</span>
@@ -11263,8 +11299,8 @@ reset to <code>any::</code> when entering a new promise type.)
 </aside>
 
 </section>
-<section id="slide-org21f618e">
-<h3 id="org21f618e">Classes are NOT nested</h3>
+<section id="slide-orga13b7d1">
+<h3 id="orga13b7d1">Classes are NOT nested</h3>
 <div class="org-src-container">
 <label class="org-src-name">examples/example_no_nested_classes.cf</label>
 <pre  class="src src-cfengine3" id="There are no nested contexts"><span style="color: #fe8019;">bundle</span> <span style="color: #d3869b;">agent</span> <span style="color: #fabd2f;">main</span>
@@ -11290,8 +11326,8 @@ R: I am ubuntu_19 running on x86_64
 </pre>
 
 </section>
-<section id="slide-org899a746">
-<h3 id="org899a746">Use Classes to Control Flow</h3>
+<section id="slide-org0ed985a">
+<h3 id="org0ed985a">Use Classes to Control Flow</h3>
 <div class="org-src-container">
 <label class="org-src-name">examples/example_config_repair_triggers_command.cf</label>
 <pre  class="src src-cfengine3"><span style="color: #fe8019;">bundle</span> <span style="color: #d3869b;">agent</span> <span style="color: #fabd2f;">apache_config</span> <span style="color: #458588;">{</span>
@@ -11326,8 +11362,8 @@ accomplishes 80%, <b>this slide</b> is the 5% that accomplishes 95%.
 </aside>
 
 </section>
-<section id="slide-org6fad1b8">
-<h3 id="org6fad1b8">Class Expressions</h3>
+<section id="slide-orgf87bdd0">
+<h3 id="orgf87bdd0">Class Expressions</h3>
 <div class="org-src-container">
 
 <pre  class="src src-cfengine3"><span style="color: #fe8019;">commands</span>:
@@ -11383,8 +11419,8 @@ accomplishes 80%, <b>this slide</b> is the 5% that accomplishes 95%.
 </table>
 
 </section>
-<section id="slide-org3b2b3d1">
-<h3 id="org3b2b3d1">Variable class expressions</h3>
+<section id="slide-org045f443">
+<h3 id="org045f443">Variable class expressions</h3>
 <p>
 Since 3.7.0 CFEngine is able to dereference variables directly within class
 expressions. Note that quotes surrounding the entire expression ending before
@@ -11414,8 +11450,8 @@ R: 'cfengine' is defined
 </pre>
 
 </section>
-<section id="slide-org4e11848">
-<h3 id="org4e11848">A Note About Classes and Distributions Based on Other Distributions</h3>
+<section id="slide-orgb6d5931">
+<h3 id="orgb6d5931">A Note About Classes and Distributions Based on Other Distributions</h3>
 <p>
 I said that only Debian systems will run <code>debian::</code> and only Red Hat will run
 <code>redhat::</code>. This isn't exactly true.
@@ -11433,8 +11469,8 @@ as hard classes.</li>
 </section>
 </section>
 <section>
-<section id="slide-org9bd9857">
-<h2 id="org9bd9857">Augments (<code>def.json</code>)</h2>
+<section id="slide-org38378d0">
+<h2 id="org38378d0">Augments (<code>def.json</code>)</h2>
 <ul>
 <li>Very early definition</li>
 <li>Loaded if <code>def.json</code> is found next to policy entry</li>
@@ -11444,8 +11480,8 @@ as hard classes.</li>
 </ul>
 
 </section>
-<section id="slide-orgc65b630">
-<h3 id="orgc65b630">Example augments</h3>
+<section id="slide-orgdbd2be4">
+<h3 id="orgdbd2be4">Example augments</h3>
 <ul>
 <li>Define <code>supported_platform</code> if the class <code>ubuntu_14</code>, <code>ubuntu_16</code>, or
 <code>ubuntu_17</code> is defined.</li>
@@ -11469,8 +11505,8 @@ as hard classes.</li>
 </div>
 
 </section>
-<section id="slide-org06ac419">
-<h3 id="org06ac419">Example policy using augments</h3>
+<section id="slide-orgcc446aa">
+<h3 id="orgcc446aa">Example policy using augments</h3>
 <div class="org-src-container">
 <label class="org-src-name">examples/augments/augments.cf</label>
 <pre  class="src src-cfengine3" id="examples/augments/augments.cf"><span style="color: #fe8019;">bundle</span> <span style="color: #d3869b;">agent</span> <span style="color: #fabd2f;">main</span>
@@ -11488,8 +11524,8 @@ as hard classes.</li>
 </div>
 
 </section>
-<section id="slide-org153c221">
-<h3 id="org153c221">Example output</h3>
+<section id="slide-org2e91c89">
+<h3 id="org2e91c89">Example output</h3>
 <div class="org-src-container">
 
 <pre  class="src src-sh">cf-agent --no-lock --file ./examples/augments/augments.cf
@@ -11503,8 +11539,8 @@ R: You can define classes from augments based on defined hostname
 </pre>
 
 </section>
-<section id="slide-orgcd38d5d">
-<h3 id="orgcd38d5d">Policy always wins!</h3>
+<section id="slide-org24e78cc">
+<h3 id="org24e78cc">Policy always wins!</h3>
 <div class="org-src-container">
 <label class="org-src-name">examples/augments/augments-policy-wins.cf</label>
 <pre  class="src src-cfengine3" id="examples/augments/augments-policy-wins.cf"><span style="color: #fe8019;">bundle</span> <span style="color: #d3869b;">common</span> <span style="color: #fabd2f;">def</span>
@@ -11529,8 +11565,8 @@ R: You can define classes from augments based on defined hostname
 </div>
 
 </section>
-<section id="slide-orgdb5c1f1">
-<h3 id="orgdb5c1f1">Example output</h3>
+<section id="slide-orgdf4a835">
+<h3 id="orgdf4a835">Example output</h3>
 <div class="org-src-container">
 
 <pre  class="src src-sh">cf-agent --no-lock --file ./examples/augments/augments-policy-wins.cf
@@ -11545,8 +11581,8 @@ R: You can define classes from augments based on defined hostname
 </pre>
 
 </section>
-<section id="slide-orge956465">
-<h3 id="orge956465">Multiple augments</h3>
+<section id="slide-orgf1a1d13">
+<h3 id="orgf1a1d13">Multiple augments</h3>
 <p>
 Merge more specific augments (based on sys vars) on top.
 </p>
@@ -11574,8 +11610,8 @@ Merge more specific augments (based on sys vars) on top.
 </div>
 
 </section>
-<section id="slide-org1323a23">
-<h4 id="org1323a23">Multiple augments: Example policy</h4>
+<section id="slide-org9e1ee44">
+<h4 id="org9e1ee44">Multiple augments: Example policy</h4>
 <div class="org-src-container">
 <label class="org-src-name">examples/augments-multiple/promises.cf</label>
 <pre  class="src src-cfengine3" id="examples/augments-multiple/promises.cf"><span style="color: #fe8019;">bundle</span> <span style="color: #d3869b;">agent</span> <span style="color: #fabd2f;">main</span>
@@ -11598,15 +11634,14 @@ R: '$(def.myvar1)' is 'defined from augments for all'
 R: '$(def.myvar2)' is 'override for linux hosts'
 </pre>
 
-
 </section>
 </section>
 <section>
-<section id="slide-orgc08124c">
-<h2 id="orgc08124c">Managing Processes</h2>
+<section id="slide-org9ac9d86">
+<h2 id="org9ac9d86">Managing Processes</h2>
 </section>
-<section id="slide-org13da52c">
-<h3 id="org13da52c">Keep Services Running: Using Processes</h3>
+<section id="slide-orgd7d1c95">
+<h3 id="orgd7d1c95">Keep Services Running: Using Processes</h3>
 <div class="org-src-container">
 
 <pre  class="src src-cfengine3" id="./examples/example_apache_service_running.cf"><span style="color: #fe8019;">bundle</span> <span style="color: #d3869b;">agent</span> <span style="color: #fabd2f;">apache</span> <span style="color: #458588;">{</span>
@@ -11636,8 +11671,8 @@ When CFEngine executes <code>commands</code> promises Apache will be started.
 </aside>
 
 </section>
-<section id="slide-org039e3fa">
-<h3 id="org039e3fa">Ensuring Processes are Not Running: Using Processes and Commands</h3>
+<section id="slide-org8bf4873">
+<h3 id="org8bf4873">Ensuring Processes are Not Running: Using Processes and Commands</h3>
 <div class="org-src-container">
 <label class="org-src-name">examples/process_stop_bluetoothd.cf</label>
 <pre  class="src src-cfengine3"><span style="color: #fe8019;">bundle</span> <span style="color: #d3869b;">agent</span> <span style="color: #fabd2f;">stop_bluetooth</span> <span style="color: #458588;">{</span>
@@ -11657,8 +11692,8 @@ command is executed.
 </p>
 
 </section>
-<section id="slide-orgfaaff54">
-<h3 id="orgfaaff54">Ensuring Processes are Not Running: Using Processes and Signals</h3>
+<section id="slide-org17620fb">
+<h3 id="org17620fb">Ensuring Processes are Not Running: Using Processes and Signals</h3>
 <div class="org-src-container">
 <label class="org-src-name">examples/process_signals_bluetoothd.cf</label>
 <pre  class="src src-cfengine3"><span style="color: #fe8019;">bundle</span> <span style="color: #d3869b;">agent</span> <span style="color: #fabd2f;">stop_bluetooth</span> <span style="color: #458588;">{</span>
@@ -11688,8 +11723,8 @@ process name field. <b>Caveat emptor!</b>
 </aside>
 
 </section>
-<section id="slide-orgad54de9">
-<h3 id="orgad54de9">Keep Services Running: Using Services</h3>
+<section id="slide-org1d1d822">
+<h3 id="org1d1d822">Keep Services Running: Using Services</h3>
 <div class="org-src-container">
 
 <pre  class="src src-cfengine3" id="examples/example_service_running.cf"><span style="color: #fe8019;">bundle</span> <span style="color: #d3869b;">agent</span> <span style="color: #fabd2f;">apache</span> <span style="color: #458588;">{</span>
@@ -11713,8 +11748,8 @@ check as appropriate for the init system in use.
 </p>
 
 </section>
-<section id="slide-org5099af9">
-<h3 id="org5099af9">Ensuring Processes are Not Running: Using Services</h3>
+<section id="slide-org2534dd7">
+<h3 id="org2534dd7">Ensuring Processes are Not Running: Using Services</h3>
 <div class="org-src-container">
 <label class="org-src-name">examples/services_bluetoothd_stop.cf</label>
 <pre  class="src src-cfengine3" id="examples/services_bluetoothd_stop.cf"><span style="color: #fe8019;">bundle</span> <span style="color: #d3869b;">agent</span> <span style="color: #fabd2f;">stop_bluetoothd</span> <span style="color: #458588;">{</span>
@@ -11738,8 +11773,8 @@ The same restrictions about distros apply to stopping services promises.
 </p>
 
 </section>
-<section id="slide-org74c1a0c">
-<h3 id="org74c1a0c">A note on the services promise abstraction</h3>
+<section id="slide-org21b4619">
+<h3 id="org21b4619">A note on the services promise abstraction</h3>
 <p>
 Services promises are really an <a href="https://cmdln.org/2019/05/31/custom-services-in-cfengine-3/">abstraction on bundles</a>.
 </p>
@@ -11747,19 +11782,19 @@ Services promises are really an <a href="https://cmdln.org/2019/05/31/custom-ser
 </section>
 </section>
 <section>
-<section id="slide-org6e0d0f1">
-<h2 id="org6e0d0f1">Managing Packages</h2>
+<section id="slide-org882dc96">
+<h2 id="org882dc96">Managing Packages</h2>
 </section>
-<section id="slide-org6faae33">
-<h3 id="org6faae33">Package modules (newer implementation)</h3>
+<section id="slide-org17f6c08">
+<h3 id="org17f6c08">Package modules (newer implementation)</h3>
 <p>
 <code>apt_get</code>, <code>pkgsrc</code>, <code>freebsd_ports</code>, <code>slackpkg</code>, <code>msiexec</code>, <code>yum</code>, <code>nimclient</code>,
  <code>zypper</code>, <code>pkg</code>
 </p>
 
 </section>
-<section id="slide-org06afaa1">
-<h4 id="org06afaa1">Example use of package_module</h4>
+<section id="slide-org943648b">
+<h4 id="org943648b">Example use of package_module</h4>
 <div class="org-src-container">
 
 <pre  class="src src-cfengine3"><span style="color: #fe8019;">bundle</span> <span style="color: #d3869b;">agent</span> <span style="color: #fabd2f;">install</span> <span style="color: #458588;">{</span>
@@ -11782,8 +11817,8 @@ available. Alternatively you can provide an explicit version.</li>
 </ul>
 
 </section>
-<section id="slide-orgcc99240">
-<h3 id="orgcc99240">Package modules (legacy implementation)</h3>
+<section id="slide-orgf934b2d">
+<h3 id="orgf934b2d">Package modules (legacy implementation)</h3>
 <p>
 <code>alpinelinux</code>, <code>freebsd</code>, <code>opencsw</code>, <code>solaris_install</code>, <code>apt</code>,
 <code>freebsd_portmaster</code>, <code>pacman</code>, <code>windows_feature</code>, <code>apt_get</code>, <code>generic</code>, <code>pip</code>,
@@ -11795,8 +11830,8 @@ available. Alternatively you can provide an explicit version.</li>
 </p>
 
 </section>
-<section id="slide-orgecdcb1b">
-<h4 id="orgecdcb1b">Example use of package_method</h4>
+<section id="slide-org82f0cef">
+<h4 id="org82f0cef">Example use of package_method</h4>
 <div class="org-src-container">
 
 <pre  class="src src-cfengine3"><span style="color: #fe8019;">bundle</span> <span style="color: #d3869b;">agent</span> <span style="color: #fabd2f;">install</span> <span style="color: #458588;">{</span>
@@ -11834,11 +11869,11 @@ easier to dig into the specific details of how packages should be managed.
 </section>
 </section>
 <section>
-<section id="slide-org0b89fce">
-<h2 id="org0b89fce">Managing Files</h2>
+<section id="slide-org5775ed7">
+<h2 id="org5775ed7">Managing Files</h2>
 </section>
-<section id="slide-org2bdb8b0">
-<h3 id="org2bdb8b0">Methodologies</h3>
+<section id="slide-orgd48336c">
+<h3 id="orgd48336c">Methodologies</h3>
 <ul>
 <li>Full file management</li>
 <li>Partial file management</li>
@@ -11846,8 +11881,8 @@ easier to dig into the specific details of how packages should be managed.
 </ul>
 
 </section>
-<section id="slide-org6e8d1e3">
-<h3 id="org6e8d1e3">Templating a file</h3>
+<section id="slide-org2b74088">
+<h3 id="org2b74088">Templating a file</h3>
 <dl>
 <dt><a href="http://mustache.github.io/">mustache</a></dt><dd>Logic-less templating engine (<b>preferred</b>)</dd>
 <dt><a href="https://docs.cfengine.com/lts/reference-promise-types-files.html#edit_template">cfengine</a></dt><dd>CFEngine's original line based templating</dd>
@@ -11855,8 +11890,8 @@ easier to dig into the specific details of how packages should be managed.
 </dl>
 
 </section>
-<section id="slide-org0992e20">
-<h4 id="org0992e20">Mustache Templating</h4>
+<section id="slide-org62c49ab">
+<h4 id="org62c49ab">Mustache Templating</h4>
 <div class="org-src-container">
 <label class="org-src-name">examples/template.mustache</label>
 <pre  class="src src-text">Hello from {{{vars.sys.fqhost}}}!
@@ -11879,8 +11914,8 @@ easier to dig into the specific details of how packages should be managed.
 </div>
 
 </section>
-<section id="slide-orgfc58a58">
-<h4 id="orgfc58a58">Mustache Extensions</h4>
+<section id="slide-org31f8f6e">
+<h4 id="org31f8f6e">Mustache Extensions</h4>
 <dl>
 <dt><code>-top-</code></dt><dd>Special key representing the complete data given to the templating
 engine.</dd>
@@ -11893,8 +11928,8 @@ representation of the data given to the templating engine.</dd>
 </dl>
 
 </section>
-<section id="slide-orga1e0072">
-<h4 id="orga1e0072">Example: Render multiline JSON for <code>packagesmatching()</code></h4>
+<section id="slide-org39b5cde">
+<h4 id="org39b5cde">Example: Render multiline JSON for <code>packagesmatching()</code></h4>
 <p>
 <code>packagesmatching()</code> returns data. Render the multiline JSON representation of the data.
 </p>
@@ -11917,8 +11952,8 @@ representation of the data given to the templating engine.</dd>
 </div>
 
 </section>
-<section id="slide-orgfe7810b">
-<h4 id="orgfe7810b">Output: Render multiline JSON for <code>packagesmatching()</code></h4>
+<section id="slide-orgaf90dca">
+<h4 id="orgaf90dca">Output: Render multiline JSON for <code>packagesmatching()</code></h4>
 <pre class="example">
 R: [
   {
@@ -11961,8 +11996,8 @@ R: [
 </pre>
 
 </section>
-<section id="slide-org1f32b85">
-<h4 id="org1f32b85">Mustache Tips</h4>
+<section id="slide-org93a9239">
+<h4 id="org93a9239">Mustache Tips</h4>
 <ul>
 <li>Render raw values with <code>{{{VAR}}}</code> or <code>{{&amp; VAR}}</code>. <b>Mustache html escapes by
 default</b>.</li>
@@ -11985,8 +12020,8 @@ and data to external agents.</li>
 </aside>
 
 </section>
-<section id="slide-org4224543">
-<h3 id="org4224543">Deleting a file</h3>
+<section id="slide-org5445df5">
+<h3 id="org5445df5">Deleting a file</h3>
 <div class="org-src-container">
 <label class="org-src-name">examples/example_delete_old_log_files.cf</label>
 <pre  class="src src-cfengine3"><span style="color: #fe8019;">bundle</span> <span style="color: #d3869b;">agent</span> <span style="color: #fabd2f;">tidy</span> <span style="color: #458588;">{</span>
@@ -12015,13 +12050,13 @@ use this.
 </section>
 </section>
 <section>
-<section id="slide-orgc052c36">
-<h2 id="orgc052c36">Troubleshooting</h2>
-<div class="outline-text-2" id="text-orgc052c36">
+<section id="slide-org69092af">
+<h2 id="org69092af">Troubleshooting</h2>
+<div class="outline-text-2" id="text-org69092af">
 </div>
 </section>
-<section id="slide-orgfd0c2a4">
-<h3 id="orgfd0c2a4">Which hub am I bootstrapped to?</h3>
+<section id="slide-org725c2f8">
+<h3 id="org725c2f8">Which hub am I bootstrapped to?</h3>
 <ul>
 <li><code>cat /var/cfengine/policy_server.dat</code></li>
 <li><code>cf-promises --show-vars | grep sys.policy_hub</code></li>
@@ -12029,8 +12064,8 @@ use this.
 </ul>
 
 </section>
-<section id="slide-org9140dd0">
-<h3 id="org9140dd0">Is cfengine running?</h3>
+<section id="slide-org0e31e79">
+<h3 id="org0e31e79">Is cfengine running?</h3>
 <ul>
 <li><code>ps -ef | grep [c]f-</code></li>
 
@@ -12042,16 +12077,16 @@ hosts. Additional processes will be seen on Enterprise Hubs
 </p>
 
 </section>
-<section id="slide-orgca971e6">
-<h3 id="orgca971e6">When did the agent last run?</h3>
+<section id="slide-org7397560">
+<h3 id="org7397560">When did the agent last run?</h3>
 <ul>
 <li><code>ls -lh /var/cfengine/promise_summary.log</code></li>
 
 </ul>
 
 </section>
-<section id="slide-org147bded">
-<h3 id="org147bded">Review output from previous agent runs</h3>
+<section id="slide-orgc3fab10">
+<h3 id="orgc3fab10">Review output from previous agent runs</h3>
 <ul>
 <li><code>ls /var/cfengine/outputs</code></li>
 <li><code>cat /var/cfengine/outputs/previous</code></li>
@@ -12059,8 +12094,8 @@ hosts. Additional processes will be seen on Enterprise Hubs
 </ul>
 
 </section>
-<section id="slide-org30c6b8c">
-<h3 id="org30c6b8c">Manual report collection from Enterprise Hub</h3>
+<section id="slide-org635806a">
+<h3 id="org635806a">Manual report collection from Enterprise Hub</h3>
 <ul>
 <li><code>cf-hub --hail &lt;IP|HOSTNAME&gt; --verbose --query rebase</code></li>
 <li><code>cf-hub -H &lt;IP|HOSTNAME&gt; -v -q delta</code></li>
@@ -12068,8 +12103,8 @@ hosts. Additional processes will be seen on Enterprise Hubs
 </ul>
 
 </section>
-<section id="slide-org71ab6e7">
-<h4 id="org71ab6e7">Unspecified server refusal</h4>
+<section id="slide-orgb8b7a20">
+<h4 id="orgb8b7a20">Unspecified server refusal</h4>
 <pre class="example">
 [root@hub ~]# cf-hub -H 10.10.10.11 -q rebase
    error: Abort transmission: got " Unspecified server refusal (see verbose server output)" from 10.10.10.11
@@ -12084,8 +12119,8 @@ refusing</li>
 </ul>
 
 </section>
-<section id="slide-orgbbf5cc3">
-<h4 id="orgbbf5cc3">Connection refused</h4>
+<section id="slide-org848c556">
+<h4 id="org848c556">Connection refused</h4>
 <ul>
 <li>Firewall blocking inbound connections on port <code>5308</code></li>
 <li><code>cf-serverd</code> not running on remote host</li>
@@ -12095,8 +12130,8 @@ refusing</li>
 </section>
 </section>
 <section>
-<section id="slide-org08584fe">
-<h2 id="org08584fe">Setting Up a Client/Server Environment</h2>
+<section id="slide-orgd110be5">
+<h2 id="orgd110be5">Setting Up a Client/Server Environment</h2>
 <p>
 Before starting you need to have cfengine installed on the server and the client
 and the server FQDN must be set properly in DNS (or use the IP addresses). This
@@ -12109,11 +12144,11 @@ Some ways of automating provisioning are <a href="http://fedoraproject.org">kick
 </p>
 
 </section>
-<section id="slide-org0538e26">
-<h3 id="org0538e26">Bootstraping the Server and Client</h3>
+<section id="slide-org087f2f1">
+<h3 id="org087f2f1">Bootstraping the Server and Client</h3>
 </section>
-<section id="slide-org4a599b0">
-<h4 id="org4a599b0">Server Side</h4>
+<section id="slide-org2e01bab">
+<h4 id="org2e01bab">Server Side</h4>
 <p>
 Edit <code>/var/cfengine/masterfiles/def.cf</code> to set the <code>acl</code> list for the IP
 addresses of your network, then run:
@@ -12125,8 +12160,8 @@ cf-agent -KI
 </pre>
 
 </section>
-<section id="slide-org0b4f89a">
-<h4 id="org0b4f89a">Client Side</h4>
+<section id="slide-orgb227d57">
+<h4 id="orgb227d57">Client Side</h4>
 <p>
 Simply run:
 </p>
@@ -12140,8 +12175,8 @@ You can use the server's IP address instead of the DNS name.
 </p>
 
 </section>
-<section id="slide-orgd0a862b">
-<h3 id="orgd0a862b">Managing and Distributing Policies</h3>
+<section id="slide-org19529e2">
+<h3 id="org19529e2">Managing and Distributing Policies</h3>
 <p>
 Policy is distributed from <code>/var/cfengine/masterfiles</code> on the server (also known as
 the <code>policy_hub</code>) and are copied to <code>/var/cfengine/inputs</code>. All clients then
@@ -12151,8 +12186,8 @@ copy <code>/var/cfengine/inputs</code> from the server.
 </section>
 </section>
 <section>
-<section id="slide-org23e044e">
-<h2 id="org23e044e">Reporting on Promise Outcomes</h2>
+<section id="slide-org7ca11a3">
+<h2 id="org7ca11a3">Reporting on Promise Outcomes</h2>
 <p>
 CFEngine logs to <code>/var/cfengine/promise_summary.log</code>. Here's an example log message:
 </p>
@@ -12184,12 +12219,12 @@ cf-agent -KI
 </pre>
 
 </section>
-<section id="slide-org947f2b9">
-<h4 id="org947f2b9">CFEngine Core/Community</h4>
-<div class="outline-text-4" id="text-org947f2b9">
+<section id="slide-orgc160fca">
+<h4 id="orgc160fca">CFEngine Core/Community</h4>
+<div class="outline-text-4" id="text-orgc160fca">
 </div>
 <ul class="org-ul">
-<li><a id="org09ab692"></a>The verbose agent log<br />
+<li><a id="org3dd878d"></a>The verbose agent log<br />
 <p>
 Running the agent in verbose mode ( <code>cf-agent --verbose</code> | <code>cf-agent -v</code> )
 provides all of the details about each promise and its result
@@ -12316,7 +12351,7 @@ verbose: Outcome of version (not specified) (agent-0): Promises observed - Total
 </pre>
 </li>
 
-<li><a id="orgf15dd63"></a>Promise logging<br />
+<li><a id="orgf2fa0b9"></a>Promise logging<br />
 <p>
 Promises can be configured to <a href="https://docs.cfengine.com/lts/reference-promise-types.html#log_repaired">log their outcomes</a> to a file with <code>log_kept</code>,
 <code>log_repaired</code>, and <code>log_failed</code> attributes in an action body.
@@ -12351,14 +12386,14 @@ R: Mon Dec  4 21:21:38 2017 REPAIRED /bin/true
 </ul>
 
 </section>
-<section id="slide-org405ae01">
-<h4 id="org405ae01">CFEngine Enterprise</h4>
+<section id="slide-org405a3da">
+<h4 id="org405a3da">CFEngine Enterprise</h4>
 <p>
 CFEngine enterprise provides details logging without special configuration.
 </p>
 
 <ul class="org-ul">
-<li><a id="org1580bea"></a>Changes UI<br />
+<li><a id="org7b6259d"></a>Changes UI<br />
 <p>
 The changes reporting interface is the easiest way to what repairs the agent is
 making to your infrastructure.
@@ -15871,7 +15906,7 @@ rkJggg==" />
 </div>
 </li>
 
-<li><a id="org8d0b609"></a>Changes API<br />
+<li><a id="org493ea3f"></a>Changes API<br />
 <p>
 Changes can also be queried from the <a href="https://docs.cfengine.com/lts/reference-enterprise-api-ref-changes.html">changes rest api</a>. Here we query for repairs made
 by <code>files</code> type promises.
@@ -15924,7 +15959,7 @@ See Also: <a href="https://docs.cfengine.com/lts/examples-enterprise-api-example
 </p>
 </li>
 
-<li><a id="org766b342"></a>Custom Reports and Query API<br />
+<li><a id="org3697b43"></a>Custom Reports and Query API<br />
 <p>
 The custom reports interface and associated <a href="https://docs.cfengine.com/lts/reference-enterprise-api-ref-query.html">query rest api</a> allow more flexible
 reports to be run.
@@ -15957,7 +15992,7 @@ Reference: <a href="https://docs.cfengine.com/docs/3.10/examples-enterprise-api-
 </p>
 </li>
 
-<li><a id="orgcd083fd"></a>/var/cfengine/state/promise_log/*.csv<br />
+<li><a id="org6fa8440"></a>/var/cfengine/state/promise_log/*.csv<br />
 <p>
 <b>WARNING:</b> These logs are purged upon collection by the hub.
 </p>
@@ -15980,7 +16015,7 @@ tree), <code>promise handle</code>, <code>promisees</code>, <code>log messages</
 </div>
 </li>
 
-<li><a id="orgff4a7bc"></a>promise_log.jsonl<br />
+<li><a id="org798d1af"></a>promise_log.jsonl<br />
 <p>
 <b>WARNING:</b> These logs are purged upon collection by the hub.
 </p>
@@ -16053,23 +16088,23 @@ Here is an example of the output:
 </ul>
 
 </section>
-<section id="slide-org75bc94a">
-<h3 id="org75bc94a">Debugging</h3>
+<section id="slide-org0c1eedc">
+<h3 id="org0c1eedc">Debugging</h3>
 <p>
 Inevitably, something will go wrong, and you will need to dig deep to figure
 something out. Lucky for you, I have some tips for debugging.
 </p>
 
 </section>
-<section id="slide-orgfefb55e">
-<h4 id="orgfefb55e">Run without locks</h4>
+<section id="slide-orgf2d215b">
+<h4 id="orgf2d215b">Run without locks</h4>
 <p>
 Again, using <code>-K</code> to disable locks is useful.
 </p>
 
 </section>
-<section id="slide-org18eeffe">
-<h4 id="org18eeffe">Using Verbose Mode</h4>
+<section id="slide-orgf1144df">
+<h4 id="orgf1144df">Using Verbose Mode</h4>
 <p>
 CFEngine's verbose output can be fantastic for debugging. Use the <code>-v</code> flag to
 turn it on.
@@ -16110,8 +16145,8 @@ verbose: P: END files promise (/tmp/touch...)
 </pre>
 
 </section>
-<section id="slide-orgdf8d411">
-<h4 id="orgdf8d411">Comments</h4>
+<section id="slide-orgf9f5462">
+<h4 id="orgf9f5462">Comments</h4>
 <p>
 CFEngine supports <i>comments</i> as part of its data structure. Every promise can
 have a <code>comment</code> attribute whose value is a quoted text string.
@@ -16161,8 +16196,8 @@ Think about why this promise is important to the proper functioning of your infr
 </aside>
 
 </section>
-<section id="slide-orga6821bf">
-<h4 id="orga6821bf">Promise Handles</h4>
+<section id="slide-orge8706d8">
+<h4 id="orge8706d8">Promise Handles</h4>
 <p>
 When debugging, promise <i>handles</i> are also useful. Again, every promise can have
 a <code>handle</code> attribute whose value is a quoted canonical string.
@@ -16220,8 +16255,8 @@ I believe this will come into core in 3.9 or 3.10.
 </aside>
 
 </section>
-<section id="slide-org941d2a4">
-<h4 id="org941d2a4">Promisees</h4>
+<section id="slide-org0e86953">
+<h4 id="org0e86953">Promisees</h4>
 <p>
 When debugging, promise <i>stakeholders</i> aka <i>promisees</i> are useful for
 understanding <a href="https://github.com/nickanderson/cfengine-inventory_users_last_login/commit/cd2fb3454cf362efa5621e39800984c1d7ad655e">who cares</a> about a given promise.
@@ -16250,8 +16285,8 @@ verbose: Additional promise info: handle 'update_etc_bind_named_cache'\
 </pre>
 
 </section>
-<section id="slide-org0ccbd0f">
-<h4 id="org0ccbd0f">Meta</h4>
+<section id="slide-orge57244b">
+<h4 id="orge57244b">Meta</h4>
 <p>
 When debugging variables and classes promise <i>meta</i> data is useful to help
 identify variables and classes with specific attributes.
@@ -16281,8 +16316,8 @@ output.
 </section>
 </section>
 <section>
-<section id="slide-org3607764">
-<h2 id="org3607764">The Rest</h2>
+<section id="slide-orgd852094">
+<h2 id="orgd852094">The Rest</h2>
 <p>
 Here's a list of topics that I didn't cover. This is to give you a taste of the
 rest of the power that is behind CFEngine. Dig deeper by checking them out in
@@ -16300,8 +16335,8 @@ function.</li>
 </ul>
 
 </section>
-<section id="slide-orge6bbf66">
-<h3 id="orge6bbf66">Pro Tips</h3>
+<section id="slide-orgc0873e5">
+<h3 id="orgc0873e5">Pro Tips</h3>
 <ul>
 <li><i>Don't edit the standard library</i>. Create a <code>site_lib.cf</code> and add your custom
 library bundles and bodies there. This helps with upgrading because you won't
@@ -16327,10 +16362,10 @@ missing character in one promise will throw the whole file off.</li>
 </ul>
 
 </section>
-<section id="slide-org6b5414d">
-<h4 id="org6b5414d">Magic in CFEngine</h4>
+<section id="slide-org3760a83">
+<h4 id="org3760a83">Magic in CFEngine</h4>
 <ul class="org-ul">
-<li><a id="orgbb92085"></a>If I try to define a class with an illegal class character there is no error<br />
+<li><a id="org546de25"></a>If I try to define a class with an illegal class character there is no error<br />
 <p>
 For example:
 </p>
@@ -16407,7 +16442,7 @@ R: Hi
 </pre>
 </li>
 
-<li><a id="org5eee578"></a>When I promise a directory is 600 it gets set to 700<br />
+<li><a id="org3037e90"></a>When I promise a directory is 600 it gets set to 700<br />
 <p>
 For example: 
 </p>
@@ -16485,8 +16520,8 @@ R: /tmp/dir mode is 600
 </section>
 </section>
 <section>
-<section id="slide-org3b05782">
-<h2 id="org3b05782">Thanks</h2>
+<section id="slide-orgbc444d8">
+<h2 id="orgbc444d8">Thanks</h2>
 </section>
 </section>
 </div>
